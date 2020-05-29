@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "158811421085",
+    "firebase_url": "https://vorbyapp.firebaseio.com",
+    "project_id": "vorbyapp",
+    "storage_bucket": "vorbyapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:158811421085:android:02c1647ab49d4f13a61774",
+        "android_client_info": {
+          "package_name": "com.vorby.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "158811421085-c4mjodpep9d409e88icg9aq9lp8mm7oa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vorby.android",
+            "certificate_hash": "595371502160356f126a0084d008dae71e0e4132"
+          }
+        },
+        {
+          "client_id": "158811421085-3jc4j32b0gccjfgrnce55v7je652do37.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhC0C9jhNNxL6eSHtyQE8YrZ4vGwaMvl4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "158811421085-3jc4j32b0gccjfgrnce55v7je652do37.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
