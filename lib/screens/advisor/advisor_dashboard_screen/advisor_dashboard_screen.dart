@@ -4,8 +4,8 @@ import './profile_tile.dart';
 import './main_tile.dart';
 import '../advisor_screens.dart';
 
-class AdvisorHomeScreen extends StatelessWidget {
-  static const routeName = '/advisor-home';
+class AdvisorDashboardScreen extends StatelessWidget {
+  static const routeName = '/advisor-dashboard';
   @override
   Widget build(BuildContext context) {
     final double statusHeight = MediaQuery.of(context).padding.top;

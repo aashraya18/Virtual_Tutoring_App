@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import '../../../../common_widgets/customBackButton.dart';
 import '../../../../models/advisor_model.dart';
 
-class HelperBlurImageWithDetail extends StatelessWidget {
-  const HelperBlurImageWithDetail(this.helper);
-  final Advisor helper;
+class AdvisorBlurImageWithDetail extends StatelessWidget {
+  const AdvisorBlurImageWithDetail(this.advisor);
+  final Advisor advisor;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -33,7 +33,7 @@ class HelperBlurImageWithDetail extends StatelessWidget {
       width: constraints.width,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: NetworkImage(helper.photoUrl),
+          image: NetworkImage(advisor.photoUrl),
           fit: BoxFit.cover,
         ),
       ),
@@ -53,7 +53,7 @@ class HelperBlurImageWithDetail extends StatelessWidget {
     return Column(
       children: <Widget>[
         Text(
-          helper.displayName,
+          advisor.displayName,
           style: TextStyle(
             color: Colors.white,
             fontSize: 22,
@@ -61,7 +61,7 @@ class HelperBlurImageWithDetail extends StatelessWidget {
           ),
         ),
         Text(
-          '${helper.college} - ${helper.branch}',
+          '${advisor.college} - ${advisor.branch}',
           style: TextStyle(
             color: Colors.white60,
             fontSize: 16,

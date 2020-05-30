@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import '../../../../common_widgets/customBackButton.dart';
 import '../../../../models/advisor_model.dart';
 
-class HelperImageWithRating extends StatelessWidget {
-  const HelperImageWithRating(this.helper);
+class AdvisorImageWithRating extends StatelessWidget {
+  const AdvisorImageWithRating(this.advisor);
 
-  final Advisor helper;
+  final Advisor advisor;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -33,7 +33,7 @@ class HelperImageWithRating extends StatelessWidget {
   Widget _buildImage(BuildContext context) {
     final constraints = MediaQuery.of(context).size;
     return Image.network(
-      helper.photoUrl,
+      advisor.photoUrl,
       height: constraints.height * 0.5,
       width: double.infinity,
       fit: BoxFit.fill,
@@ -42,7 +42,7 @@ class HelperImageWithRating extends StatelessWidget {
 
   Widget _buildName() {
     return Text(
-      helper.displayName,
+      advisor.displayName,
       style: TextStyle(
         color: Colors.white,
         fontSize: 22,

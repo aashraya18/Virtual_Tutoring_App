@@ -26,7 +26,7 @@ class StudentSettingsScreen extends StatelessWidget {
   }
 
   Widget _buildAvatarColumn(Size constraints, BuildContext context) {
-    final user = Provider.of<AuthProvider>(context).student;
+    final student = Provider.of<AuthProvider>(context).student;
     return Container(
       height: constraints.height * 0.3,
       width: constraints.width,
@@ -40,12 +40,12 @@ class StudentSettingsScreen extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               image: DecorationImage(
-                  fit: BoxFit.fill, image: NetworkImage(user.photoUrl)),
+                  fit: BoxFit.fill, image: NetworkImage(student.photoUrl)),
             ),
           ),
           SizedBox(height: 15),
           Text(
-            user.displayName,
+            student.displayName,
             style: TextStyle(
               color: Colors.white,
               fontSize: 22,

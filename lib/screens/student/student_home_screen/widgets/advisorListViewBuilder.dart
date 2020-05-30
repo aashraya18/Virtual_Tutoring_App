@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../../../models/advisor_model.dart';
-import './helperCard.dart';
+import './advisorCard.dart';
 
-class HelperListViewBuilder extends StatelessWidget {
-  HelperListViewBuilder({
+class AdvisorListViewBuilder extends StatelessWidget {
+  AdvisorListViewBuilder({
     @required this.title,
     @required this.stream,
   });
@@ -30,7 +30,7 @@ class HelperListViewBuilder extends StatelessWidget {
                 height: 262,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemBuilder: (ctx, index) => HelperCard(helpers[index]),
+                  itemBuilder: (ctx, index) => AdvisorCard(helpers[index]),
                   itemCount: helpers.length,
                 ),
               );

@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import '../../../../models/advisor_model.dart';
 import './../student_advisor_screen/student_advisor_screen.dart';
 
-class HelperCard extends StatelessWidget {
-  const HelperCard(this.helper);
-  final Advisor helper;
+class AdvisorCard extends StatelessWidget {
+  const AdvisorCard(this.advisor);
+  final Advisor advisor;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class HelperCard extends StatelessWidget {
         ClipRRect(
           borderRadius: BorderRadius.circular(15),
           child: Image.network(
-            helper.photoUrl,
+            advisor.photoUrl,
             height: 160,
             width: 130,
             fit: BoxFit.cover,
@@ -38,7 +38,7 @@ class HelperCard extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            helper.displayName,
+            advisor.displayName,
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
         ),
@@ -58,11 +58,11 @@ class HelperCard extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Text(helper.college, style: TextStyle(fontSize: 16)),
+              Text(advisor.college, style: TextStyle(fontSize: 16)),
               SizedBox(height: 5),
               FittedBox(
                 child: Text(
-                  helper.branch,
+                  advisor.branch,
                   style: TextStyle(fontSize: 13),
                 ),
                 fit: BoxFit.cover,
@@ -72,8 +72,8 @@ class HelperCard extends StatelessWidget {
         ),
       ),
       onTap: () {
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (ctx) => StudentAdvisorScreen(helper)));
+        Navigator.of(context)
+            .pushNamed(StudentAdvisorScreen.routeName, arguments: advisor);
       },
     );
   }

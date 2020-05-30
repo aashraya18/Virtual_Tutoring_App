@@ -2,26 +2,26 @@ import 'package:flutter/material.dart';
 
 import '../../../../models/advisor_model.dart';
 import '../../../../common_widgets/bottomFlatButton.dart';
-import './helperBlurImageWithDetail.dart';
-import './helperTabBar.dart';
+import './advisorBlurImageWithDetail.dart';
+import './advisorTabBar.dart';
 import '../student_time_screen/student_time_screen.dart';
 import '../../../../services/custom_icons_icons.dart';
 
 class StudentAdvisorDetailScreen extends StatelessWidget {
   static const routeName = '/student-advior-detail';
-  const StudentAdvisorDetailScreen(this.helper);
-  final Advisor helper;
 
   @override
   Widget build(BuildContext context) {
     final constraints = MediaQuery.of(context).size;
+    final Advisor advisor =
+        ModalRoute.of(context).settings.arguments as Advisor;
     return Scaffold(
       body: Stack(
         children: <Widget>[
           Column(
             children: <Widget>[
-              HelperBlurImageWithDetail(helper),
-              Expanded(child: HelperTabBar(helper)),
+              AdvisorBlurImageWithDetail(advisor),
+              Expanded(child: AdvisorTabBar(advisor)),
               BottomFlatButton(
                 iconData: CustomIcons.user_add_outline,
                 label: 'Guide Me',
@@ -36,13 +36,13 @@ class StudentAdvisorDetailScreen extends StatelessWidget {
               )
             ],
           ),
-          _buildSmallImageOnTop(constraints)
+          _buildSmallImageOnTop(constraints, advisor.photoUrl),
         ],
       ),
     );
   }
 
-  Widget _buildSmallImageOnTop(Size constraints) {
+  Widget _buildSmallImageOnTop(Size constraints, String photoUrl) {
     return Positioned(
       top: constraints.height * 0.15 - 3,
       left: constraints.width / 15 - 3,
@@ -55,7 +55,7 @@ class StudentAdvisorDetailScreen extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
           child: Image.network(
-            helper.photoUrl,
+            photoUrl,
             height: constraints.height * 0.09,
             width: constraints.height * 0.09,
           ),

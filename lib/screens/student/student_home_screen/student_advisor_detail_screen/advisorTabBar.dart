@@ -14,16 +14,16 @@ enum CurrentTab {
   mentees,
 }
 
-class HelperTabBar extends StatefulWidget {
-  const HelperTabBar(this.helper);
+class AdvisorTabBar extends StatefulWidget {
+  const AdvisorTabBar(this.advisor);
 
-  final Advisor helper;
+  final Advisor advisor;
 
   @override
-  _HelperTabBarState createState() => _HelperTabBarState();
+  _AdvisorTabBarState createState() => _AdvisorTabBarState();
 }
 
-class _HelperTabBarState extends State<HelperTabBar> {
+class _AdvisorTabBarState extends State<AdvisorTabBar> {
   CurrentTab _currentTab = CurrentTab.about;
   @override
   Widget build(BuildContext context) {
@@ -65,7 +65,7 @@ class _HelperTabBarState extends State<HelperTabBar> {
           ),
           SizedBox(height: 20),
           Text(
-            widget.helper.about,
+            widget.advisor.about,
             style: TextStyle(fontSize: 17),
           ),
         ],
@@ -76,7 +76,7 @@ class _HelperTabBarState extends State<HelperTabBar> {
   Widget _buildReviews() {
     return StreamBuilder<List<Review>>(
         stream: Provider.of<DatabaseProvider>(context)
-            .getHelperReviews(widget.helper.uid),
+            .getHelperReviews(widget.advisor.uid),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final reviews = snapshot.data;
@@ -92,7 +92,7 @@ class _HelperTabBarState extends State<HelperTabBar> {
   Widget _buildMentees() {
     return StreamBuilder<List<Student>>(
         stream: Provider.of<DatabaseProvider>(context)
-            .getHelperMentees(widget.helper.uid),
+            .getHelperMentees(widget.advisor.uid),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final mentees = snapshot.data;
@@ -127,7 +127,7 @@ class _HelperTabBarState extends State<HelperTabBar> {
       tabTitle: 'Reviews',
       child: StreamBuilder<List<Review>>(
           stream: Provider.of<DatabaseProvider>(context)
-              .getHelperReviews(widget.helper.uid),
+              .getHelperReviews(widget.advisor.uid),
           builder: (context, snapshot) {
             if (snapshot.hasData) return Text(snapshot.data.length.toString());
             return CircularProgressIndicator();
@@ -149,7 +149,7 @@ class _HelperTabBarState extends State<HelperTabBar> {
       tabTitle: 'Mentees',
       child: StreamBuilder<List<Student>>(
           stream: Provider.of<DatabaseProvider>(context)
-              .getHelperMentees(widget.helper.uid),
+              .getHelperMentees(widget.advisor.uid),
           builder: (context, snapshot) {
             if (snapshot.hasData) return Text(snapshot.data.length.toString());
             return CircularProgressIndicator();

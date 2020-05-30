@@ -17,10 +17,10 @@ class _StudentEditScreenState extends State<StudentEditScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<AuthProvider>(context).student;
-    _nameController.text = user.displayName;
-    _phoneController.text = user.uid;
-    _emailController.text = user.email;
+    final student = Provider.of<AuthProvider>(context).student;
+    _nameController.text = student.displayName;
+    _phoneController.text = student.uid;
+    _emailController.text = student.email;
     final constraints = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -33,7 +33,7 @@ class _StudentEditScreenState extends State<StudentEditScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              _buildProfilePicture(constraints, user.photoUrl),
+              _buildProfilePicture(constraints, student.photoUrl),
               Padding(
                 padding: const EdgeInsets.all(25.0),
                 child: Column(

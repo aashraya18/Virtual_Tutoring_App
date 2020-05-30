@@ -5,10 +5,10 @@ import '../../../../services/database_provider.dart';
 import '../../../../models/review_model.dart';
 import '../../../../models/student_model.dart';
 
-class HelperAboutBar extends StatelessWidget {
-  const HelperAboutBar(this.helperId);
+class AboutAdvisorbar extends StatelessWidget {
+  const AboutAdvisorbar(this.advisorId);
 
-  final String helperId;
+  final String advisorId;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class HelperAboutBar extends StatelessWidget {
       children: <Widget>[
         StreamBuilder<List<Review>>(
             stream: Provider.of<DatabaseProvider>(context)
-                .getHelperReviews(helperId),
+                .getHelperReviews(advisorId),
             builder: (context, snapshot) {
               if (snapshot.hasData)
                 return Text(snapshot.data.length.toString());
@@ -56,7 +56,7 @@ class HelperAboutBar extends StatelessWidget {
       children: <Widget>[
         StreamBuilder<List<Student>>(
             stream: Provider.of<DatabaseProvider>(context)
-                .getHelperMentees(helperId),
+                .getHelperMentees(advisorId),
             builder: (context, snapshot) {
               if (snapshot.hasData)
                 return Text(snapshot.data.length.toString());
