@@ -53,14 +53,16 @@ class AuthProvider extends ChangeNotifier implements AuthBase {
         await _firestoreService.getData(docPath: 'helpers/${user.email}');
     if (advisorData.exists) {
       _advisor = Advisor(
-        uid: user.uid,
         about: advisorData['about'],
         branch: advisorData['branch'],
         college: advisorData['college'],
         displayName: advisorData['displayName'],
         email: user.email,
+        menteesCount: advisorData['menteesCount'],
         phoneNumber: advisorData['phoneNumber'],
         photoUrl: advisorData['photoUrl'],
+        reviewsCount: advisorData['reviewsCount'],
+        uid: user.uid,
       );
       _role = true;
     } else {
@@ -153,14 +155,16 @@ class AuthProvider extends ChangeNotifier implements AuthBase {
 
       if (advisorData.exists) {
         _advisor = Advisor(
-          uid: user.uid,
           about: advisorData['about'],
           branch: advisorData['branch'],
           college: advisorData['college'],
           displayName: advisorData['displayName'],
           email: user.email,
+          menteesCount: advisorData['menteesCount'],
           phoneNumber: advisorData['phoneNumber'],
           photoUrl: advisorData['photoUrl'],
+          reviewsCount: advisorData['reviewsCount'],
+          uid: user.uid,
         );
         _role = true;
       } else {

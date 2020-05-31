@@ -31,9 +31,9 @@ class _AdvisorTabBarState extends State<AdvisorTabBar> {
       children: <Widget>[
         Row(
           children: <Widget>[
-            _buildAboutColumn(context),
-            _buildReviewsColumn(context),
-            _buildMenteesColumn(context),
+            _buildAboutColumn(),
+            _buildReviewsColumn(),
+            _buildMenteesColumn(),
           ],
         ),
         _buildTabBottomColor(),
@@ -42,12 +42,12 @@ class _AdvisorTabBarState extends State<AdvisorTabBar> {
           width: double.infinity,
           color: Colors.grey[400],
         ),
-        Expanded(child: _buildBody(context)),
+        Expanded(child: _buildBody()),
       ],
     );
   }
 
-  Widget _buildBody(BuildContext context) {
+  Widget _buildBody() {
     if (_currentTab == CurrentTab.reviews) return _buildReviews();
     if (_currentTab == CurrentTab.mentees) return _buildMentees();
     return _buildAbout();
@@ -76,7 +76,7 @@ class _AdvisorTabBarState extends State<AdvisorTabBar> {
   Widget _buildReviews() {
     return StreamBuilder<List<Review>>(
         stream: Provider.of<DatabaseProvider>(context)
-            .getHelperReviews(widget.advisor.uid),
+            .getAdvisorReviews(widget.advisor.email),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final reviews = snapshot.data;
@@ -92,7 +92,7 @@ class _AdvisorTabBarState extends State<AdvisorTabBar> {
   Widget _buildMentees() {
     return StreamBuilder<List<Student>>(
         stream: Provider.of<DatabaseProvider>(context)
-            .getHelperMentees(widget.advisor.uid),
+            .getAdvisorMentees(widget.advisor.email),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final mentees = snapshot.data;
@@ -105,11 +105,11 @@ class _AdvisorTabBarState extends State<AdvisorTabBar> {
         });
   }
 
-  Widget _buildAboutColumn(BuildContext context) {
+  Widget _buildAboutColumn() {
     return _buildTab(
       context: context,
       tabTitle: 'About',
-      child: Text(''),
+      child: '',
       color: Colors.blue,
       onPressed: _currentTab == CurrentTab.about
           ? null
@@ -121,17 +121,11 @@ class _AdvisorTabBarState extends State<AdvisorTabBar> {
     );
   }
 
-  Widget _buildReviewsColumn(BuildContext context) {
+  Widget _buildReviewsColumn() {
     return _buildTab(
       context: context,
       tabTitle: 'Reviews',
-      child: StreamBuilder<List<Review>>(
-          stream: Provider.of<DatabaseProvider>(context)
-              .getHelperReviews(widget.advisor.uid),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) return Text(snapshot.data.length.toString());
-            return CircularProgressIndicator();
-          }),
+      child: widget.advisor.reviewsCount,
       color: Colors.black,
       onPressed: _currentTab == CurrentTab.reviews
           ? null
@@ -143,17 +137,11 @@ class _AdvisorTabBarState extends State<AdvisorTabBar> {
     );
   }
 
-  Widget _buildMenteesColumn(BuildContext context) {
+  Widget _buildMenteesColumn() {
     return _buildTab(
       context: context,
       tabTitle: 'Mentees',
-      child: StreamBuilder<List<Student>>(
-          stream: Provider.of<DatabaseProvider>(context)
-              .getHelperMentees(widget.advisor.uid),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) return Text(snapshot.data.length.toString());
-            return CircularProgressIndicator();
-          }),
+      child: widget.advisor.menteesCount,
       color: Colors.red,
       onPressed: _currentTab == CurrentTab.mentees
           ? null
@@ -168,7 +156,7 @@ class _AdvisorTabBarState extends State<AdvisorTabBar> {
   Widget _buildTab({
     @required BuildContext context,
     @required String tabTitle,
-    @required Widget child,
+    @required String child,
     @required Function onPressed,
     @required Color color,
   }) {
@@ -182,7 +170,7 @@ class _AdvisorTabBarState extends State<AdvisorTabBar> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            child,
+            Text(child),
             Text(tabTitle),
           ],
         ),

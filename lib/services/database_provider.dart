@@ -4,29 +4,33 @@ import '../models/review_model.dart';
 import '../models/student_model.dart';
 
 abstract class DataBase {
-  Stream<List<Advisor>> getHelpers();
+  Stream<List<Advisor>> getAdvisors();
+  Stream<List<Review>> getAdvisorReviews(String advisorEmail);
+  Stream<List<Student>> getAdvisorMentees(String advisorEmail);
 }
 
 class DatabaseProvider implements DataBase {
   final _service = FirestoreService.instance;
 
-  Stream<List<Advisor>> getHelpers() => _service.collectionStream(
+  Stream<List<Advisor>> getAdvisors() => _service.collectionStream(
         path: 'helpers',
         builder: (snapshot) => Advisor(
-          uid: snapshot.data['uid'],
-          displayName: snapshot.data['displayName'],
           about: snapshot.data['about'],
-          college: snapshot.data['college'],
           branch: snapshot.data['branch'],
+          college: snapshot.data['college'],
+          displayName: snapshot.data['displayName'],
           email: '${snapshot.documentID}',
+          menteesCount: snapshot.data['menteesCount'],
           phoneNumber: snapshot.data['phoneNumber'],
           photoUrl: snapshot.data['photoUrl'],
+          reviewsCount: snapshot.data['reviewsCount'],
+          uid: snapshot.data['uid'],
         ),
       );
 
-  Stream<List<Review>> getHelperReviews(String helperId) =>
+  Stream<List<Review>> getAdvisorReviews(String advisorEmail) =>
       _service.collectionStream(
-        path: 'helpers/$helperId/reviews',
+        path: 'helpers/$advisorEmail/reviews',
         builder: (snapshot) => Review(
           heading: snapshot.data['heading'],
           review: snapshot.data['review'],
@@ -34,9 +38,9 @@ class DatabaseProvider implements DataBase {
         ),
       );
 
-  Stream<List<Student>> getHelperMentees(String helperId) =>
+  Stream<List<Student>> getAdvisorMentees(String advisorEmail) =>
       _service.collectionStream(
-        path: 'helpers/$helperId/mentees',
+        path: 'helpers/$advisorEmail/mentees',
         builder: (snapshot) => Student(
           uid: snapshot.data['uid'],
           displayName: snapshot.data['fullName'],
