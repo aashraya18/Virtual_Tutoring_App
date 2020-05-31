@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '../../../../services/database_provider.dart';
-import '../../../../models/review_model.dart';
-import '../../../../models/student_model.dart';
+class AboutAdvisorBar extends StatelessWidget {
+  const AboutAdvisorBar(this.advisorReviewsCount, this.advisorMenteesCount);
 
-class AboutAdvisorbar extends StatelessWidget {
-  const AboutAdvisorbar(this.advisorId);
-
-  final String advisorId;
-
+  final String advisorReviewsCount;
+  final String advisorMenteesCount;
   @override
   Widget build(BuildContext context) {
     final constraints = MediaQuery.of(context).size;
@@ -26,44 +21,22 @@ class AboutAdvisorbar extends StatelessWidget {
               Text('About'),
             ],
           ),
-          _buildReviewsColumn(context),
-          _buildMenteesColumn(context),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(advisorReviewsCount),
+              Text('Reviews'),
+            ],
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(advisorMenteesCount),
+              Text('Reviews'),
+            ],
+          ),
         ],
       ),
-    );
-  }
-
-  Widget _buildReviewsColumn(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        StreamBuilder<List<Review>>(
-            stream: Provider.of<DatabaseProvider>(context)
-                .getHelperReviews(advisorId),
-            builder: (context, snapshot) {
-              if (snapshot.hasData)
-                return Text(snapshot.data.length.toString());
-              return CircularProgressIndicator();
-            }),
-        Text('Reviews'),
-      ],
-    );
-  }
-
-  Widget _buildMenteesColumn(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        StreamBuilder<List<Student>>(
-            stream: Provider.of<DatabaseProvider>(context)
-                .getHelperMentees(advisorId),
-            builder: (context, snapshot) {
-              if (snapshot.hasData)
-                return Text(snapshot.data.length.toString());
-              return CircularProgressIndicator();
-            }),
-        Text('Mentees'),
-      ],
     );
   }
 }
