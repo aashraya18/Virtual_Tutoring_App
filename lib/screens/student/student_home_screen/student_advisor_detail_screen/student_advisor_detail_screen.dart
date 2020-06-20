@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../../models/advisor_model.dart';
 import '../../../../common_widgets/bottomFlatButton.dart';
+import 'advisorBlurImageWithDetail.dart';
+import 'advisorTabBar.dart';
 import './advisorBlurImageWithDetail.dart';
 import './advisorTabBar.dart';
 import '../student_time_screen/student_time_screen.dart';
@@ -30,8 +32,8 @@ class StudentAdvisorDetailScreen extends StatelessWidget {
                 iconSize: 20,
                 textSize: 18,
                 onPressed: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (ctx) => StudentTimeScreen()));
+                  Navigator.of(context).pushNamed(StudentTimeScreen.routeName,
+                      arguments: advisor);
                 },
               )
             ],

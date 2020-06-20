@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import './student_colleges_screen/student_colleges_screen.dart';
-import './student_competitive_screen/student_competitve_screen.dart';
-import './student_expertise_screen/student_expertise_screen.dart';
+import 'student_colleges_screen/student_colleges_screen.dart';
+import 'student_competitive_screen/student_competitve_screen.dart';
+import 'student_expertise_screen/student_expertise_screen.dart';
 
 enum SelectedScreen {
   colleges,
@@ -33,11 +33,17 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
 
   Widget _buildCustomTabBar() {
     final statusBarHeight = MediaQuery.of(context).padding.top;
+    final height = MediaQuery.of(context).size.height;
     return Container(
-      padding:
-          EdgeInsets.symmetric(vertical: statusBarHeight * 1.5, horizontal: 10),
+      padding: EdgeInsets.fromLTRB(
+        height * 0.01,
+        statusBarHeight + height * 0.01,
+        height * 0.01,
+        height * 0.01,
+      ),
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        margin: EdgeInsets.all(0.0),
         elevation: 5,
         child: Padding(
           padding: const EdgeInsets.all(2.0),

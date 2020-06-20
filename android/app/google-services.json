@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "158811421085-3d8oq87pmhjisjnvg5t733cnha31jhd5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vorby.android",
+            "certificate_hash": "c1eaae42fd8bdc5e64162b7ef7a96556644df3fc"
+          }
+        },
+        {
           "client_id": "158811421085-c4mjodpep9d409e88icg9aq9lp8mm7oa.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

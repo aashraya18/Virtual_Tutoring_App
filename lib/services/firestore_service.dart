@@ -58,7 +58,6 @@ class FirestoreService {
     @required String value,
   }) {
     Query reference = _instance.collection(path).where(field, isEqualTo: value);
-
     return collectionStreamBase(reference: reference, builder: builder);
   }
 
@@ -66,8 +65,10 @@ class FirestoreService {
     @required String path,
     @required T builder(DocumentSnapshot data),
     @required String orderBy,
+    bool descending,
   }) {
-    Query reference = _instance.collection(path).orderBy(orderBy);
+    Query reference =
+        _instance.collection(path).orderBy(orderBy, descending: descending);
 
     return collectionStreamBase(reference: reference, builder: builder);
   }

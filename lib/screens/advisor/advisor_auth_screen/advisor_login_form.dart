@@ -2,54 +2,50 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import '../../services/auth_provider.dart';
+import '../../../services/auth_provider.dart';
+import '../../../common_widgets/platformExceptionAlertDialog.dart';
 
-class LoginForm extends StatefulWidget {
+class AdvisorLoginForm extends StatefulWidget {
   @override
-  _LoginFormState createState() => _LoginFormState();
+  _AdvisorLoginFormState createState() => _AdvisorLoginFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class _AdvisorLoginFormState extends State<AdvisorLoginForm> {
   final _loginForm = GlobalKey<FormState>();
 
   final _emailTextCont = TextEditingController();
   final _passwordTextCont = TextEditingController();
 
-  bool loading = false;
+  bool _loading = false;
 
   Future<void> _login() async {
-    if (!_loginForm.currentState.validate()) {
-      return;
-    }
+    // Validate Email and Password fields.
+    if (!_loginForm.currentState.validate()) return;
+
+    // Set loading to true
     setState(() {
-      loading = true;
+      _loading = true;
     });
     try {
-      final authData = Provider.of<AuthProvider>(context, listen: false);
-      await authData.signInWithEmailAndPassword(
-          _emailTextCont.text, _passwordTextCont.text);
-      loading = false;
-    } on PlatformException catch (error) {
-      String errorMessage;
-      if (error.code == 'ERROR_INVALID_EMAIL') errorMessage = 'Invalid Email';
-      if (error.code == 'ERROR_WRONG_PASSWORD') errorMessage = 'Wrong Password';
-      if (error.code == 'ERROR_USER_NOT_FOUND') errorMessage = 'No user found.';
-      if (error.code == 'ERROR_USER_DISABLED')
-        errorMessage = 'User has been disbled';
-      if (error.code == 'ERROR_TOO_MANY_REQUESTS')
-        errorMessage = 'Too many attempts to sign in.';
-      if (error.code == 'ERROR_OPERATION_NOT_ALLOWED')
-        errorMessage = 'This mode not available';
+      // Try logging in with email and password.
+      await Provider.of<AuthProvider>(context, listen: false)
+          .signInWithEmailAndPassword(
+              _emailTextCont.text, _passwordTextCont.text);
 
-      print(errorMessage);
-      setState(() {
-        loading = false;
-      });
+      // Pop route and set loading to false.
+      Navigator.of(context).pop();
+      _loading = false;
     } catch (error) {
-      print(error.toString());
+      // On error set loading to false.
       setState(() {
-        loading = false;
+        _loading = false;
       });
+
+      // Show error dialog.
+      PlatformExceptionAlertDialog(
+        title: 'Signin error',
+        exception: error,
+      ).show(context);
     }
   }
 
@@ -62,10 +58,6 @@ class _LoginFormState extends State<LoginForm> {
         children: <Widget>[
           _buildUserNameTTF(),
           _buildPasswordTTF(),
-          Padding(
-            padding: const EdgeInsets.all(25.0),
-            child: _buildForgetPassword(),
-          ),
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 25,
@@ -130,15 +122,6 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
 
-  Widget _buildForgetPassword() {
-    return Container(
-      child: Text(
-        'Forgot Password?',
-        style: TextStyle(color: Colors.black54),
-      ),
-    );
-  }
-
   Widget _buildLoginButton(Size constraints) {
     return GestureDetector(
       child: ClipRRect(
@@ -148,7 +131,7 @@ class _LoginFormState extends State<LoginForm> {
           width: constraints.width,
           color: Color.fromRGBO(66, 133, 140, 1),
           alignment: Alignment.center,
-          child: loading
+          child: _loading
               ? CircularProgressIndicator()
               : Text(
                   'Login',

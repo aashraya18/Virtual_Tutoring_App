@@ -12,25 +12,19 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (ctx) => AuthProvider()),
-        Provider(create: (ctx) => DatabaseProvider()),
-      ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primaryColor: Color.fromRGBO(66, 133, 140, 1),
-          accentColor: Colors.white,
-          canvasColor: Colors.white,
-          fontFamily: 'Literal',
-          textTheme: TextTheme(headline6: TextStyle(fontSize: 20)),
-          appBarTheme: AppBarTheme(
-              color: Colors.white,
-              iconTheme: IconThemeData(color: Colors.black54),
-              textTheme: TextTheme(
-                headline6: TextStyle(
-                    color: Color.fromRGBO(66, 133, 140, 1), fontSize: 22),
-              )),
+        ProxyProvider<AuthProvider, DatabaseProvider>(
+          update: (ctx, auth, database) => DatabaseProvider(auth.student),
         ),
-        routes: routes,
+        Provider(create: (ctx) => ChatProvider()),
+      ],
+      child: Consumer<AuthProvider>(
+        builder: (ctx, auth, _) {
+          return MaterialApp(
+            title: 'Vorby',
+            theme: auth.themeData,
+            routes: routes,
+          );
+        },
       ),
     );
   }

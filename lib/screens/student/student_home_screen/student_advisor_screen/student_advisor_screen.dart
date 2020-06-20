@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../models/advisor_model.dart';
 import '../../../../common_widgets/bottomFlatButton.dart';
+
 import './advisorImageWithRating.dart';
 import './aboutAdvisorBar.dart';
 import '../student_advisor_detail_screen/student_advisor_detail_screen.dart';
@@ -37,7 +38,7 @@ class StudentAdvisorScreen extends StatelessWidget {
                           arguments: advisor);
                     },
                   ),
-                  AboutAdvisorbar(advisor.uid),
+                  AboutAdvisorBar(advisor.reviewsCount, advisor.menteesCount),
                   Divider(),
                 ],
               ),

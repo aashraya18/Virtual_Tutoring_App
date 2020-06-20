@@ -1,20 +1,31 @@
 import 'package:flutter/material.dart';
 
 class Student {
-  final String uid;
+  final String bio;
   final String displayName;
-  final String photoUrl;
   final String email;
+  final String phoneNumber;
+  final String photoUrl;
+  final String uid;
 
   Student({
-    @required this.uid,
+    @required this.bio,
     @required this.displayName,
-    @required this.photoUrl,
     @required this.email,
+    @required this.phoneNumber,
+    @required this.photoUrl,
+    @required this.uid,
   });
 
   @override
   String toString() {
-    return 'uid: $uid, displayName: $displayName, photoUrl: $photoUrl, email: $email';
+    return '''
+    bio: $bio,
+    displayName: $displayName,
+    email: $email,
+    phoneNumber: $phoneNumber,
+    photoUrl: $photoUrl,
+    uid: $uid,
+     ''';
   }
 }

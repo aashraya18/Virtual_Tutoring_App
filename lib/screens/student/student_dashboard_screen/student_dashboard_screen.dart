@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../student_home_screen/student_home_screen.dart';
-import '../student_messages_screen/student_messages_screen.dart';
+import '../student_guides_screen/student_guides_screen.dart';
 import '../student_settings_screen/student_settings_screen.dart';
 import '../../../services/custom_icons_icons.dart';
 
@@ -16,7 +16,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
 
   final _screens = <Widget>[
     StudentHomeScreen(),
-    StudentMessagesScreen(),
+    StudentGuidesScreen(),
     StudentSettingsScreen(),
   ];
   @override

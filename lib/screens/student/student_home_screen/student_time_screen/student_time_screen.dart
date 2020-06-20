@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../../../common_widgets/bottomFlatButton.dart';
-import '../student_slot_screen/student_slot_screen.dart';
+import '../../../../common_widgets/platformAlertDialog.dart';
+import '../../../../models/advisor_model.dart';
+import '../student_payment_screen/order_id.dart';
 
 enum TimeSelected {
   rs90,
@@ -20,17 +22,33 @@ class _StudentTimeScreenState extends State<StudentTimeScreen> {
 
   void _setTime() {
     if (_timeSelected == null) {
+      PlatformAlertDialog(
+        content: 'Not selected duration',
+        title: 'Alert',
+        defaultActionText: 'Okay',
+      ).show(context);
       return;
     }
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (ctx) => StudentSlotScreen()));
+    final advisor = ModalRoute.of(context).settings.arguments as Advisor;
+    double amount;
+    if (_timeSelected == TimeSelected.rs90)
+      amount = 9000;
+    else if (_timeSelected == TimeSelected.rs100)
+      amount = 10000;
+    else if (_timeSelected == TimeSelected.rs250) amount = 25000;
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => OrderId(
+              amount: amount,
+              mentorId: advisor.uid,
+              mentorName: advisor.displayName,
+              mentorEmail: advisor.email,
+            )));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(''),
         elevation: 0,
       ),
       body: Center(
