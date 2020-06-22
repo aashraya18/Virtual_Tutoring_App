@@ -39,6 +39,7 @@ dependencies:
   country_code_picker: ^1.4.0
   otp_text_field: ^1.0.1
   flutter_rating_bar: ^3.0.1+1
+  smooth_star_rating: ^1.1.1
 
 dev_dependencies:
   flutter_test:

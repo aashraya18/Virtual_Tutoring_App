@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
       child: Consumer<AuthProvider>(
         builder: (ctx, auth, _) {
           return MaterialApp(
+            debugShowCheckedModeBanner: false,
             title: 'Vorby',
             theme: auth.themeData,
             routes: routes,

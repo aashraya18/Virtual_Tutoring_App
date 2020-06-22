@@ -11,12 +11,24 @@ class StudentExpertiseScreen extends StatelessWidget {
     return ListView(
       children: <Widget>[
         AdvisorListViewBuilder(
-          title: 'JEE - Advance',
-          stream: Provider.of<DatabaseProvider>(context).getAdvisors(),
+          title: 'Computer Science',
+          stream: Provider.of<DatabaseProvider>(context)
+              .getFilteredAdvisors('Computer Science'),
         ),
         AdvisorListViewBuilder(
-          title: 'JEE - Main',
-          stream: Provider.of<DatabaseProvider>(context).getAdvisors(),
+          title: 'Mechanical',
+          stream: Provider.of<DatabaseProvider>(context)
+              .getFilteredAdvisors('Mechanical'),
+        ),
+        AdvisorListViewBuilder(
+          title: 'Electronics',
+          stream: Provider.of<DatabaseProvider>(context)
+              .getFilteredAdvisors('Electronics'),
+        ),
+        AdvisorListViewBuilder(
+          title: 'Information Technology',
+          stream: Provider.of<DatabaseProvider>(context)
+              .getFilteredAdvisors('Information Technology'),
         ),
       ],
     );

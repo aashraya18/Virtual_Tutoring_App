@@ -57,7 +57,8 @@ class FirestoreService {
     @required String field,
     @required String value,
   }) {
-    Query reference = _instance.collection(path).where(field, isEqualTo: value);
+    Query reference =
+        _instance.collection(path).where(field, arrayContains: value);
     return collectionStreamBase(reference: reference, builder: builder);
   }
 

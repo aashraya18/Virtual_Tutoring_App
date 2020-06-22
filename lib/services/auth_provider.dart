@@ -56,6 +56,7 @@ class AuthProvider extends ChangeNotifier {
           menteesCount: advisorData['menteesCount'],
           phoneNumber: advisorData['phoneNumber'],
           photoUrl: advisorData['photoUrl'],
+          rating: advisorData['rating'],
           reviewsCount: advisorData['reviewsCount'],
           uid: user.uid,
         );
@@ -208,6 +209,7 @@ class AuthProvider extends ChangeNotifier {
           menteesCount: advisorData['menteesCount'],
           phoneNumber: advisorData['phoneNumber'],
           photoUrl: advisorData['photoUrl'],
+          rating: advisorData['rating'],
           reviewsCount: advisorData['reviewsCount'],
           uid: user.uid,
         );

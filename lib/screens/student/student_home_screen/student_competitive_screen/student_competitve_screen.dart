@@ -12,11 +12,18 @@ class StudentCompetitiveScreen extends StatelessWidget {
       children: <Widget>[
         AdvisorListViewBuilder(
           title: 'JEE - Advance',
-          stream: Provider.of<DatabaseProvider>(context).getAdvisors(),
+          stream: Provider.of<DatabaseProvider>(context)
+              .getFilteredAdvisors('jee-advanced'),
         ),
         AdvisorListViewBuilder(
           title: 'JEE - Main',
-          stream: Provider.of<DatabaseProvider>(context).getAdvisors(),
+          stream: Provider.of<DatabaseProvider>(context)
+              .getFilteredAdvisors('jee-mains'),
+        ),
+        AdvisorListViewBuilder(
+          title: 'VITEE',
+          stream: Provider.of<DatabaseProvider>(context)
+              .getFilteredAdvisors('VITEE'),
         ),
       ],
     );

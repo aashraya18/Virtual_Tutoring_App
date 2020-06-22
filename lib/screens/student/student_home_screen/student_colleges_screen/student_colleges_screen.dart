@@ -11,12 +11,19 @@ class StudentCollegesScreen extends StatelessWidget {
     return ListView(
       children: <Widget>[
         AdvisorListViewBuilder(
-          title: 'JEE - Advance',
-          stream: Provider.of<DatabaseProvider>(context).getAdvisors(),
+          title: 'IIT',
+          stream:
+              Provider.of<DatabaseProvider>(context).getFilteredAdvisors('IIT'),
         ),
         AdvisorListViewBuilder(
-          title: 'JEE - Main',
-          stream: Provider.of<DatabaseProvider>(context).getAdvisors(),
+          title: 'NIT',
+          stream:
+              Provider.of<DatabaseProvider>(context).getFilteredAdvisors('NIT'),
+        ),
+        AdvisorListViewBuilder(
+          title: 'VIT',
+          stream:
+              Provider.of<DatabaseProvider>(context).getFilteredAdvisors('VIT'),
         ),
       ],
     );

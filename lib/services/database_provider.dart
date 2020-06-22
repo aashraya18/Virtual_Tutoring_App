@@ -24,6 +24,27 @@ class DatabaseProvider {
           menteesCount: snapshot.data['menteesCount'],
           phoneNumber: snapshot.data['phoneNumber'],
           photoUrl: snapshot.data['photoUrl'],
+          rating: snapshot.data['rating'],
+          reviewsCount: snapshot.data['reviewsCount'],
+          uid: snapshot.data['uid'],
+        ),
+      );
+
+  Stream<List<Advisor>> getFilteredAdvisors(String value) =>
+      _service.collectionStreamWhere(
+        path: 'helpers',
+        field: 'categories',
+        value: value,
+        builder: (snapshot) => Advisor(
+          about: snapshot.data['about'],
+          branch: snapshot.data['branch'],
+          college: snapshot.data['college'],
+          displayName: snapshot.data['displayName'],
+          email: '${snapshot.documentID}',
+          menteesCount: snapshot.data['menteesCount'],
+          phoneNumber: snapshot.data['phoneNumber'],
+          photoUrl: snapshot.data['photoUrl'],
+          rating: snapshot.data['rating'],
           reviewsCount: snapshot.data['reviewsCount'],
           uid: snapshot.data['uid'],
         ),
@@ -64,6 +85,7 @@ class DatabaseProvider {
       menteesCount: advisorData['menteesCount'],
       phoneNumber: advisorData['phoneNumber'],
       photoUrl: advisorData['photoUrl'],
+      rating: advisorData['rating'],
       reviewsCount: advisorData['reviewsCount'],
       uid: advisorData['uid'],
     );
@@ -85,6 +107,7 @@ class DatabaseProvider {
       menteesCount: advisorData['menteesCount'],
       phoneNumber: advisorData['phoneNumber'],
       photoUrl: advisorData['photoUrl'],
+      rating: advisorData['rating'],
       reviewsCount: advisorData['reviewsCount'],
       uid: advisorData['uid'],
     );

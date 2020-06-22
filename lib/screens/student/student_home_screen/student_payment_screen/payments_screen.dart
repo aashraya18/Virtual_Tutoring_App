@@ -9,7 +9,6 @@ import '../../../../services/database_provider.dart';
 import './constants.dart';
 import './paymentSuccess.dart';
 import './paymentFailed.dart';
-//import 'package:crypto/crypto.dart';
 
 class PaymentsScreen extends StatefulWidget {
   static const routeName = '/user-payments';
