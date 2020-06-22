@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../../services/database_provider.dart';
 import '../../../../models/advisor_model.dart';
 import '../../../../models/review_model.dart';
-import '../../../../models/student_model.dart';
+import '../../../../models/mentee_model.dart';
 import './review_card.dart';
 import './mentee_card.dart';
 
@@ -64,9 +64,13 @@ class _AdvisorTabBarState extends State<AdvisorTabBar> {
             style: TextStyle(fontSize: 24),
           ),
           SizedBox(height: 20),
-          Text(
-            widget.advisor.about,
-            style: TextStyle(fontSize: 17),
+          Expanded(
+            child: Text(
+              widget.advisor.about,
+              style: TextStyle(fontSize: 17),
+              softWrap: true,
+              overflow: TextOverflow.clip,
+            ),
           ),
         ],
       ),
@@ -80,28 +84,38 @@ class _AdvisorTabBarState extends State<AdvisorTabBar> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final reviews = snapshot.data;
-            return ListView.builder(
-              itemBuilder: (ctx, index) => ReviewCard(reviews[index]),
-              itemCount: reviews.length,
-            );
+            if (reviews.isNotEmpty) {
+              return ListView.builder(
+                itemBuilder: (ctx, index) => ReviewCard(reviews[index]),
+                itemCount: reviews.length,
+              );
+            } else {
+              return Center(child: Text('No reviews yet.'));
+            }
+          } else {
+            return Center(child: CircularProgressIndicator());
           }
-          return CircularProgressIndicator();
         });
   }
 
   Widget _buildMentees() {
-    return StreamBuilder<List<Student>>(
+    return StreamBuilder<List<Mentee>>(
         stream: Provider.of<DatabaseProvider>(context)
             .getAdvisorMentees(widget.advisor.email),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final mentees = snapshot.data;
-            return ListView.builder(
-              itemBuilder: (ctx, index) => MenteeCard(mentees[index]),
-              itemCount: mentees.length,
-            );
+            if (mentees.isNotEmpty) {
+              return ListView.builder(
+                itemBuilder: (ctx, index) => MenteeCard(mentees[index]),
+                itemCount: mentees.length,
+              );
+            } else {
+              return Center(child: Text('No mentees yet.'));
+            }
+          } else {
+            return Center(child: CircularProgressIndicator());
           }
-          return CircularProgressIndicator();
         });
   }
 

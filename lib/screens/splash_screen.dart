@@ -9,10 +9,16 @@ class SplashScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: Center(
-        child: Image.asset(
-          'assets/images/vorby/white_bg.png',
-          height: height * 0.15,
-          width: width * 0.5,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image.asset(
+              'assets/images/vorby/white_bg.png',
+              height: height * 0.15,
+              width: width * 0.5,
+            ),
+            CircularProgressIndicator(),
+          ],
         ),
       ),
     );

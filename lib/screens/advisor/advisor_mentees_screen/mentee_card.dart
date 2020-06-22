@@ -1,29 +1,45 @@
+import 'package:android/models/mentee_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import './advisor_mentee_detail_screen.dart';
+import '../../../services/database_provider.dart';
+
+import './advisor_chat_screen.dart';
 
 class MenteeCard extends StatelessWidget {
-  final String title;
-  final String status;
-  final Color statusColor;
+  final Mentee mentee;
 
-  const MenteeCard({
-    @required this.title,
-    @required this.status,
-    @required this.statusColor,
-  });
+  const MenteeCard(this.mentee);
+
+  Future<void> _onTap(BuildContext context) async {
+    final student = await Provider.of<DatabaseProvider>(context, listen: false)
+        .getStudent(mentee.uid);
+    Navigator.of(context)
+        .pushNamed(AdvisorChatScreen.routeName, arguments: student);
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
       leading: Image.asset('assets/images/mentee_icon.png'),
-      title: Text(title),
+      title: Text(mentee.displayName),
       trailing: Text(
-        status,
-        style: TextStyle(color: statusColor),
+        status(mentee.status),
+        style: TextStyle(color: statusColor(mentee.status)),
       ),
-      onTap: () {
-        Navigator.of(context).pushNamed(AdvisorMenteeDetailScreen.routeName);
-      },
+      onTap: () async => _onTap(context),
     );
+  }
+
+  String status(String input) {
+    if (input == 'done') return 'Done';
+    if (input == 'approved') return 'Approved';
+    return 'Approval Pending';
+  }
+
+  Color statusColor(String input) {
+    if (input == 'done') return Colors.green;
+    if (input == 'approved') return Colors.black;
+    return Colors.black;
   }
 }

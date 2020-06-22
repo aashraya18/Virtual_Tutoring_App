@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import './mentee_card.dart';
+import '../../../services/services.dart';
+
+import '../../../models/mentee_model.dart';
+import 'mentee_card.dart';
 
 class AdvisorMenteesScreen extends StatelessWidget {
   static const routeName = '/advisor-mentees';
@@ -10,7 +14,7 @@ class AdvisorMenteesScreen extends StatelessWidget {
       body: CustomScrollView(
         slivers: <Widget>[
           _buildSliverAppBar(context),
-          _buildSliverList(),
+          _buildSliverList(context),
         ],
       ),
     );
@@ -33,16 +37,25 @@ class AdvisorMenteesScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSliverList() {
-    return SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (ctx, index) => MenteeCard(
-          title: 'Hello',
-          status: 'Approval Pending',
-          statusColor: Colors.green,
-        ),
-        childCount: 15,
-      ),
-    );
+  Widget _buildSliverList(BuildContext context) {
+    return StreamBuilder<List<Mentee>>(
+        stream: Provider.of<DatabaseProvider>(context).getAdvisorMentees(
+            Provider.of<AuthProvider>(context, listen: false).advisor.email),
+        builder: (context, snapshot) {
+          final mentees = snapshot.data;
+          if (snapshot.hasData) {
+            return SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (ctx, index) => MenteeCard(mentees[index]),
+                childCount: mentees.length,
+              ),
+            );
+          } else {
+            return SliverFillRemaining(
+                child: Center(
+                    child: CircularProgressIndicator(
+                        backgroundColor: Theme.of(context).primaryColor)));
+          }
+        });
   }
 }

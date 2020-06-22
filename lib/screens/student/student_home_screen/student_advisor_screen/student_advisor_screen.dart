@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../../../models/advisor_model.dart';
 import '../../../../common_widgets/bottomFlatButton.dart';
+import '../../../../services/custom_icons_icons.dart';
+import '../student_advisor_detail_screen/student_advisor_detail_screen.dart';
 import './advisorImageWithRating.dart';
 import './aboutAdvisorBar.dart';
-import '../student_advisor_detail_screen/student_advisor_detail_screen.dart';
-import '../../../../services/custom_icons_icons.dart';
 
 class StudentAdvisorScreen extends StatelessWidget {
   static const routeName = '/student-advisor';

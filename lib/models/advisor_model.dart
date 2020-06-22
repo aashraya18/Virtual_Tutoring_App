@@ -10,6 +10,7 @@ class Advisor {
   final String phoneNumber;
   final String photoUrl;
   final String reviewsCount;
+  final dynamic rating;
   final String uid;
 
   Advisor({
@@ -22,6 +23,7 @@ class Advisor {
     @required this.phoneNumber,
     @required this.photoUrl,
     @required this.reviewsCount,
+    @required this.rating,
     @required this.uid,
   });
 

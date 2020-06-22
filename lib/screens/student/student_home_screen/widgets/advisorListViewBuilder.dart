@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
 import '../../../../models/advisor_model.dart';
+import 'advisorCard.dart';
 import './advisorCard.dart';
 
 class AdvisorListViewBuilder extends StatelessWidget {
@@ -13,12 +13,13 @@ class AdvisorListViewBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return Column(
-      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.only(left: 10),
+          padding: EdgeInsets.only(left: height * 0.01),
           child: Text(title),
         ),
         StreamBuilder<List<Advisor>>(
@@ -26,16 +27,33 @@ class AdvisorListViewBuilder extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               final helpers = snapshot.data;
+              if (helpers.isNotEmpty) {
+                return Container(
+                  height: height * 0.3,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (ctx, index) => AdvisorCard(helpers[index]),
+                    itemCount: helpers.length,
+                  ),
+                );
+              } else {
+                return Container(
+                  height: height * 0.3,
+                  width: width,
+                  alignment: Alignment.center,
+                  child: Text('No Advisor in this category yet.'),
+                );
+              }
+            } else {
               return Container(
-                height: 262,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (ctx, index) => AdvisorCard(helpers[index]),
-                  itemCount: helpers.length,
+                height: height * 0.3,
+                width: width,
+                alignment: Alignment.center,
+                child: CircularProgressIndicator(
+                  backgroundColor: Theme.of(context).primaryColor,
                 ),
               );
             }
-            return CircularProgressIndicator();
           },
         ),
       ],

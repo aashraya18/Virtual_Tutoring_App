@@ -1,53 +1,61 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../services/services.dart';
+import '../../../models/student_model.dart';
+import './advisor_chat_screen.dart';
 
 class AdvisorMenteeDetailScreen extends StatelessWidget {
   static const routeName = '/mentee-detail';
   @override
   Widget build(BuildContext context) {
+    final menteeUid = ModalRoute.of(context).settings.arguments as String;
+
     return Scaffold(
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar(
-            expandedHeight: 250,
-            backgroundColor: Theme.of(context).accentColor,
-            flexibleSpace: FlexibleSpaceBar(
-              background: Image.asset('assets/images/profile2.png'),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: ListTile(
-              leading: Image.asset('assets/images/mentee_icon.png'),
-              title: Text(
-                'Meenal Pandey',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 20),
-              ),
-            ),
-          ),
-          SliverFillRemaining(
-            hasScrollBody: false,
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    'Mentee Info:',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
+      body: FutureBuilder<Student>(
+        future: Provider.of<DatabaseProvider>(context).getStudent(menteeUid),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final student = snapshot.data;
+            return Column(
+              children: <Widget>[
+                Container(
+                  height: 250,
+                  alignment: Alignment.center,
+                  child: Image.network(student.photoUrl),
+                ),
+                Divider(),
+                Container(
+                  child: ListTile(
+                    leading: Image.asset('assets/images/mentee_icon.png'),
+                    title: InkWell(
+                      onTap: () {
+                        Navigator.of(context).pushNamed(
+                            AdvisorChatScreen.routeName,
+                            arguments: student);
+                      },
+                      child: Text(
+                        student.displayName,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 20),
+                      ),
                     ),
                   ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Lorem ipsum dolor sit amet, ddjuf kkfkf kk consectetur adipiscing elit, hjfbkll lfnlikkg sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ',
-                    style: TextStyle(fontSize: 18),
-                  )
-                ],
-              ),
-            ),
-          )
-        ],
+                ),
+                Divider(),
+                Container(
+                  child: Text('Slots'),
+                )
+              ],
+            );
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        },
       ),
     );
   }

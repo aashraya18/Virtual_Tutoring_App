@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import './review_card.dart';
+import 'package:provider/provider.dart';
+
+import './../../../services/services.dart';
+import '../../../models/review_model.dart';
+import 'review_card.dart';
 
 class AdvisorReviewsScreen extends StatelessWidget {
   static const routeName = '/advisor-reviews';
@@ -9,7 +13,7 @@ class AdvisorReviewsScreen extends StatelessWidget {
       body: CustomScrollView(
         slivers: <Widget>[
           _buildSliverAppBar(context),
-          _buildSliverList(),
+          _buildSliverList(context),
         ],
       ),
     );
@@ -32,15 +36,32 @@ class AdvisorReviewsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSliverList() {
-    return SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (ctx, index) => ReviewCard(
-          title: 'Hello',
-          status: 'Stars',
-        ),
-        childCount: 15,
-      ),
-    );
+  Widget _buildSliverList(BuildContext context) {
+    final advisorEmail =
+        Provider.of<AuthProvider>(context, listen: false).advisor.email;
+    return StreamBuilder<List<Review>>(
+        stream: Provider.of<DatabaseProvider>(context)
+            .getAdvisorReviews(advisorEmail),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final reviews = snapshot.data;
+            if (reviews.isNotEmpty) {
+              return SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (ctx, index) => ReviewCard(reviews[index]),
+                  childCount: reviews.length,
+                ),
+              );
+            } else {
+              return SliverFillRemaining(
+                  child: Center(child: Text('No Reviews Yet')));
+            }
+          } else {
+            return SliverFillRemaining(
+                child: Center(
+                    child: CircularProgressIndicator(
+                        backgroundColor: Theme.of(context).primaryColor)));
+          }
+        });
   }
 }

@@ -32,7 +32,7 @@ class AboutAdvisorBar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(advisorMenteesCount),
-              Text('Reviews'),
+              Text('Mentees'),
             ],
           ),
         ],

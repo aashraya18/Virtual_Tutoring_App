@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../services/auth_provider.dart';
+import '../../../models/student_model.dart';
 import './student_edit_screen.dart';
 
 class StudentSettingsScreen extends StatelessWidget {
@@ -10,6 +11,7 @@ class StudentSettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final constraints = MediaQuery.of(context).size;
+    final student = Provider.of<AuthProvider>(context).student;
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -18,15 +20,15 @@ class StudentSettingsScreen extends StatelessWidget {
         body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              _buildAvatarColumn(constraints, context),
-              _buildListTiles(context),
+              _buildAvatarColumn(context, constraints, student),
+              _buildListTiles(context, student),
             ],
           ),
         ));
   }
 
-  Widget _buildAvatarColumn(Size constraints, BuildContext context) {
-    final student = Provider.of<AuthProvider>(context).student;
+  Widget _buildAvatarColumn(
+      BuildContext context, Size constraints, Student student) {
     return Container(
       height: constraints.height * 0.3,
       width: constraints.width,
@@ -56,7 +58,7 @@ class StudentSettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildListTiles(BuildContext context) {
+  Widget _buildListTiles(BuildContext context, Student student) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -72,31 +74,9 @@ class StudentSettingsScreen extends StatelessWidget {
               style: Theme.of(context).textTheme.headline6,
             ),
             onTap: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (ctx) => StudentEditScreen()));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => StudentEditScreen(student)));
             },
-          ),
-          ListTile(
-            contentPadding: EdgeInsets.all(10),
-            leading: Icon(
-              Icons.lock_outline,
-              color: Theme.of(context).primaryColor,
-            ),
-            title: Text(
-              'Change Password',
-              style: Theme.of(context).textTheme.headline6,
-            ),
-          ),
-          ListTile(
-            contentPadding: EdgeInsets.all(10),
-            leading: Icon(
-              Icons.credit_card,
-              color: Theme.of(context).primaryColor,
-            ),
-            title: Text(
-              'Payment Method',
-              style: Theme.of(context).textTheme.headline6,
-            ),
           ),
           ListTile(
             contentPadding: EdgeInsets.all(10),

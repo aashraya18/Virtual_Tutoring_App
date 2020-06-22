@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
-class StudentMessagesScreen extends StatelessWidget {
-  static const routeName = '/student-messages';
+import './student_messages_tab.dart';
+import './student_advisors_tab.dart';
+
+class StudentGuidesScreen extends StatelessWidget {
+  static const routeName = '/student-guides';
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -14,14 +17,8 @@ class StudentMessagesScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            Center(
-                child: Text(
-              'It\'s lonely out here.\nGet some guidance now!',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Theme.of(context).primaryColor, fontSize: 18),
-            )),
-            Center(child: Icon(Icons.forum)),
+            Center(child: StudentAdvisorsTab()),
+            Center(child: StudentMessagesTab()),
           ],
         ),
       ),

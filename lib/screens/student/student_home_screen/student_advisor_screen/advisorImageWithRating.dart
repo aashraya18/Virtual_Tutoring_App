@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
-
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 import '../../../../common_widgets/customBackButton.dart';
 import '../../../../models/advisor_model.dart';
 
-class AdvisorImageWithRating extends StatelessWidget {
+class AdvisorImageWithRating extends StatefulWidget {
   const AdvisorImageWithRating(this.advisor);
 
   final Advisor advisor;
+
+  @override
+  _AdvisorImageWithRatingState createState() => _AdvisorImageWithRatingState();
+}
+
+class _AdvisorImageWithRatingState extends State<AdvisorImageWithRating> {
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -33,7 +39,7 @@ class AdvisorImageWithRating extends StatelessWidget {
   Widget _buildImage(BuildContext context) {
     final constraints = MediaQuery.of(context).size;
     return Image.network(
-      advisor.photoUrl,
+      widget.advisor.photoUrl,
       height: constraints.height * 0.5,
       width: double.infinity,
       fit: BoxFit.fill,
@@ -42,7 +48,7 @@ class AdvisorImageWithRating extends StatelessWidget {
 
   Widget _buildName() {
     return Text(
-      advisor.displayName,
+      widget.advisor.displayName,
       style: TextStyle(
         color: Colors.white,
         fontSize: 22,
@@ -52,10 +58,17 @@ class AdvisorImageWithRating extends StatelessWidget {
   }
 
   Widget _buildRating() {
-    return Icon(
-      Icons.star,
-      color: Colors.white,
-      size: 40,
-    );
+    return SmoothStarRating(
+        allowHalfRating: true,
+        onRated: (v) {},
+        starCount: 5,
+        rating: double.parse(widget.advisor.rating.toString()),
+        size: 40.0,
+        isReadOnly: true,
+        filledIconData: Icons.star,
+        halfFilledIconData: Icons.star_half,
+        color: Colors.white,
+        borderColor: Colors.white,
+        spacing: 0.0);
   }
 }

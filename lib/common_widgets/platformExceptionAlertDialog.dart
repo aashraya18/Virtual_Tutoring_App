@@ -23,6 +23,7 @@ class PlatformExceptionAlertDialog extends PlatformAlertDialog {
   static Map<String, String> _errors = {
     'ERROR_INVALID_EMAIL': 'Email or Password is incorrect',
     'ERROR_WRONG_PASSWORD': 'Email or Password is incorrect',
+    'ERROR_INVALID_VERIFICATION_CODE': 'Wrong OTP.',
     'ERROR_USER_NOT_FOUND': 'Please signup first',
     'ERROR_USER_DISABLED': 'You are disabled from using the app',
     'ERROR_TOO_MANY_REQUESTS': 'You have tried so many times. Try again later.',

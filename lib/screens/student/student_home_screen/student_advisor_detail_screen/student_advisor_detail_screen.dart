@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../../../models/advisor_model.dart';
 import '../../../../common_widgets/bottomFlatButton.dart';
+import '../../../../services/custom_icons_icons.dart';
+import '../student_time_screen/student_time_screen.dart';
 import './advisorBlurImageWithDetail.dart';
 import './advisorTabBar.dart';
-import '../student_time_screen/student_time_screen.dart';
-import '../../../../services/custom_icons_icons.dart';
 
 class StudentAdvisorDetailScreen extends StatelessWidget {
   static const routeName = '/student-advior-detail';
@@ -30,8 +30,8 @@ class StudentAdvisorDetailScreen extends StatelessWidget {
                 iconSize: 20,
                 textSize: 18,
                 onPressed: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (ctx) => StudentTimeScreen()));
+                  Navigator.of(context).pushNamed(StudentTimeScreen.routeName,
+                      arguments: advisor);
                 },
               )
             ],
