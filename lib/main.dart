@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import './services/services.dart';
+import './services/auth_provider.dart';
+import './services/student_database_provider.dart';
+import './services/advisor_database_provider.dart';
+import './services/chat_provider.dart';
 import './routes.dart';
 
 void main() => runApp(MyApp());
@@ -12,8 +15,13 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (ctx) => AuthProvider()),
-        ProxyProvider<AuthProvider, DatabaseProvider>(
-          update: (ctx, auth, database) => DatabaseProvider(auth.student),
+        ProxyProvider<AuthProvider, StudentDatabaseProvider>(
+          update: (ctx, auth, database) =>
+              StudentDatabaseProvider(auth.student),
+        ),
+        ProxyProvider<AuthProvider, AdvisorDatabaseProvider>(
+          update: (ctx, auth, database) =>
+              AdvisorDatabaseProvider(auth.advisor),
         ),
         Provider(create: (ctx) => ChatProvider()),
       ],

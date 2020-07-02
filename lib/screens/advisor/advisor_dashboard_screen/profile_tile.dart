@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../services/services.dart';
+import '../../../services/auth_provider.dart';
 import '../advisor_profile_screen/advisor_profile_screen.dart';
 
 class ProfileTile extends StatelessWidget {

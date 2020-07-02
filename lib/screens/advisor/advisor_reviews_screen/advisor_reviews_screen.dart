@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import './../../../services/services.dart';
+import '../../../services/advisor_database_provider.dart';
 import '../../../models/review_model.dart';
 import 'review_card.dart';
 
@@ -37,11 +37,8 @@ class AdvisorReviewsScreen extends StatelessWidget {
   }
 
   Widget _buildSliverList(BuildContext context) {
-    final advisorEmail =
-        Provider.of<AuthProvider>(context, listen: false).advisor.email;
     return StreamBuilder<List<Review>>(
-        stream: Provider.of<DatabaseProvider>(context)
-            .getAdvisorReviews(advisorEmail),
+        stream: Provider.of<AdvisorDatabaseProvider>(context).getMyReviews(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final reviews = snapshot.data;

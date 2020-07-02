@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../services/database_provider.dart';
+import '../../../../services/student_database_provider.dart';
 import '../../../../models/advisor_model.dart';
 import '../../../../models/review_model.dart';
 import '../../../../models/mentee_model.dart';
@@ -79,7 +79,7 @@ class _AdvisorTabBarState extends State<AdvisorTabBar> {
 
   Widget _buildReviews() {
     return StreamBuilder<List<Review>>(
-        stream: Provider.of<DatabaseProvider>(context)
+        stream: Provider.of<StudentDatabaseProvider>(context)
             .getAdvisorReviews(widget.advisor.email),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -100,7 +100,7 @@ class _AdvisorTabBarState extends State<AdvisorTabBar> {
 
   Widget _buildMentees() {
     return StreamBuilder<List<Mentee>>(
-        stream: Provider.of<DatabaseProvider>(context)
+        stream: Provider.of<StudentDatabaseProvider>(context)
             .getAdvisorMentees(widget.advisor.email),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -139,7 +139,7 @@ class _AdvisorTabBarState extends State<AdvisorTabBar> {
     return _buildTab(
       context: context,
       tabTitle: 'Reviews',
-      child: widget.advisor.reviewsCount,
+      child: widget.advisor.reviewsCount.toString(),
       color: Colors.black,
       onPressed: _currentTab == CurrentTab.reviews
           ? null
@@ -155,7 +155,7 @@ class _AdvisorTabBarState extends State<AdvisorTabBar> {
     return _buildTab(
       context: context,
       tabTitle: 'Mentees',
-      child: widget.advisor.menteesCount,
+      child: widget.advisor.menteesCount.toString(),
       color: Colors.red,
       onPressed: _currentTab == CurrentTab.mentees
           ? null

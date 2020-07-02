@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+
 import '../../../../models/advisor_model.dart';
-import 'advisorCard.dart';
 import './advisorCard.dart';
 
 class AdvisorListViewBuilder extends StatelessWidget {

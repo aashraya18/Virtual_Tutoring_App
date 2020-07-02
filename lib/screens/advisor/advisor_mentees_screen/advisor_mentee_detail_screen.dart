@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../services/services.dart';
+import '../../../services/advisor_database_provider.dart';
 import '../../../models/student_model.dart';
 import './advisor_chat_screen.dart';
 
@@ -17,7 +17,8 @@ class AdvisorMenteeDetailScreen extends StatelessWidget {
         elevation: 0,
       ),
       body: FutureBuilder<Student>(
-        future: Provider.of<DatabaseProvider>(context).getStudent(menteeUid),
+        future:
+            Provider.of<AdvisorDatabaseProvider>(context).getStudent(menteeUid),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final student = snapshot.data;

@@ -3,7 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../../../services/services.dart';
+import '../../../services/auth_provider.dart';
+import '../../../services/chat_provider.dart';
 import '../../../models/message_model.dart';
 import '../../../models/advisor_model.dart';
 import './student_call_screen.dart';
@@ -60,12 +61,13 @@ class _StudentChatScreenState extends State<StudentChatScreen> {
                 await PermissionHandler().requestPermissions(
                   [PermissionGroup.camera, PermissionGroup.microphone],
                 );
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        StudentCallScreen('${advisor.uid}' + '${student.uid}'),
-                  ),
+                await Navigator.of(context).pushNamed(
+                  StudentCallScreen.routeName,
+                  arguments: {
+                    'channel': '${advisor.uid}' + '${student.uid}',
+                    'advisorName': advisor.displayName,
+                    'advisorEmail': advisor.email,
+                  },
                 );
               },
               icon: Icon(

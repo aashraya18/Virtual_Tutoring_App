@@ -17,8 +17,8 @@ class TransferPayment {
     this.mentorId: '1337',
   });
 
-  final String keyId = Constants().keyId;
-  final String keyValue = Constants().keyValue;
+  final String keyId = Constants.keyId;
+  final String keyValue = Constants.keyValue;
   String transferId;
 
   void transfer() async {

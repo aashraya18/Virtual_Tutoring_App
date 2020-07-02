@@ -16,16 +16,4 @@ class Student {
     @required this.photoUrl,
     @required this.uid,
   });
-
-  @override
-  String toString() {
-    return '''
-    bio: $bio,
-    displayName: $displayName,
-    email: $email,
-    phoneNumber: $phoneNumber,
-    photoUrl: $photoUrl,
-    uid: $uid,
-     ''';
-  }
 }
