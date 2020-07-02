@@ -2,7 +2,7 @@ import 'package:android/models/mentee_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../services/database_provider.dart';
+import '../../../services/advisor_database_provider.dart';
 
 import './advisor_chat_screen.dart';
 
@@ -12,8 +12,9 @@ class MenteeCard extends StatelessWidget {
   const MenteeCard(this.mentee);
 
   Future<void> _onTap(BuildContext context) async {
-    final student = await Provider.of<DatabaseProvider>(context, listen: false)
-        .getStudent(mentee.uid);
+    final student =
+        await Provider.of<AdvisorDatabaseProvider>(context, listen: false)
+            .getStudent(mentee.uid);
     Navigator.of(context)
         .pushNamed(AdvisorChatScreen.routeName, arguments: student);
   }

@@ -30,4 +30,6 @@ Map<String, Widget Function(BuildContext)> routes = {
   StudentTimeScreen.routeName: (ctx) => StudentTimeScreen(),
   StudentSlotScreen.routeName: (ctx) => StudentSlotScreen(),
   StudentChatScreen.routeName: (ctx) => StudentChatScreen(),
+  StudentFeedbackScreen.routeName: (ctx) => StudentFeedbackScreen(),
+  StudentCallScreen.routeName: (ctx) => StudentCallScreen(),
 };

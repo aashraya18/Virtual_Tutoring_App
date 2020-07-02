@@ -37,7 +37,8 @@ class StudentAdvisorScreen extends StatelessWidget {
                           arguments: advisor);
                     },
                   ),
-                  AboutAdvisorBar(advisor.reviewsCount, advisor.menteesCount),
+                  AboutAdvisorBar(advisor.reviewsCount.toString(),
+                      advisor.menteesCount.toString()),
                   Divider(),
                 ],
               ),

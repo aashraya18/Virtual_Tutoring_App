@@ -6,10 +6,10 @@ class Advisor {
   final String college;
   final String displayName;
   final String email;
-  final String menteesCount;
+  final dynamic menteesCount;
   final String phoneNumber;
   final String photoUrl;
-  final String reviewsCount;
+  final dynamic reviewsCount;
   final dynamic rating;
   final String uid;
 
@@ -26,20 +26,4 @@ class Advisor {
     @required this.rating,
     @required this.uid,
   });
-
-  @override
-  String toString() {
-    return '''
-    about: $about, 
-    branch: $branch, 
-    college: $college, 
-    displayName: $displayName, 
-    email: $email,
-    menteesCount: $menteesCount,
-    phoneNumber: $phoneNumber,
-    photoUrl: $photoUrl,
-    reviewsCount: $reviewsCount,
-    uid: $uid, 
-    ''';
-  }
 }

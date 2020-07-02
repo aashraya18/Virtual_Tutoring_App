@@ -9,5 +9,7 @@ export './student_home_screen/student_advisor_detail_screen/student_advisor_deta
 export './student_home_screen/student_time_screen/student_time_screen.dart';
 export './student_home_screen/student_slot_screen/student_slot_screen.dart';
 export './student_guides_screen/student_guides_screen.dart';
-export './student_settings_screen/student_settings_screen.dart';
 export './student_guides_screen/student_chat_screen.dart';
+export './student_guides_screen/student_call_screen.dart';
+export './student_guides_screen/student_feedback_screen.dart';
+export './student_settings_screen/student_settings_screen.dart';

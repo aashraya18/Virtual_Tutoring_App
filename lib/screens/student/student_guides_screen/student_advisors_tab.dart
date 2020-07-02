@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../../services/student_database_provider.dart';
 import '../../../models/advisor_model.dart';
-import '../../../services/database_provider.dart';
 import './student_chat_screen.dart';
 
 class StudentAdvisorsTab extends StatelessWidget {
@@ -9,15 +10,16 @@ class StudentAdvisorsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder<List<String>>(
-        stream: Provider.of<DatabaseProvider>(context).getMyAdvisors(),
+        stream:
+            Provider.of<StudentDatabaseProvider>(context).getMyAdvisorsList(),
         builder: (ctx, snapshot) {
           if (snapshot.hasData) {
             final advisorUids = snapshot.data;
             if (advisorUids.isNotEmpty) {
               return ListView.builder(
                 itemBuilder: (ctx, index) => FutureBuilder<Advisor>(
-                  future: Provider.of<DatabaseProvider>(context)
-                      .getAdvisor(advisorUids[index]),
+                  future: Provider.of<StudentDatabaseProvider>(context)
+                      .getMyAdvisor(advisorUids[index]),
                   builder: (ctx, fsnapshot) {
                     if (fsnapshot.hasData) {
                       return _buildTile(context, fsnapshot.data);
