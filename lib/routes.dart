@@ -1,4 +1,5 @@
 import 'package:android/screens/advisor/advisor_ask_me/ask_me_screen.dart';
+import 'package:android/screens/advisor/advisor_ask_me/submit_answer.dart';
 import 'package:flutter/material.dart';
 import './screens/screens.dart';
 
@@ -18,6 +19,7 @@ Map<String, Widget Function(BuildContext)> routes = {
   AdvisorPaymentsScreen.routeName: (ctx) => AdvisorPaymentsScreen(),
   AdvisorChatScreen.routeName: (ctx) => AdvisorChatScreen(),
   AskMeScreen.routeName: (ctx) => AskMeScreen(),
+  SubmitAnswer.routeName: (ctx) => SubmitAnswer(),
   //STUDENTS
   StudentAuthScreen.routeName: (ctx) => StudentAuthScreen(),
   StudentDashboardScreen.routeName: (ctx) => StudentDashboardScreen(),

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:android/screens/advisor/advisor_ask_me/submit_answer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:android/models/advisor_model.dart';
@@ -52,7 +53,7 @@ class _AskMeScreenState extends State<AskMeScreen> {
   }
 
   Widget _buildPastQuestion() {
-    getData();
+    getNewQuestions();
     return _buildTab(
       context: context,
       tabTitle: 'Past Question',
@@ -141,7 +142,7 @@ class _AskMeScreenState extends State<AskMeScreen> {
 
   Widget _buildPast() {
     return StreamBuilder<QuerySnapshot>(
-        stream: getData(),
+        stream: getPastQuestions(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) return new Text('Loading...');
           return new ListView(
@@ -226,7 +227,8 @@ class _AskMeScreenState extends State<AskMeScreen> {
                         RaisedButton(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20)),
-                          onPressed: () {},
+                          onPressed: () => Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (ctx) => SubmitAnswer(question: document["Question"],))),
                           color: Colors.teal,
                           child: Padding(
                             padding: EdgeInsets.symmetric(
@@ -252,13 +254,14 @@ class _AskMeScreenState extends State<AskMeScreen> {
 
   Widget _buildNew() {
     return StreamBuilder<QuerySnapshot>(
-        stream: getData(),
+        stream: getNewQuestions(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) return new Text('Loading...');
           return new ListView(
             children: snapshot.data.documents.map((DocumentSnapshot document) {
               return GestureDetector(
-                onTap: (){},
+                onTap: () => Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (ctx) => SubmitAnswer(question: document["Question"],))),
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Card(
@@ -318,12 +321,22 @@ class _AskMeScreenState extends State<AskMeScreen> {
         });
   }
 
-  Stream<QuerySnapshot> getData() {
+  Stream<QuerySnapshot> getNewQuestions() {
     String advisorEmail = '${advisor.email}';
     String path = 'helpers/$advisorEmail/askMe';
-//    return Firestore.instance.document(path).snapshots();
     return Firestore.instance
         .collection(path)
+        .where("isAnswered" , isEqualTo: false)
+        .orderBy("Likes", descending: true)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getPastQuestions() {
+    String advisorEmail = '${advisor.email}';
+    String path = 'helpers/$advisorEmail/askMe';
+    return Firestore.instance
+        .collection(path)
+    .where("isAnswered", isEqualTo: true)
         .orderBy("Likes", descending: true)
         .snapshots();
   }
