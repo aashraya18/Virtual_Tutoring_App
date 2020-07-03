@@ -1,17 +1,17 @@
+import 'package:android/screens/student/student_home_screen/student_payment_screen/constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer';
 import 'dart:convert';
 
-import './constants.dart';
-
 class TransferPayment {
+
   final double amount;
   final String accountId;
   final String mentorName;
   final String mentorId;
 
   TransferPayment({
-    this.amount: 2000, // This is in the smallest currency sub-unit i.e paisa.
+    this.amount: 2000,    // This is in the smallest currency sub-unit i.e paisa.
     this.accountId: 'acc_EqDkbQSjjSfnSt',
     this.mentorName: 'Alexa',
     this.mentorId: '1337',
@@ -22,7 +22,8 @@ class TransferPayment {
   String transferId;
 
   void transfer() async {
-    String apiUrl = 'https://$keyId:$keyValue@api.razorpay.com/v1/transfers';
+    String apiUrl =
+        'https://$keyId:$keyValue@api.razorpay.com/v1/transfers';
     final http.Response response = await http.post(
       apiUrl,
       headers: <String, String>{'Content-Type': 'application/json'},
@@ -32,7 +33,10 @@ class TransferPayment {
             "account": "$accountId",
             "amount": amount,
             "currency": "INR",
-            "notes": {"name": '$mentorName', "roll_no": "$mentorId"},
+            "notes": {
+              "name": '$mentorName',
+              "roll_no": "$mentorId"
+            },
             "on_hold": false
           }
         ]
@@ -46,4 +50,5 @@ class TransferPayment {
     }
     return null;
   }
+
 }

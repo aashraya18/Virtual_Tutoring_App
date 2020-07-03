@@ -1,9 +1,12 @@
-import 'dart:convert';
+import 'file:///D:/FlutterDevelopment/vorby_app/lib/screens/student/student_home_screen/student_slot_screen/user_time_slot.dart';
+import 'package:android/screens/student/student_home_screen/student_payment_screen/constants.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'dart:developer';
+import 'dart:convert';
+import 'payments_screen.dart';
 
-import './constants.dart';
-
-class OrderId {
+class OrderId{
   final double amount;
   final String mentorName;
   final String mentorId;
@@ -22,12 +25,10 @@ class OrderId {
     final http.Response response2 = await http.post(
       apiUrl,
       headers: <String, String>{'Content-Type': 'application/json'},
-      body: jsonEncode(<dynamic, dynamic>{
-        "amount": amount,
-        "currency": "INR",
-        "notes": {"mentorName": mentorName, "mentorId": mentorId}
-      }),
+      body: jsonEncode(
+          <dynamic, dynamic>{"amount": amount, "currency": "INR","notes" : {"mentorName" : mentorName , "mentorId" : mentorId}}),
     );
+    log('${response2.body}');
     var extractData = jsonDecode(response2.body);
     orderId = extractData['id'];
     return orderId;

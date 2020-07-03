@@ -1,13 +1,17 @@
+import 'package:android/screens/screens.dart';
 import 'package:flutter/material.dart';
-import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'razorpay_flutter.dart';
 
-import '../../../screen_decider.dart';
 
 class SuccessPage extends StatelessWidget {
+
   final PaymentSuccessResponse response;
   SuccessPage({
     @required this.response,
   });
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +24,7 @@ class SuccessPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              "Advisor has been added.",
+              "Your payment is successful and the response is\n\n PaymentId: ${response.paymentId}  \n\n OrderId: ${response.orderId} \n\n Signature: ${response.signature}",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 18,
@@ -32,9 +36,12 @@ class SuccessPage extends StatelessWidget {
               height: 10.0,
             ),
             RaisedButton(
-              onPressed: () {
-                Navigator.of(context)
-                    .pushReplacementNamed(ScreenDecider.routeName);
+              onPressed: (){
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (ctx) => StudentDashboardScreen()
+                  )
+                );
               },
               color: Color.fromRGBO(66, 133, 140, 1),
               textColor: Colors.white,

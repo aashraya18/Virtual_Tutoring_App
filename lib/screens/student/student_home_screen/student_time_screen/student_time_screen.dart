@@ -1,8 +1,9 @@
+import 'package:android/models/student_model.dart';
+import 'package:android/services/auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/bottomFlatButton.dart';
-import '../../../../common_widgets/platformAlertDialog.dart';
-import '../../../../models/advisor_model.dart';
 import '../student_slot_screen/student_slot_screen.dart';
 
 enum TimeSelected {
@@ -13,40 +14,28 @@ enum TimeSelected {
 
 class StudentTimeScreen extends StatefulWidget {
   static const routeName = '/student-time';
+  final advisor;
+  const StudentTimeScreen({Key key, this.advisor}) : super(key: key);
   @override
   _StudentTimeScreenState createState() => _StudentTimeScreenState();
 }
 
 class _StudentTimeScreenState extends State<StudentTimeScreen> {
   TimeSelected _timeSelected;
-
+  double amount;
   void _setTime() {
     if (_timeSelected == null) {
-      PlatformAlertDialog(
-        content: 'Not selected duration',
-        title: 'Alert',
-        defaultActionText: 'Okay',
-      ).show(context);
       return;
     }
-    final advisor = ModalRoute.of(context).settings.arguments as Advisor;
-    double amount;
-    if (_timeSelected == TimeSelected.rs90)
-      amount = 9000;
-    else if (_timeSelected == TimeSelected.rs100)
-      amount = 10000;
-    else if (_timeSelected == TimeSelected.rs250) amount = 25000;
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => StudentSlotScreen(
-              advisor: advisor,
-              amount: amount * 100,
-            )));
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (ctx) => StudentSlotScreen(advisor: widget.advisor,amount: amount*100,)));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text(''),
         elevation: 0,
       ),
       body: Center(
@@ -54,12 +43,15 @@ class _StudentTimeScreenState extends State<StudentTimeScreen> {
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             _buildText(),
-            _buildTimeCard(
-                time: '20', money: '90', selected: TimeSelected.rs90),
-            _buildTimeCard(
-                time: '30', money: '100', selected: TimeSelected.rs100),
-            _buildTimeCard(
-                time: '60', money: '250', selected: TimeSelected.rs250),
+            Center(
+              child: _buildTimeCard(
+                  time: '25', money: '200', selected: TimeSelected.rs90),
+            ),
+
+//            _buildTimeCard(
+//                time: '30', money: '100', selected: TimeSelected.rs100),
+//            _buildTimeCard(
+//                time: '60', money: '250', selected: TimeSelected.rs250),
             Spacer(),
             BottomFlatButton(
               iconData: Icons.access_time,
@@ -68,7 +60,7 @@ class _StudentTimeScreenState extends State<StudentTimeScreen> {
               textColor: Colors.white,
               iconSize: 25,
               textSize: 18,
-              onPressed: _setTime,
+              onPressed: () => _setTime(),
             ),
           ],
         ),
@@ -153,6 +145,7 @@ class _StudentTimeScreenState extends State<StudentTimeScreen> {
             : () {
                 setState(() {
                   _timeSelected = selected;
+                  amount = double.parse(money);
                 });
               },
       ),
