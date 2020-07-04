@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:android/screens/advisor/advisor_ask_me/submit_answer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -23,6 +22,11 @@ class AskMeScreen extends StatefulWidget {
 class _AskMeScreenState extends State<AskMeScreen> {
   CurrentTab _currentTab = CurrentTab.newQuestion;
   Advisor advisor;
+  @override
+  void dispose() {
+
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     advisor = Provider.of<AuthProvider>(context).advisor;
@@ -348,7 +352,6 @@ class _AskMeScreenState extends State<AskMeScreen> {
     return Firestore.instance
         .collection(path)
         .where("isAnswered", isEqualTo: false)
-        .orderBy("Likes", descending: true)
         .snapshots();
   }
 
