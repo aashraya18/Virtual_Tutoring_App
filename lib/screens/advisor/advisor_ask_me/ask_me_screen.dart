@@ -141,115 +141,134 @@ class _AskMeScreenState extends State<AskMeScreen> {
   }
 
   Widget _buildPast() {
-    return StreamBuilder<QuerySnapshot>(
-        stream: getPastQuestions(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (!snapshot.hasData) return new Text('Loading...');
-          return new ListView(
-            children: snapshot.data.documents.map((DocumentSnapshot document) {
+    return SingleChildScrollView(
+      child: StreamBuilder<QuerySnapshot>(
+          stream: getPastQuestions(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData)
               return Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  elevation: 3,
-                  child: Theme(
-                    data: ThemeData(accentColor: Colors.teal),
-                    child: ExpansionTile(
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Expanded(
-                            flex: 1,
-                            child: Icon(
-                              MdiIcons.helpCircle,
-                              size: 30.0,
-                              color: Colors.black38,
-                            ),
-                          ),
-                          Expanded(
-                            flex: 5,
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.vertical,
-                              child: Text(
-                                document['Question'],
-                                style: TextStyle(
-                                  fontSize: 20.0,
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.w400,
-                                ),
+                padding: const EdgeInsets.all(8.0),
+                child: new Text(
+                  'No Questions Answered',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                  ),
+                ),
+              );
+            return new ListView(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              children:
+                  snapshot.data.documents.map((DocumentSnapshot document) {
+                return Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                    elevation: 3,
+                    child: Theme(
+                      data: ThemeData(accentColor: Colors.teal),
+                      child: ExpansionTile(
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Expanded(
+                              flex: 1,
+                              child: Icon(
+                                MdiIcons.helpCircle,
+                                size: 30.0,
+                                color: Colors.black38,
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            width: 10.0,
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Row(
-                              children: <Widget>[
-                                Icon(
-                                  MdiIcons.heart,
-                                  size: 20.0,
-                                  color: Colors.teal,
-                                  textDirection: TextDirection.rtl,
-                                ),
-                                SizedBox(
-                                  width: 5.0,
-                                ),
-                                Text(
-                                  '${document['Likes']}',
-                                  textAlign: TextAlign.center,
+                            Expanded(
+                              flex: 5,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.vertical,
+                                child: Text(
+                                  document['Question'],
                                   style: TextStyle(
-                                    fontSize: 15.0,
+                                    fontSize: 20.0,
                                     color: Colors.black87,
                                     fontWeight: FontWeight.w400,
                                   ),
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.all(16.0),
-                          child: Text(
-                            document['Answer'],
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 15.0,
-                              color: Colors.black87,
-                              fontWeight: FontWeight.w400,
+                            SizedBox(
+                              width: 10.0,
                             ),
-                          ),
+                            Expanded(
+                              flex: 1,
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(
+                                    MdiIcons.heart,
+                                    size: 20.0,
+                                    color: Colors.teal,
+                                    textDirection: TextDirection.rtl,
+                                  ),
+                                  SizedBox(
+                                    width: 5.0,
+                                  ),
+                                  Text(
+                                    '${document['Likes']}',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 15.0,
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                        RaisedButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
-                          onPressed: () => Navigator.of(context)
-                              .push(MaterialPageRoute(builder: (ctx) => SubmitAnswer(question: document["Question"],))),
-                          color: Colors.teal,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 70.0, vertical: 5.0),
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.all(16.0),
                             child: Text(
-                              'Edit',
+                              document['Answer'],
+                              textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: Colors.white,
                                 fontSize: 15.0,
+                                color: Colors.black87,
+                                fontWeight: FontWeight.w400,
                               ),
                             ),
                           ),
-                        )
-                      ],
+                          RaisedButton(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                            onPressed: () =>
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (ctx) => SubmitAnswer(
+                                          question: document["Question"],
+                                          id: document["ID"],
+                                        ))),
+                            color: Colors.teal,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 70.0, vertical: 5.0),
+                              child: Text(
+                                'Edit',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15.0,
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              );
-            }).toList(),
-          );
-        });
+                );
+              }).toList(),
+            );
+          }),
+    );
   }
 
   Widget _buildNew() {
@@ -260,8 +279,10 @@ class _AskMeScreenState extends State<AskMeScreen> {
           return new ListView(
             children: snapshot.data.documents.map((DocumentSnapshot document) {
               return GestureDetector(
-                onTap: () => Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (ctx) => SubmitAnswer(question: document["Question"],))),
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (ctx) => SubmitAnswer(
+                        question: document["Question"],
+                        id: document.documentID))),
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Card(
@@ -326,7 +347,7 @@ class _AskMeScreenState extends State<AskMeScreen> {
     String path = 'helpers/$advisorEmail/askMe';
     return Firestore.instance
         .collection(path)
-        .where("isAnswered" , isEqualTo: false)
+        .where("isAnswered", isEqualTo: false)
         .orderBy("Likes", descending: true)
         .snapshots();
   }
@@ -336,7 +357,7 @@ class _AskMeScreenState extends State<AskMeScreen> {
     String path = 'helpers/$advisorEmail/askMe';
     return Firestore.instance
         .collection(path)
-    .where("isAnswered", isEqualTo: true)
+        .where("isAnswered", isEqualTo: true)
         .orderBy("Likes", descending: true)
         .snapshots();
   }

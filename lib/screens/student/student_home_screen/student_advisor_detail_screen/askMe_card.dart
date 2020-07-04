@@ -8,17 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
-class SubmitAnswer extends StatefulWidget {
+class AskMeCard extends StatefulWidget {
   static const routeName = '/submitAnswer';
-
-  final String question;
-  final String id;
-  const SubmitAnswer({Key key, this.question, this.id}) : super(key: key);
   @override
-  _SubmitAnswerState createState() => _SubmitAnswerState();
+  _AskMeCardState createState() => _AskMeCardState();
 }
 
-class _SubmitAnswerState extends State<SubmitAnswer> {
+class _AskMeCardState extends State<AskMeCard> {
   final myController = TextEditingController();
   String answer;
   int maxLines = 5;
@@ -38,44 +34,6 @@ class _SubmitAnswerState extends State<SubmitAnswer> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                elevation: 3,
-                child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Expanded(
-                          flex: 1,
-                          child: Icon(
-                            MdiIcons.helpCircle,
-                            size: 30.0,
-                            color: Colors.black38,
-                          ),
-                        ),
-                        Expanded(
-                          flex: 5,
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.vertical,
-                            child: Text(
-                              widget.question,
-                              style: TextStyle(
-                                fontSize: 20.0,
-                                color: Colors.black87,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              SizedBox(
-                height: 20.0,
-              ),
               Container(
                 margin: EdgeInsets.all(12),
                 height: maxLines * 24.0,
@@ -83,7 +41,7 @@ class _SubmitAnswerState extends State<SubmitAnswer> {
                   maxLines: maxLines,
                   controller: myController,
                   decoration: new InputDecoration(
-                    hintText: "Kindly answer here.....",
+                    hintText: "Ask a question",
                     fillColor: Colors.white,
                     filled: true,
                     border: new OutlineInputBorder(
@@ -106,13 +64,13 @@ class _SubmitAnswerState extends State<SubmitAnswer> {
               RaisedButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
-                onPressed: () => _updateDatabase(),
+//                onPressed: () => _updateDatabase(),
                 color: Colors.teal,
                 child: Padding(
                   padding: EdgeInsets.symmetric(
                       horizontal: 100.0, vertical: 15.0),
                   child: Text(
-                    'Submit',
+                    'Ask',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 15.0,
@@ -127,14 +85,14 @@ class _SubmitAnswerState extends State<SubmitAnswer> {
     );
   }
 
-  void _updateDatabase() {
-    String path = '/helpers/${advisor.email}/askMe/${widget.id}';
-    DocumentReference documentReference = Firestore.instance.document(path);
-    Map<String, dynamic> updateAskMe = {
-      'Answer' : answer,
-      'isAnswered' : true,
-    };
-    documentReference.updateData(updateAskMe);
-    Navigator.of(context).pop();
-  }
+//  void _updateDatabase() {
+//    String path = '/helpers/${advisor.email}/askMe/${widget.id}';
+//    DocumentReference documentReference = Firestore.instance.document(path);
+//    Map<String, dynamic> updateAskMe = {
+//      'Answer' : answer,
+//      'isAnswered' : true,
+//    };
+//    documentReference.updateData(updateAskMe);
+//    Navigator.of(context).pop();
+//  }
 }
