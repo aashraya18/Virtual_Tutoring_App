@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../services/services.dart';
+import '../../../services/advisor_database_provider.dart';
 
 import '../../../models/mentee_model.dart';
-import 'mentee_card.dart';
+//import 'mentee_card.dart';
 
 class AdvisorMenteesScreen extends StatelessWidget {
   static const routeName = '/advisor-mentees';
@@ -39,23 +39,22 @@ class AdvisorMenteesScreen extends StatelessWidget {
 
   Widget _buildSliverList(BuildContext context) {
     return StreamBuilder<List<Mentee>>(
-        stream: Provider.of<DatabaseProvider>(context).getAdvisorMentees(
-            Provider.of<AuthProvider>(context, listen: false).advisor.email),
+        stream: Provider.of<AdvisorDatabaseProvider>(context).getMyMentees(),
         builder: (context, snapshot) {
-          final mentees = snapshot.data;
-          if (snapshot.hasData) {
-            return SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (ctx, index) => MenteeCard(mentees[index]),
-                childCount: mentees.length,
-              ),
-            );
-          } else {
-            return SliverFillRemaining(
-                child: Center(
-                    child: CircularProgressIndicator(
-                        backgroundColor: Theme.of(context).primaryColor)));
-          }
+//          final mentees = snapshot.data;
+//          if (snapshot.hasData) {
+//            return SliverList(
+//              delegate: SliverChildBuilderDelegate(
+//                (ctx, index) => MenteeCard(mentees[index]),
+//                childCount: mentees.length,
+//              ),
+//            );
+//          } else {
+//            return SliverFillRemaining(
+//                child: Center(
+//                    child: CircularProgressIndicator(
+//                        backgroundColor: Theme.of(context).primaryColor)));
+//          }
         });
   }
 }

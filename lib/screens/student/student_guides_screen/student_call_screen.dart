@@ -1,11 +1,11 @@
-import 'dart:async';
-
-import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter/material.dart';
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'dart:async';
+import 'student_feedback_screen.dart';
 
 class StudentCallScreen extends StatefulWidget {
-  final String channelName;
-  const StudentCallScreen(this.channelName);
+  static const routeName = '/student-call';
+  const StudentCallScreen();
 
   @override
   _StudentCallScreenState createState() => _StudentCallScreenState();
@@ -26,10 +26,27 @@ class _StudentCallScreenState extends State<StudentCallScreen> {
     super.dispose();
   }
 
+  int counter = 1620;
+  Timer _timer;
+  _startTimer(){
+    //counter = 10;
+    _timer = Timer.periodic(Duration(seconds: 1),(timer){
+      setState(() {
+        print(counter);
+        counter--;
+      });
+      if(counter == 0){
+        _timer.cancel();
+        _onCallEnd(context);
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     // initialize agora sdk
+    _startTimer();
     initialize();
   }
 
@@ -40,7 +57,12 @@ class _StudentCallScreenState extends State<StudentCallScreen> {
     VideoEncoderConfiguration configuration = VideoEncoderConfiguration();
     configuration.dimensions = Size(1920, 1080);
     await AgoraRtcEngine.setVideoEncoderConfiguration(configuration);
-    await AgoraRtcEngine.joinChannel(null, widget.channelName, null, 0);
+    await AgoraRtcEngine.joinChannel(
+        null,
+        (ModalRoute.of(context).settings.arguments
+            as Map<String, String>)['channel'],
+        null,
+        0);
   }
 
   /// Create agora sdk instance and initialize
@@ -217,58 +239,11 @@ class _StudentCallScreenState extends State<StudentCallScreen> {
     );
   }
 
-  /// Info panel to show logs
-  /* Widget _panel() {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 48),
-      alignment: Alignment.bottomCenter,
-      child: FractionallySizedBox(
-        heightFactor: 0.5,
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 48),
-          child: ListView.builder(
-            reverse: true,
-            itemCount: _infoStrings.length,
-            itemBuilder: (BuildContext context, int index) {
-              if (_infoStrings.isEmpty) {
-                return null;
-              }
-              return Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 3,
-                  horizontal: 10,
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Flexible(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 2,
-                          horizontal: 5,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.yellowAccent,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Text(
-                          _infoStrings[index],
-                          style: TextStyle(color: Colors.blueGrey),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
-      ),
-    );
-  } */
-
   void _onCallEnd(BuildContext context) {
-    Navigator.pop(context);
+    Navigator.of(context).pop();
+    Navigator.of(context).pushNamed(StudentFeedbackScreen.routeName,
+        arguments:
+            (ModalRoute.of(context).settings.arguments as Map<String, String>));
   }
 
   void _onToggleMute() {
@@ -290,7 +265,6 @@ class _StudentCallScreenState extends State<StudentCallScreen> {
         child: Stack(
           children: <Widget>[
             _viewRows(),
-            // _panel(),
             _toolbar(),
           ],
         ),

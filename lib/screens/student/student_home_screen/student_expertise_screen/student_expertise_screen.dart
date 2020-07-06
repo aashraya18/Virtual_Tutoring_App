@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../services/database_provider.dart';
+import '../../../../services/student_database_provider.dart';
 import '../widgets/advisorListViewBuilder.dart';
 
 class StudentExpertiseScreen extends StatelessWidget {
@@ -11,12 +11,24 @@ class StudentExpertiseScreen extends StatelessWidget {
     return ListView(
       children: <Widget>[
         AdvisorListViewBuilder(
-          title: 'JEE - Advance',
-          stream: Provider.of<DatabaseProvider>(context).getAdvisors(),
+          title: 'Computer Science',
+          stream: Provider.of<StudentDatabaseProvider>(context)
+              .getFilteredAdvisors('Computer Science'),
         ),
         AdvisorListViewBuilder(
-          title: 'JEE - Main',
-          stream: Provider.of<DatabaseProvider>(context).getAdvisors(),
+          title: 'Mechanical',
+          stream: Provider.of<StudentDatabaseProvider>(context)
+              .getFilteredAdvisors('Mechanical'),
+        ),
+        AdvisorListViewBuilder(
+          title: 'Electronics',
+          stream: Provider.of<StudentDatabaseProvider>(context)
+              .getFilteredAdvisors('Electronics'),
+        ),
+        AdvisorListViewBuilder(
+          title: 'Information Technology',
+          stream: Provider.of<StudentDatabaseProvider>(context)
+              .getFilteredAdvisors('Information Technology'),
         ),
       ],
     );

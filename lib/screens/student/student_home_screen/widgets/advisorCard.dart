@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+
 import '../../../../models/advisor_model.dart';
 import '../student_advisor_screen/student_advisor_screen.dart';
-import './../student_advisor_screen/student_advisor_screen.dart';
 
 class AdvisorCard extends StatelessWidget {
   const AdvisorCard(this.advisor);
   final Advisor advisor;
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;

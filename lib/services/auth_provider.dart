@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import './firestore_service.dart';
+import 'firestore_service.dart';
 import '../models/student_model.dart';
 import '../models/advisor_model.dart';
 
@@ -56,6 +56,7 @@ class AuthProvider extends ChangeNotifier {
           menteesCount: advisorData['menteesCount'],
           phoneNumber: advisorData['phoneNumber'],
           photoUrl: advisorData['photoUrl'],
+          rating: advisorData['rating'],
           reviewsCount: advisorData['reviewsCount'],
           uid: user.uid,
         );
@@ -189,7 +190,7 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> signInWithEmailAndPassword(String email, String password) async {
+  Future<String> signInWithEmailAndPassword(String email, String password) async {
     try {
       final authResult = await _firebaseAuthService.signInWithEmailAndPassword(
           email: email, password: password);
@@ -208,14 +209,17 @@ class AuthProvider extends ChangeNotifier {
           menteesCount: advisorData['menteesCount'],
           phoneNumber: advisorData['phoneNumber'],
           photoUrl: advisorData['photoUrl'],
+          rating: advisorData['rating'],
           reviewsCount: advisorData['reviewsCount'],
           uid: user.uid,
         );
         _role = true;
         _themeData = advisorTheme;
       } else {
+
         final studentData =
             await _firestoreService.getData(docPath: 'students/${user.uid}');
+        //print(studentData.data);
         _student = Student(
           bio: studentData['bio'],
           displayName: studentData['displayName'],
@@ -228,9 +232,11 @@ class AuthProvider extends ChangeNotifier {
         _themeData = studentTheme;
       }
       notifyListeners();
+      return user.uid;
     } catch (error) {
       throw error;
     }
+
   }
 
   Future<void> signOut() async {

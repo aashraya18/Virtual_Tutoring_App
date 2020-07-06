@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-
-import '../../../services/services.dart';
+import '../../../services/student_database_provider.dart';
+import '../../../services/auth_provider.dart';
+import '../../../services/chat_provider.dart';
 import '../../../models/message_model.dart';
 import '../../../models/advisor_model.dart';
-import './student_call_screen.dart';
+import 'student_call_screen.dart';
 
 class StudentChatScreen extends StatefulWidget {
   static const routeName = '/student-chat';
@@ -40,6 +41,61 @@ class _StudentChatScreenState extends State<StudentChatScreen> {
     FocusScope.of(context).unfocus();
   }
 
+  bool _checkTime(List<dynamic> slots,int now){
+    int startTime;
+    int endTime;
+    bool status = false;
+    for(int i=0;i<slots.length;++i){
+      String start = '' ;
+      for(int j=0;j<slots[i].length;++j){
+        if(slots[i][j] != "-" && slots[i][j] != ".")
+          start = start + slots[i][j];
+        else if(slots[i][j] == "-") {
+          startTime = int.parse(start);
+          break;
+        }
+      }
+      String end = '';
+      for(int j=6;j<slots[i].length;++j){
+        if(slots[i][j] != '.')
+          end = end+slots[i][j];
+      }
+      endTime = int.parse(end);
+      if(now>=startTime && now<=endTime){
+       status =true;
+       break;
+      }
+    }
+    return status;
+  }
+
+   Future<bool> getSlot(BuildContext context ,String studentEmail, String advisorEmail) async{
+
+    final now = DateTime.now();
+
+    var formatDay = DateFormat('d-M-yyyy');
+    var formatTime = DateFormat('HHmm');
+
+    String formattedDay = formatDay.format(now);
+    int formattedTime = int.parse(formatTime.format(now));
+
+    final List<dynamic> bookedSlots = await Provider.of<StudentDatabaseProvider>(context,listen:false).getSlotTiming('$studentEmail', '$advisorEmail','$formattedDay');
+
+    if(bookedSlots == null){
+      print('Not today');
+      return false;
+    }
+    else
+    if(_checkTime(bookedSlots,formattedTime )){
+      print('Go to the call');
+      return true;
+    }
+    else
+      print('Not now');
+      return false;
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final student = Provider.of<AuthProvider>(context, listen: false).student;
@@ -60,13 +116,21 @@ class _StudentChatScreenState extends State<StudentChatScreen> {
                 await PermissionHandler().requestPermissions(
                   [PermissionGroup.camera, PermissionGroup.microphone],
                 );
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        StudentCallScreen('${advisor.uid}' + '${student.uid}'),
-                  ),
-                );
+
+                bool ready = await getSlot(context,student.email,advisor.email);
+                if(ready){
+                  await Navigator.of(context).pushNamed(
+                    StudentCallScreen.routeName,
+                    arguments: {
+                      'channel': '${advisor.uid}' + '${student.uid}',
+                      'advisorName': advisor.displayName,
+                      'advisorEmail': advisor.email,
+                    },
+                  );
+                }
+                else{
+                  print('Not your booked slot');
+                }
               },
               icon: Icon(
                 Icons.video_call,

@@ -3,11 +3,12 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../../../services/services.dart';
+import '../../../services/auth_provider.dart';
+import '../../../services/chat_provider.dart';
 import '../../../models/message_model.dart';
 import '../../../models/advisor_model.dart';
 import '../../../models/student_model.dart';
-import './advisor_call_screen.dart';
+import 'advisor_call_screen.dart';
 
 class AdvisorChatScreen extends StatefulWidget {
   static const routeName = '/advisor-chat';

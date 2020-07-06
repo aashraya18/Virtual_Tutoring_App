@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../services/auth_provider.dart';
+import '../../../services/advisor_database_provider.dart';
+import '../../../services/student_database_provider.dart';
 import '../../../common_widgets/platformExceptionAlertDialog.dart';
 
 class AdvisorLoginForm extends StatefulWidget {
@@ -15,11 +18,13 @@ class _AdvisorLoginFormState extends State<AdvisorLoginForm> {
 
   final _emailTextCont = TextEditingController();
   final _passwordTextCont = TextEditingController();
-
+  List <dynamic> tokens = [];
+  String Token;
   bool _loading = false;
 
   Future<void> _login() async {
     // Validate Email and Password fields.
+    print(_emailTextCont.text);
     if (!_loginForm.currentState.validate()) return;
 
     // Set loading to true
@@ -28,10 +33,28 @@ class _AdvisorLoginFormState extends State<AdvisorLoginForm> {
     });
     try {
       // Try logging in with email and password.
-      await Provider.of<AuthProvider>(context, listen: false)
+     String uid = await Provider.of<AuthProvider>(context, listen: false)
           .signInWithEmailAndPassword(
               _emailTextCont.text, _passwordTextCont.text);
+      print(_emailTextCont.text);
+      print(uid);
 
+      if(_emailTextCont.text.contains('advisor')){
+        print('advisor it is');
+        tokens = await Provider.of<AdvisorDatabaseProvider>(context,listen:false).getAdvisorDeviceToken(_emailTextCont.text);
+        print(tokens);
+        if(!tokens.contains(Token)){
+          tokens.add(Token);
+          Firestore.instance.collection('helpers').document(_emailTextCont.text).updateData({'tokens':tokens});
+        }
+      }else{
+        tokens = await Provider.of<StudentDatabaseProvider>(context,listen:false).getStudentDeviceToken(uid);
+        print(tokens);
+        if(!tokens.contains(Token)){
+          tokens.add(Token);
+          Firestore.instance.collection('students').document(uid).updateData({'tokens':tokens});
+        }
+      }
       // Pop route and set loading to false.
       Navigator.of(context).pop();
       _loading = false;
@@ -47,6 +70,23 @@ class _AdvisorLoginFormState extends State<AdvisorLoginForm> {
         exception: error,
       ).show(context);
     }
+  }
+
+  final FirebaseMessaging _fcm = FirebaseMessaging();
+  _getToken(){
+
+    _fcm.getToken().then((token){
+      setState(() {
+        Token = token;
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _getToken();
   }
 
   @override

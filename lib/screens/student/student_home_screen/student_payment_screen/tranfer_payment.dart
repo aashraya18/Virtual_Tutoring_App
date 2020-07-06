@@ -2,7 +2,7 @@ import 'package:http/http.dart' as http;
 import 'dart:developer';
 import 'dart:convert';
 
-import './constants.dart';
+import 'constants.dart';
 
 class TransferPayment {
   final double amount;
@@ -17,8 +17,8 @@ class TransferPayment {
     this.mentorId: '1337',
   });
 
-  final String keyId = Constants().keyId;
-  final String keyValue = Constants().keyValue;
+  final String keyId = Constants.keyId;
+  final String keyValue = Constants.keyValue;
   String transferId;
 
   void transfer() async {

@@ -1,15 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
-
-import './profile_tile.dart';
-import './main_tile.dart';
+import 'profile_tile.dart';
+import 'main_tile.dart';
 
 import '../advisor_screens.dart';
 
 class AdvisorDashboardScreen extends StatelessWidget {
   static const routeName = '/advisor-dashboard';
+  final FirebaseMessaging _fcm = FirebaseMessaging();
+  _configFirebaseListeners(BuildContext context){
+    _fcm.configure(
+        onMessage: (Map<String,dynamic>message)async{
+          print('onMessage:$message');
+          Navigator.popAndPushNamed(context, AdvisorMenteesScreen.routeName);
+        },
+        onLaunch: (Map<String,dynamic>message)async{
+          print('onLaunch:$message');
+          Navigator.popAndPushNamed(context, AdvisorMenteesScreen.routeName);
+        },
+        onResume: (Map<String,dynamic>message)async{
+          print('onResume:$message');
+          Navigator.popAndPushNamed(context, AdvisorMenteesScreen.routeName);
+        }
+    );
+  }
   @override
   Widget build(BuildContext context) {
+    _configFirebaseListeners(context);
     final double statusHeight = MediaQuery.of(context).padding.top;
     return Scaffold(
       body: Center(

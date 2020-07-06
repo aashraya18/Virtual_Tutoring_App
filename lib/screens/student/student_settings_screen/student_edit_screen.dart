@@ -5,7 +5,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import '../../../services/database_provider.dart';
+import '../../../services/student_database_provider.dart';
 import '../../../services/auth_provider.dart';
 import '../../../common_widgets/platformExceptionAlertDialog.dart';
 import '../../../models/student_model.dart';
@@ -96,12 +96,13 @@ class _StudentEditScreenState extends State<StudentEditScreen> {
     try {
       // If image is not null update image on server.
       if (image != null) {
-        await Provider.of<DatabaseProvider>(context, listen: false)
-            .updatePhotoUrl(image);
+        await Provider.of<StudentDatabaseProvider>(context, listen: false)
+            .updateMyPhotoUrl(image);
       }
 
       // Update profile on server.
-      await Provider.of<DatabaseProvider>(context, listen: false).updateProfile(
+      await Provider.of<StudentDatabaseProvider>(context, listen: false)
+          .updateMyProfile(
         _nameController.text,
         _bioController.text,
         _emailController.text,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../services/services.dart';
+import '../../../services/auth_provider.dart';
 import '../../../models/advisor_model.dart';
 
 class AdvisorProfileScreen extends StatelessWidget {

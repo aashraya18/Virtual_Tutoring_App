@@ -38,17 +38,17 @@ class FirestoreService {
     return document;
   }
 
-  Future<void> deleteDocument({
-    @required String documentPath,
-  }) async {
-    await _instance.document(documentPath).delete();
-  }
-
   Future<QuerySnapshot> getDocuments({
     @required String collectionPath,
   }) async {
     final snapshot = await _instance.collection(collectionPath).getDocuments();
     return snapshot;
+  }
+
+  Future<void> deleteDocument({
+    @required String documentPath,
+  }) async {
+    await _instance.document(documentPath).delete();
   }
 
   Stream<List<T>> collectionStreamWhere<T>({
@@ -57,7 +57,8 @@ class FirestoreService {
     @required String field,
     @required String value,
   }) {
-    Query reference = _instance.collection(path).where(field, isEqualTo: value);
+    Query reference =
+        _instance.collection(path).where(field, arrayContains: value);
     return collectionStreamBase(reference: reference, builder: builder);
   }
 
