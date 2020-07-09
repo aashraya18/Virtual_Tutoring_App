@@ -268,7 +268,7 @@ ThemeData studentTheme = ThemeData(
 
 ThemeData advisorTheme = ThemeData(
   primarySwatch: Colors.blue,
-  primaryColor: Color.fromRGBO(13, 40, 107, 1),
+  primaryColor: Color.fromRGBO(31, 106, 113, 1),
   accentColor: Colors.white,
   canvasColor: Color.fromRGBO(244, 246, 252, 1),
   backgroundColor: Color.fromRGBO(253, 176, 94, 1),

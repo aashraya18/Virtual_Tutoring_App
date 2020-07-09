@@ -1,7 +1,10 @@
+import 'package:android/services/advisor_database_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'dart:async';
+import 'package:provider/provider.dart';
 import 'student_feedback_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class StudentCallScreen extends StatefulWidget {
   static const routeName = '/student-call';
@@ -15,7 +18,10 @@ class _StudentCallScreenState extends State<StudentCallScreen> {
   static final _users = <int>[];
   final _infoStrings = <String>[];
   bool muted = false;
-
+  bool paymentAllowed = false;
+  Map payment;
+  int amount;
+  int guidedStudents;
   @override
   void dispose() {
     // clear users
@@ -28,13 +34,30 @@ class _StudentCallScreenState extends State<StudentCallScreen> {
 
   int counter = 1620;
   Timer _timer;
-  _startTimer(){
-    //counter = 10;
+  _startTimer() {
     _timer = Timer.periodic(Duration(seconds: 1),(timer){
       setState(() {
         print(counter);
         counter--;
       });
+
+      if(counter == 1615) {
+        amount =  payment['Amount'] +100;
+        guidedStudents = payment['GuidedStudents']+1;
+        String status = "";
+        if(amount >= 2000)
+          setState(() {
+            status = 'allowed';
+          });
+        payment = {
+          'Amount': amount,
+          'GuidedStudents':guidedStudents,
+          'status':status,
+        };
+
+        print(payment);
+        Firestore.instance.collection('helpers').document('test@advisor.com').updateData({'Payment':payment});
+      }
       if(counter == 0){
         _timer.cancel();
         _onCallEnd(context);
@@ -42,11 +65,23 @@ class _StudentCallScreenState extends State<StudentCallScreen> {
     });
   }
 
+
+    getPayment() async{
+     payment = await Provider.of<AdvisorDatabaseProvider>(context ,listen:false).getAdvisorDetails('test@advisor.com', 'Payment');
+    if(payment == null){
+      payment ={
+        'Amount':0,
+        'GuidedStudents':0,
+      };
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     // initialize agora sdk
-    _startTimer();
+//    _startTimer();
+//    getPayment();
     initialize();
   }
 
@@ -259,6 +294,9 @@ class _StudentCallScreenState extends State<StudentCallScreen> {
 
   @override
   Widget build(BuildContext context) {
+//    Map temp = ModalRoute.of(context).settings.arguments;
+//    payment = temp['payment'];
+//    print(payment);
     return Scaffold(
       backgroundColor: Colors.black,
       body: Center(

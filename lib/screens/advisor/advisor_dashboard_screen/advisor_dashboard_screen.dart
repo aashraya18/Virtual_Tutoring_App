@@ -54,7 +54,7 @@ class AdvisorDashboardScreen extends StatelessWidget {
                     top: 40,
                     right: 20,
                     bottom: 25,
-                    imageLabel: 'payments.png',
+                    imageLabel: 'schedule.png',
                     tileLabel: 'Your Schedule',
                     pageRoute: AdvisorScheduleScreen.routeName,
                   ),

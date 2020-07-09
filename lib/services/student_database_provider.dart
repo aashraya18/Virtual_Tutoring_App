@@ -30,6 +30,7 @@ class StudentDatabaseProvider {
           rating: snapshot.data['rating'],
           reviewsCount: snapshot.data['reviewsCount'],
           uid: snapshot.data['uid'],
+          payment: snapshot.data['payment'],
         ),
       );
 

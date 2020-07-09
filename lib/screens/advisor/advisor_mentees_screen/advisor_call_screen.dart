@@ -1,8 +1,9 @@
 import 'dart:async';
-
+import 'package:provider/provider.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter/material.dart';
-
+import 'package:android/services/advisor_database_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 class AdvisorCallScreen extends StatefulWidget {
   final String channelName;
   const AdvisorCallScreen(this.channelName);
@@ -15,6 +16,9 @@ class _AdvisorCallScreenState extends State<AdvisorCallScreen> {
   static final _users = <int>[];
   final _infoStrings = <String>[];
   bool muted = false;
+  Map payment;
+  int amount;
+  int guidedStudents;
 
   @override
   void dispose() {
@@ -26,10 +30,42 @@ class _AdvisorCallScreenState extends State<AdvisorCallScreen> {
     super.dispose();
   }
 
+  int counter = 1620;
+  Timer _timer;
+  _startTimer() {
+    _timer = Timer.periodic(Duration(seconds: 1),(timer){
+      setState(() {
+        //print(counter);
+        counter--;
+      });
+
+      if(counter == 0){
+        _timer.cancel();
+        _onCallEnd(context);
+      }
+    });
+  }
+
+
+  getPayment() async{
+    FirebaseUser email = await FirebaseAuth.instance.currentUser();
+    String emailID = email.email;
+    payment = await Provider.of<AdvisorDatabaseProvider>(context ,listen:false).getAdvisorDetails(emailID, 'Payment');
+    if(payment == null){
+      payment ={
+        'Amount':0,
+        'GuidedStudents':0,
+      };
+      print(payment);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     // initialize agora sdk
+    _startTimer();
+    getPayment();
     initialize();
   }
 

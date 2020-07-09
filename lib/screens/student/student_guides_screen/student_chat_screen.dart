@@ -1,7 +1,9 @@
+import 'package:android/services/advisor_database_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:android/common_widgets/customAppBar.dart';
 import '../../../services/student_database_provider.dart';
 import '../../../services/auth_provider.dart';
 import '../../../services/chat_provider.dart';
@@ -18,6 +20,7 @@ class StudentChatScreen extends StatefulWidget {
 class _StudentChatScreenState extends State<StudentChatScreen> {
   final messageTextController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  Map payment;
   DateTime now;
 
   Future<void> _onSend() async {
@@ -86,7 +89,7 @@ class _StudentChatScreenState extends State<StudentChatScreen> {
       return false;
     }
     else
-    if(_checkTime(bookedSlots,formattedTime )){
+    if(_checkTime(bookedSlots,formattedTime)){
       print('Go to the call');
       return true;
     }
@@ -101,43 +104,83 @@ class _StudentChatScreenState extends State<StudentChatScreen> {
     final student = Provider.of<AuthProvider>(context, listen: false).student;
     final advisor = ModalRoute.of(context).settings.arguments as Advisor;
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            advisor.displayName,
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          centerTitle: true,
-          actions: <Widget>[
-            IconButton(
-              onPressed: () async {
-                await PermissionHandler().requestPermissions(
-                  [PermissionGroup.camera, PermissionGroup.microphone],
-                );
+        appBar: CustomAppBar(
+            height: 195,
+            child:Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.arrow_back),
+                      onPressed: (){
+                        Navigator.pop(context);
+                      },
+                    ),
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top:60.0),
+                          child: Container(
+                            margin: EdgeInsets.only(top: 30),
+                            height: 50,
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Image.network(advisor.photoUrl)),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom:8.0),
+                          child: Text(
+                            advisor.displayName,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 20
+                            ),
+                          ),
+                        ),
 
-                bool ready = await getSlot(context,student.email,advisor.email);
-                if(ready){
-                  await Navigator.of(context).pushNamed(
-                    StudentCallScreen.routeName,
-                    arguments: {
-                      'channel': '${advisor.uid}' + '${student.uid}',
-                      'advisorName': advisor.displayName,
-                      'advisorEmail': advisor.email,
-                    },
-                  );
-                }
-                else{
-                  print('Not your booked slot');
-                }
-              },
-              icon: Icon(
-                Icons.video_call,
-                size: 40,
-              ),
+                      ],
+                    ),Builder(
+                      builder: (context) => IconButton(
+                        onPressed: () async {
+                          await PermissionHandler().requestPermissions(
+                            [PermissionGroup.camera, PermissionGroup.microphone],
+                          );
+
+                         bool ready = await getSlot(context,student.email,advisor.email);
+                          if(ready){
+                            await Navigator.of(context).pushNamed(
+                              StudentCallScreen.routeName,
+                              arguments: {
+                                'channel': '${advisor.uid}' + '${student.uid}',
+                                'advisorName': advisor.displayName,
+                                'advisorEmail': advisor.email,
+                              },
+                            );
+                          }
+                          else{
+                            Scaffold.of(context).showSnackBar(SnackBar(
+                              backgroundColor: Theme.of(context).primaryColor,
+                              content: Text('Not your scheduled slot'),
+                              duration: Duration(seconds: 3),
+                            ));
+                          }
+                        },
+                        icon: Icon(
+                          Icons.video_call,
+                          size: 40,
+                        ),
+                      ),
+                    )
+
+                  ],
+                ),
+                Divider(
+                  color: Colors.black,
+                )
+              ],
             )
-          ],
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -157,8 +200,10 @@ class _StudentChatScreenState extends State<StudentChatScreen> {
                     ), */
                     Expanded(
                       child: TextFormField(
+                        maxLines: null,
                         decoration: InputDecoration(
                           hintText: 'Write your message...',
+
                         ),
                         controller: messageTextController,
                         validator: (value) {

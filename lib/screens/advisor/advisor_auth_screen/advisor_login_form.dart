@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:android/screens/admin/advisor_details.dart';
 import '../../../services/auth_provider.dart';
 import '../../../services/advisor_database_provider.dart';
 import '../../../services/student_database_provider.dart';
@@ -24,6 +25,9 @@ class _AdvisorLoginFormState extends State<AdvisorLoginForm> {
 
   Future<void> _login() async {
     // Validate Email and Password fields.
+    if(_emailTextCont.text.contains('admin') && _passwordTextCont.text == '@12345678'){
+      Navigator.pushNamed(context, AllAdvisordetails.routeName);
+    }
     print(_emailTextCont.text);
     if (!_loginForm.currentState.validate()) return;
 
@@ -41,7 +45,7 @@ class _AdvisorLoginFormState extends State<AdvisorLoginForm> {
 
       if(_emailTextCont.text.contains('advisor')){
         print('advisor it is');
-        tokens = await Provider.of<AdvisorDatabaseProvider>(context,listen:false).getAdvisorDeviceToken(_emailTextCont.text);
+        tokens = await Provider.of<AdvisorDatabaseProvider>(context,listen:false).getAdvisorDetails(_emailTextCont.text , 'tokens');
         print(tokens);
         if(!tokens.contains(Token)){
           tokens.add(Token);

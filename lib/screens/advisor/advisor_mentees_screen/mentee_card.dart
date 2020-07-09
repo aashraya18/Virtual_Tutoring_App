@@ -1,4 +1,4 @@
-import 'file:///C:/Users/Harshul%20C/AndroidStudioProjects/vorby_app2/lib/models/mentee_model.dart';
+import 'package:android/models/mentee_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

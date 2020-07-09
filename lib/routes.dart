@@ -5,7 +5,8 @@ Map<String, Widget Function(BuildContext)> routes = {
   ScreenDecider.routeName: (ctx) => ScreenDecider(),
   SplashScreen.routeName: (ctx) => SplashScreen(),
   AuthSelectScreen.routeName: (ctx) => AdvisorAuthScreen(),
-
+  //ADMIN
+  AllAdvisordetails.routeName: (ctx) =>AllAdvisordetails(),
   //ADVISORS
   AdvisorAuthScreen.routeName: (ctx) => AdvisorAuthScreen(),
   AdvisorForgotScreen.routeName: (ctx) => AdvisorForgotScreen(),

@@ -54,7 +54,10 @@ Widget _buildTile(BuildContext context, Advisor advisor) {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
             ),
-            child: Image.network(advisor.photoUrl)),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.network(advisor.photoUrl)),
+            ),
         title: Container(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
