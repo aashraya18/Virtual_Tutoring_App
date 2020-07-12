@@ -4,6 +4,9 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:android/common_widgets/customAppBar.dart';
+import 'package:android/google_sheet/controller.dart';
+import 'package:android/google_sheet/call_log.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../../services/student_database_provider.dart';
 import '../../../services/auth_provider.dart';
 import '../../../services/chat_provider.dart';
@@ -44,6 +47,16 @@ class _StudentChatScreenState extends State<StudentChatScreen> {
     FocusScope.of(context).unfocus();
   }
 
+  logToExcel(String name) async{
+    final now = DateTime.now();
+    VideoCallLog callLog = VideoCallLog(name, now.toString(),'Start','User');
+    LogController logController = LogController((String response){
+      print("Response: $response");
+
+    });
+    logController.submitForm(callLog);
+  }
+
   bool _checkTime(List<dynamic> slots,int now){
     int startTime;
     int endTime;
@@ -82,14 +95,14 @@ class _StudentChatScreenState extends State<StudentChatScreen> {
     String formattedDay = formatDay.format(now);
     int formattedTime = int.parse(formatTime.format(now));
 
-    final List<dynamic> bookedSlots = await Provider.of<StudentDatabaseProvider>(context,listen:false).getSlotTiming('$studentEmail', '$advisorEmail','$formattedDay');
+    final List<dynamic> bookedSlots = await Provider.of<StudentDatabaseProvider>(context,listen:false).getSlotTiming('$studentEmail', '$advisorEmail','4-7-2020');
 
     if(bookedSlots == null){
       print('Not today');
       return false;
     }
     else
-    if(_checkTime(bookedSlots,formattedTime)){
+    if(_checkTime(bookedSlots,1910)){
       print('Go to the call');
       return true;
     }
@@ -150,6 +163,7 @@ class _StudentChatScreenState extends State<StudentChatScreen> {
 
                          bool ready = await getSlot(context,student.email,advisor.email);
                           if(ready){
+                            logToExcel(student.displayName);
                             await Navigator.of(context).pushNamed(
                               StudentCallScreen.routeName,
                               arguments: {
