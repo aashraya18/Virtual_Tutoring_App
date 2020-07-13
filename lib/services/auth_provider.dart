@@ -250,7 +250,7 @@ class AuthProvider extends ChangeNotifier {
 }
 
 ThemeData studentTheme = ThemeData(
-  primaryColor: Color.fromRGBO(66, 133, 140, 1),
+  primaryColor: Color.fromRGBO(31, 106, 113, 1),
   accentColor: Colors.white,
   canvasColor: Colors.white,
   fontFamily: 'Literal',
