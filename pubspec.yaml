@@ -28,6 +28,7 @@ dependencies:
   provider: ^4.0.4
   firebase_auth: ^0.15.5+3
   firebase_storage: ^3.1.6
+  firebase_messaging: ^6.0.16
   cloud_firestore: ^0.13.4+2
   razorpay_flutter: 1.2.1
   permission_handler: ^3.0.0
@@ -65,7 +66,9 @@ flutter:
    - assets/images/vorby/black_bg.png
    - assets/images/vorby/no_bg.png
    - assets/images/vorby/white_bg.png
-
+   - assets/images/gpay.png
+   - assets/images/upi.png
+   - assets/images/phonepe.png
   fonts:
     - family: Literal
       fonts:

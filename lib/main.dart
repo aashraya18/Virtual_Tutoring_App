@@ -1,6 +1,7 @@
+//import 'package:android/notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'screens/admin/advisor_details.dart';
 import './services/auth_provider.dart';
 import './services/student_database_provider.dart';
 import './services/advisor_database_provider.dart';
@@ -12,7 +13,8 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
+    return
+      MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (ctx) => AuthProvider()),
         ProxyProvider<AuthProvider, StudentDatabaseProvider>(

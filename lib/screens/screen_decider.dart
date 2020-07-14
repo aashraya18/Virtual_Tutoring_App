@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:android/screens/admin/advisor_details.dart';
 import '../services/auth_provider.dart';
 
 import './auth_select_screen.dart';
@@ -28,6 +28,7 @@ class _ScreenDeciderState extends State<ScreenDecider> {
     final role = authData.role;
     final advisor = authData.advisor;
     final student = authData.student;
+    //return AllAdvisordetails();
     if (role == true) {
       if (advisor != null)
         return AdvisorDashboardScreen();

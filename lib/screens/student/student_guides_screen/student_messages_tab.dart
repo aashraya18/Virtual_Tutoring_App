@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../services/student_database_provider.dart';
 import '../../../models/advisor_model.dart';
-import './student_chat_screen.dart';
+import 'student_chat_screen.dart';
 
 class StudentMessagesTab extends StatelessWidget {
   @override
@@ -54,7 +54,10 @@ Widget _buildTile(BuildContext context, Advisor advisor) {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
             ),
-            child: Image.network(advisor.photoUrl)),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.network(advisor.photoUrl)),
+            ),
         title: Container(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import './student/student_auth_screen/student_auth_screen.dart';
-import './advisor/advisor_auth_screen/advisor_auth_screen.dart';
+import 'student/student_auth_screen/student_auth_screen.dart';
+import 'advisor/advisor_auth_screen/advisor_auth_screen.dart';
 
 class AuthSelectScreen extends StatelessWidget {
   static const routeName = '/auth';

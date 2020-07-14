@@ -44,7 +44,7 @@ class _StudentAdvisorScreenState extends State<StudentAdvisorScreen> {
                   ),
                   AboutAdvisorBar(advisor.reviewsCount.toString(),
                       advisor.menteesCount.toString()),
-//                    Divider(),
+                  Divider(),
                 ],
               ),
               _buildSmallImageOnTop(constraints, advisor.photoUrl),

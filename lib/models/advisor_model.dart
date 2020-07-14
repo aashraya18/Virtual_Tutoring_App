@@ -12,6 +12,7 @@ class Advisor {
   final dynamic reviewsCount;
   final dynamic rating;
   final String uid;
+  final Map payment;
 
   Advisor({
     @required this.about,
@@ -25,5 +26,6 @@ class Advisor {
     @required this.reviewsCount,
     @required this.rating,
     @required this.uid,
+    @required this.payment,
   });
 }

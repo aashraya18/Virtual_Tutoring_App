@@ -41,19 +41,17 @@ class AdvisorMenteesScreen extends StatelessWidget {
     return StreamBuilder<List<Mentee>>(
         stream: Provider.of<AdvisorDatabaseProvider>(context).getMyMentees(),
         builder: (context, snapshot) {
-          final mentees = snapshot.data;
+          final List<Mentee> mentees = snapshot.data;
           if (snapshot.hasData) {
             return SliverList(
               delegate: SliverChildBuilderDelegate(
-                (ctx, index) => MenteeCard(mentees[index]),
+                    (ctx, index) => MenteeCard(mentees[index]),
                 childCount: mentees.length,
               ),
             );
           } else {
             return SliverFillRemaining(
-                child: Center(
-                    child: CircularProgressIndicator(
-                        backgroundColor: Theme.of(context).primaryColor)));
+                child: Center(child: CircularProgressIndicator()));
           }
         });
   }

@@ -1,12 +1,14 @@
 import 'package:android/screens/advisor/advisor_ask_me/ask_me_screen.dart';
 import 'package:android/screens/advisor/advisor_ask_me/submit_answer.dart';
 import 'package:flutter/material.dart';
-import './screens/screens.dart';
+import 'screens/screens.dart';
 
 Map<String, Widget Function(BuildContext)> routes = {
   ScreenDecider.routeName: (ctx) => ScreenDecider(),
   SplashScreen.routeName: (ctx) => SplashScreen(),
   AuthSelectScreen.routeName: (ctx) => AdvisorAuthScreen(),
+  //ADMIN
+  AllAdvisordetails.routeName: (ctx) =>AllAdvisordetails(),
   //ADVISORS
   AdvisorAuthScreen.routeName: (ctx) => AdvisorAuthScreen(),
   AdvisorForgotScreen.routeName: (ctx) => AdvisorForgotScreen(),
