@@ -1,4 +1,4 @@
-import 'file:///D:/FlutterDevelopment/vorby_app/lib/screens/student/student_home_screen/student_slot_screen/user_time_slot.dart';
+import 'package:android/screens/student/student_home_screen/student_slot_screen/user_time_slot.dart';
 import 'package:android/screens/student/student_home_screen/student_payment_screen/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -148,14 +148,17 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
   void updateStudentDatabase() {
     log('Student List: ${widget.userTimeSlot.studentBookedSlotList}');
     String dateSelected = widget.userTimeSlot.dateSelected;
-    String path =
-        '/studentSlot/${widget.userTimeSlot.studentEmail}/${widget.userTimeSlot.advisorEmail}/$dateSelected';
+    log('Student Uid: ${widget.userTimeSlot.studentUid}');
+    log('${widget.userTimeSlot.advisorEmail}');
+    log('$dateSelected');
+
+    String path = '/students/${widget.userTimeSlot.studentUid}/advisors/${widget.userTimeSlot.advisorEmail}/slotBooking/$dateSelected';
     DocumentReference documentReference = Firestore.instance.document(path);
     Map<String, dynamic> studentSlot = {
       'Booked': FieldValue.arrayUnion(widget.userTimeSlot.studentBookedSlotList),
     };
     documentReference.setData(studentSlot, merge: true).whenComplete(() {
-      log('completed');
+      log('completeddone');
     });
   }
   @override

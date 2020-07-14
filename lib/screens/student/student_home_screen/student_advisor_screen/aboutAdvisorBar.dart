@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class AboutAdvisorBar extends StatelessWidget {
   const AboutAdvisorBar(this.advisorReviewsCount, this.advisorMenteesCount);
@@ -31,8 +32,8 @@ class AboutAdvisorBar extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(advisorMenteesCount),
-              Text('Mentees'),
+              Icon(MdiIcons.forum),
+              Text('Ask me!'),
             ],
           ),
         ],

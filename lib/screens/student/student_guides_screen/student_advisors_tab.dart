@@ -31,7 +31,11 @@ class StudentAdvisorsTab extends StatelessWidget {
                 itemCount: advisorUids.length,
               );
             } else {
-              return Center(child: Text('No Advisors Yet'));
+              return Center(child: Text('It\'s lonely out here.\nGet some guidance now!',
+              style: TextStyle(
+                color: Color(0xff42858C),
+                fontSize: 20.0,
+              ),));
             }
           } else {
             return Center(child: CircularProgressIndicator());
@@ -46,8 +50,8 @@ class StudentAdvisorsTab extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: ListTile(
-          onTap: () => Navigator.of(context)
-              .pushNamed(StudentChatScreen.routeName, arguments: advisor),
+//          onTap: () => Navigator.of(context)
+//              .pushNamed(StudentChatScreen.routeName, arguments: advisor),
           leading: Container(
               height: 50,
               decoration: BoxDecoration(

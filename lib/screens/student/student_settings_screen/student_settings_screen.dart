@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../../../services/auth_provider.dart';
@@ -32,7 +33,7 @@ class StudentSettingsScreen extends StatelessWidget {
     return Container(
       height: constraints.height * 0.3,
       width: constraints.width,
-      color: Theme.of(context).primaryColor,
+      color: Color(0xff42858C),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -66,11 +67,26 @@ class StudentSettingsScreen extends StatelessWidget {
           ListTile(
             contentPadding: EdgeInsets.all(10),
             leading: Icon(
-              Icons.edit,
+              MdiIcons.pencilOutline,
               color: Theme.of(context).primaryColor,
             ),
             title: Text(
               'Edit Profile',
+              style: Theme.of(context).textTheme.headline6,
+            ),
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => StudentEditScreen(student)));
+            },
+          ),
+          ListTile(
+            contentPadding: EdgeInsets.all(10),
+            leading: Icon(
+              MdiIcons.lockOutline,
+              color: Theme.of(context).primaryColor,
+            ),
+            title: Text(
+              'Change Password',
               style: Theme.of(context).textTheme.headline6,
             ),
             onTap: () {

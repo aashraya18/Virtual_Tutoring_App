@@ -80,6 +80,11 @@ class StudentDatabaseProvider {
         builder: (snapshot) => snapshot.documentID,
       );
 
+//  Stream<List<String>> getMyBookedSlotList(advisorEmail) => _service.collectionStream(
+//    path: 'students/${student.uid}/advisors/$advisorEmail/slotBooking',
+//    builder: (snapshot) => snapshot.documentID,
+//  );
+
   Future<Advisor> getMyMessages(String advisorEmail) async {
     final advisorData =
         await _service.getData(docPath: 'helpers/$advisorEmail');

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:android/models/student_model.dart';
-import 'file:///D:/FlutterDevelopment/vorby_app/lib/screens/student/student_home_screen/student_slot_screen/user_time_slot.dart';
+import 'package:android/screens/student/student_home_screen/student_slot_screen/user_time_slot.dart';
 import 'package:android/screens/screens.dart';
 import 'package:android/screens/student/student_home_screen/student_payment_screen/order_id.dart';
 import 'package:android/screens/student/student_home_screen/student_payment_screen/payments_screen.dart';
@@ -347,7 +347,7 @@ class _StudentSlotScreenState extends State<StudentSlotScreen> {
     setState(() {
       isLoading = true;
     });
-    UserTimeSlot userTimeSlot = storeData();
+    final userTimeSlot = storeData();
     final OrderId order = OrderId(
       mentorId: '${widget.advisor.uid}',
       mentorName: '${widget.advisor.displayName}',
@@ -400,6 +400,7 @@ class _StudentSlotScreenState extends State<StudentSlotScreen> {
       advisorEmail: '${widget.advisor.email}',
       mentorNotBookedSlotList: mentorNotBookedSlotList,
       studentEmail: '${student.email}',
+      studentUid: '${student.uid}',
     );
     return slotSelected;
   }
