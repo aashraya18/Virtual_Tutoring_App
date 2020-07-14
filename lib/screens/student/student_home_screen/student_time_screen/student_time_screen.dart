@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/bottomFlatButton.dart';
+import '../../../../common_widgets/platformAlertDialog.dart';
+import '../../../../models/advisor_model.dart';
 import '../student_slot_screen/student_slot_screen.dart';
 
 enum TimeSelected {
@@ -27,8 +29,18 @@ class _StudentTimeScreenState extends State<StudentTimeScreen> {
     if (_timeSelected == null) {
       return;
     }
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (ctx) => StudentSlotScreen(advisor: widget.advisor,amount: amount*100,)));
+    final advisor = ModalRoute.of(context).settings.arguments as Advisor;
+    double amount;
+    if (_timeSelected == TimeSelected.rs90)
+      amount = 9000;
+    else if (_timeSelected == TimeSelected.rs100)
+      amount = 10000;
+    else if (_timeSelected == TimeSelected.rs250) amount = 25000;
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => StudentSlotScreen(
+              advisor: advisor,
+              amount: amount * 100,
+            )));
   }
 
   @override

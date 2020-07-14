@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import './student_login_form.dart';
-import './student_signup_form.dart';
+import 'student_login_form.dart';
+import 'student_signup_form.dart';
 
 enum Mode {
   login,

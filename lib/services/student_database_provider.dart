@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 
-import './firestore_service.dart';
+import 'firestore_service.dart';
 import '../models/advisor_model.dart';
 import '../models/review_model.dart';
 import '../models/student_model.dart';
@@ -30,8 +30,11 @@ class StudentDatabaseProvider {
           rating: snapshot.data['rating'],
           reviewsCount: snapshot.data['reviewsCount'],
           uid: snapshot.data['uid'],
+          payment: snapshot.data['payment'],
         ),
       );
+
+
 
   Stream<List<Review>> getAdvisorReviews(String advisorEmail) =>
       _service.collectionStream(
@@ -57,6 +60,21 @@ class StudentDatabaseProvider {
         path: 'students/${student.uid}/advisors',
         builder: (snapshot) => snapshot.documentID,
       );
+
+  Future <List<dynamic>> getSlotTiming(String advisorEmail,String date) async{
+    try{
+      final  document =  await _service.getData(docPath:'students/${student.uid}/advisors/$advisorEmail/slotBooking/$date');
+      print(document['Booked']);
+      return document['Booked'];
+    }catch(e){
+      return null;
+    }
+  }
+
+  Future<List<dynamic>> getStudentDeviceToken(String uid) async {
+    final document = await _service.getData(docPath: 'students/$uid');
+    return document['tokens'];
+  }
 
   Future<Advisor> getMyAdvisor(String email) async {
     final advisorData = await _service.getData(docPath: 'helpers/$email');
@@ -144,4 +162,5 @@ class StudentDatabaseProvider {
       'email': email,
     });
   }
+
 }

@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../services/advisor_database_provider.dart';
 
-import './advisor_chat_screen.dart';
+import 'advisor_chat_screen.dart';
 
 class MenteeCard extends StatelessWidget {
   final Mentee mentee;

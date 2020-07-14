@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import './firestore_service.dart';
+import 'firestore_service.dart';
 import '../models/student_model.dart';
 import '../models/advisor_model.dart';
 
@@ -190,7 +190,7 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> signInWithEmailAndPassword(String email, String password) async {
+  Future<String> signInWithEmailAndPassword(String email, String password) async {
     try {
       final authResult = await _firebaseAuthService.signInWithEmailAndPassword(
           email: email, password: password);
@@ -216,8 +216,10 @@ class AuthProvider extends ChangeNotifier {
         _role = true;
         _themeData = advisorTheme;
       } else {
+
         final studentData =
             await _firestoreService.getData(docPath: 'students/${user.uid}');
+        //print(studentData.data);
         _student = Student(
           bio: studentData['bio'],
           displayName: studentData['displayName'],
@@ -230,9 +232,11 @@ class AuthProvider extends ChangeNotifier {
         _themeData = studentTheme;
       }
       notifyListeners();
+      return user.uid;
     } catch (error) {
       throw error;
     }
+
   }
 
   Future<void> signOut() async {
@@ -246,7 +250,7 @@ class AuthProvider extends ChangeNotifier {
 }
 
 ThemeData studentTheme = ThemeData(
-  primaryColor: Color.fromRGBO(66, 133, 140, 1),
+  primaryColor: Color.fromRGBO(31, 106, 113, 1),
   accentColor: Colors.white,
   canvasColor: Colors.white,
   fontFamily: 'Literal',
@@ -264,7 +268,7 @@ ThemeData studentTheme = ThemeData(
 
 ThemeData advisorTheme = ThemeData(
   primarySwatch: Colors.blue,
-  primaryColor: Color.fromRGBO(13, 40, 107, 1),
+  primaryColor: Color.fromRGBO(31, 106, 113, 1),
   accentColor: Colors.white,
   canvasColor: Color.fromRGBO(244, 246, 252, 1),
   backgroundColor: Color.fromRGBO(253, 176, 94, 1),

@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../services/auth_provider.dart';
 import '../../../models/student_model.dart';
-import './student_edit_screen.dart';
+import 'student_edit_screen.dart';
 
 class StudentSettingsScreen extends StatelessWidget {
   static const routeName = '/student-settings';

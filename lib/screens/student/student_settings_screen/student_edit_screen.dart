@@ -4,7 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../../services/student_database_provider.dart';
 import '../../../services/auth_provider.dart';
 import '../../../common_widgets/platformExceptionAlertDialog.dart';
@@ -160,6 +160,7 @@ class _StudentEditScreenState extends State<StudentEditScreen> {
                     _buildFullNameTTF(),
                     _buildBioTTF(),
                     _buildEmailTTF(),
+                    Builder(builder:(context)=> _changePasswordLink(_emailController.text , context)),
                   ],
                 ),
               ),
@@ -256,6 +257,30 @@ class _StudentEditScreenState extends State<StudentEditScreen> {
         if (!regex.hasMatch(value)) return 'Enter valid email.';
         return null;
       },
+    );
+  }
+
+  Widget _changePasswordLink(String email , BuildContext context ){
+    return Padding(
+      padding: const EdgeInsets.only(top:22.0),
+      child: GestureDetector(
+        onTap: () async{
+          await FirebaseAuth.instance.sendPasswordResetEmail(email:email);
+          print('Done');
+          Scaffold.of(context).showSnackBar(SnackBar(
+            backgroundColor: Theme.of(context).primaryColor,
+            content: Text('Email sent'),
+            duration: Duration(seconds: 3),
+          ));
+        },
+        child: Text(
+          'Change Password',
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+            fontSize: 20
+          ),
+        ),
+      ),
     );
   }
 

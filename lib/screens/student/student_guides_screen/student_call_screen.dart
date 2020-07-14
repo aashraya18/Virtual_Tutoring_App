@@ -1,7 +1,15 @@
+import 'package:android/services/advisor_database_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
-
-import './student_feedback_screen.dart';
+import 'dart:async';
+import 'package:android/services/auth_provider.dart';
+import 'package:provider/provider.dart';
+import 'student_feedback_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:android/google_sheet/controller.dart';
+import 'package:android/google_sheet/call_log.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:android/models/student_model.dart';
 
 class StudentCallScreen extends StatefulWidget {
   static const routeName = '/student-call';
@@ -15,7 +23,11 @@ class _StudentCallScreenState extends State<StudentCallScreen> {
   static final _users = <int>[];
   final _infoStrings = <String>[];
   bool muted = false;
-
+  bool paymentAllowed = false;
+  Map payment;
+  int amount;
+  int guidedStudents;
+  Student student;
   @override
   void dispose() {
     // clear users
@@ -26,11 +38,73 @@ class _StudentCallScreenState extends State<StudentCallScreen> {
     super.dispose();
   }
 
+  int counter = 1620;
+  Timer _timer;
+  _startTimer() {
+    _timer = Timer.periodic(Duration(seconds: 1),(timer){
+      setState(() {
+        print(counter);
+        counter--;
+      });
+
+      if(counter == 1320){
+        logToExcel('5 mins in call');
+      }else if(counter == 720)
+        logToExcel('15 mins in call');
+
+     else if(counter == 420) {
+        amount =  payment['Amount'] +100;
+        guidedStudents = payment['GuidedStudents']+1;
+        String status = "";
+        if(amount >= 2000)
+          setState(() {
+            status = 'allowed';
+          });
+        payment = {
+          'Amount': amount,
+          'GuidedStudents':guidedStudents,
+          'status':status,
+        };
+
+        print(payment);
+        Firestore.instance.collection('helpers').document('test@advisor.com').updateData({'Payment':payment});
+      }
+      else if(counter == 0){
+        _timer.cancel();
+        _onCallEnd(context);
+      }
+    });
+  }
+
+
+    getPayment() async{
+     payment = await Provider.of<AdvisorDatabaseProvider>(context ,listen:false).getAdvisorDetails('test@advisor.com', 'Payment');
+    if(payment == null){
+      payment ={
+        'Amount':0,
+        'GuidedStudents':0,
+      };
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     // initialize agora sdk
+//    _startTimer();
+//    getPayment();
     initialize();
+  }
+
+  logToExcel(String event) async{
+    final now = DateTime.now();
+    print(student.displayName);
+    VideoCallLog callLog = VideoCallLog(student.displayName, now.toString(),event,'User');
+    LogController logController = LogController((String response){
+      print("Response: $response");
+
+    });
+    logController.submitForm(callLog);
   }
 
   Future<void> initialize() async {
@@ -223,6 +297,8 @@ class _StudentCallScreenState extends State<StudentCallScreen> {
   }
 
   void _onCallEnd(BuildContext context) {
+    print('LOG');
+    logToExcel('End');
     Navigator.of(context).pop();
     Navigator.of(context).pushNamed(StudentFeedbackScreen.routeName,
         arguments:
@@ -242,6 +318,10 @@ class _StudentCallScreenState extends State<StudentCallScreen> {
 
   @override
   Widget build(BuildContext context) {
+//    Map temp = ModalRoute.of(context).settings.arguments;
+//    payment = temp['payment'];
+//    print(payment);
+    student = Provider.of<AuthProvider>(context, listen: false).student;
     return Scaffold(
       backgroundColor: Colors.black,
       body: Center(

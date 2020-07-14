@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:intl/intl.dart';
 import '../../../services/student_database_provider.dart';
 import '../../../models/advisor_model.dart';
-import './student_chat_screen.dart';
+import 'student_chat_screen.dart';
 
 class StudentAdvisorsTab extends StatelessWidget {
+
+
+
+
   @override
   Widget build(BuildContext context) {
+    //getSlot(context, 'test@test.com', 'ashish@advisor.com');
     return Scaffold(
       body: StreamBuilder<List<String>>(
         stream:
@@ -57,7 +62,11 @@ class StudentAdvisorsTab extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Image.network(advisor.photoUrl)),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(7),
+                child: Image.network(advisor.photoUrl),
+              ),
+           ),
           title: Container(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

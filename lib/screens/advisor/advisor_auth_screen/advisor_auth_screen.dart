@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import './advisor_login_form.dart';
-import './advisor_forgot_screen.dart';
+import 'advisor_login_form.dart';
+import 'advisor_forgot_screen.dart';
 
 class AdvisorAuthScreen extends StatelessWidget {
   static const routeName = '/auth-advisor';

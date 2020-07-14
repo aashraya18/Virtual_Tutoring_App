@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 import 'dart:developer';
 import 'dart:convert';
 
+import 'constants.dart';
+
 class TransferPayment {
 
   final double amount;
