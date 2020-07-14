@@ -61,9 +61,9 @@ class StudentDatabaseProvider {
         builder: (snapshot) => snapshot.documentID,
       );
 
-  Future <List<dynamic>> getSlotTiming(String studentEmail,String advisorEmail,String date) async{
+  Future <List<dynamic>> getSlotTiming(String advisorEmail,String date) async{
     try{
-      final  document =  await _service.getData(docPath:'studentSlot/$studentEmail/$advisorEmail/$date');
+      final  document =  await _service.getData(docPath:'students/${student.uid}/advisors/$advisorEmail/slotBooking/$date');
       print(document['Booked']);
       return document['Booked'];
     }catch(e){

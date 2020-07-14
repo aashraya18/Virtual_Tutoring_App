@@ -80,14 +80,14 @@ class _AdvisorChatScreenState extends State<AdvisorChatScreen> {
     String formattedDay = formatDay.format(now);
     int formattedTime = int.parse(formatTime.format(now));
 
-    final List<dynamic> bookedSlots = await Provider.of<StudentDatabaseProvider>(context,listen:false).getSlotTiming('$studentEmail', '$advisorEmail','4-7-2020');
+    final List<dynamic> bookedSlots = await Provider.of<StudentDatabaseProvider>(context,listen:false).getSlotTiming('$advisorEmail','$formattedDay');
 
     if(bookedSlots == null){
       print('Not today');
       return false;
     }
     else
-    if(_checkTime(bookedSlots,1910)){
+    if(_checkTime(bookedSlots,formattedTime)){
       print('Go to the call');
       return true;
     }
