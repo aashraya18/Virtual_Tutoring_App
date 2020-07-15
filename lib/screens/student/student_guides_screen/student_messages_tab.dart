@@ -149,35 +149,36 @@ class _StudentMessagesTabState extends State<StudentMessagesTab> {
                               itemCount: slotList.data.length,
                               itemBuilder: (BuildContext ctx, int index) {
                                 return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    Row(
-                                      children: <Widget>[
-                                        Text(
-                                          '${slotList.data[index]['Date']} , ',
-                                          style: TextStyle(
-                                            fontSize: 13.0,
-                                            fontWeight: FontWeight.w300,
-                                          ),
-                                        ),
-                                        Flexible(
-                                          child: ListView.builder(
-//                                    scrollDirection: Axis.horizontal,
-                                              shrinkWrap: true,
-                                              itemCount: slotList
-                                                  .data[index]['Time'].length,
-                                              itemBuilder: (BuildContext ctx,
-                                                  int indext) {
-                                                return Text(
-                                                  '${slotList.data[index]['Time'][indext]} GMT',
-                                                  style: TextStyle(
-                                                    fontSize: 13.0,
-                                                    fontWeight: FontWeight.w300,
-                                                  ),
-                                                );
-                                              }),
-                                        ),
-                                      ],
+                                    Text(
+
+                                      '${slotList.data[index]['Date']}',
+                                      textAlign: TextAlign.justify,
+                                      style: TextStyle(
+                                        fontSize: 13.0,
+                                        fontWeight: FontWeight.w400,
+                                      ),
                                     ),
+                                    ListView.builder(
+//                                    scrollDirection: Axis.horizontal,
+                                        shrinkWrap: true,
+                                        itemCount: slotList
+                                            .data[index]['Time'].length,
+                                        itemBuilder: (BuildContext ctx,
+                                            int indext) {
+                                          return Text(
+                                            '${slotList.data[index]['Time'][indext]} GMT',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 13.0,
+                                              fontWeight: FontWeight.w300,
+                                            ),
+                                          );
+                                        }),
+                                    SizedBox(
+                                      height: 5.0,
+                                    )
 //                                Divider(
 //                                  thickness: 1.0,
 //                                  height: 1.0,
