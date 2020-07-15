@@ -37,6 +37,12 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
   String keyValue = Constants.keyValue;
   String orderId;
 
+  @override
+  void dispose() {
+    super.dispose();
+    _razorpay.clear();
+  }
+
   Future payData() async {
     try {
       _razorpay.open(options);
@@ -228,4 +234,4 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
 //    }
 //
 //  }
- */
+

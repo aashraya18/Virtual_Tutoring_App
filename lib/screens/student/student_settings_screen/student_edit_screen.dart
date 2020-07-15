@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -262,9 +263,11 @@ class _StudentEditScreenState extends State<StudentEditScreen> {
 
   Widget _changePasswordLink(String email , BuildContext context ){
     return Padding(
-      padding: const EdgeInsets.only(top:22.0),
-      child: GestureDetector(
-        onTap: () async{
+      padding: const EdgeInsets.all(40.0),
+      child: RaisedButton(
+        color: Theme.of(context).primaryColor,
+        textColor: Colors.white,
+        onPressed: () async{
           await FirebaseAuth.instance.sendPasswordResetEmail(email:email);
           print('Done');
           Scaffold.of(context).showSnackBar(SnackBar(
@@ -273,11 +276,22 @@ class _StudentEditScreenState extends State<StudentEditScreen> {
             duration: Duration(seconds: 3),
           ));
         },
-        child: Text(
-          'Change Password',
-          style: TextStyle(
-            color: Theme.of(context).primaryColor,
-            fontSize: 20
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Icon(
+                MdiIcons.lockOutline,
+//                color: Theme.of(context).primaryColor,
+              ),Text(
+                'Change Password',
+                style: TextStyle(
+//                  color: Theme.of(context).primaryColor,
+                  fontSize: 20
+                ),
+              ),
+            ],
           ),
         ),
       ),

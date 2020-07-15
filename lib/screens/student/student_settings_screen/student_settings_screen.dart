@@ -82,21 +82,6 @@ class StudentSettingsScreen extends StatelessWidget {
           ListTile(
             contentPadding: EdgeInsets.all(10),
             leading: Icon(
-              MdiIcons.lockOutline,
-              color: Theme.of(context).primaryColor,
-            ),
-            title: Text(
-              'Change Password',
-              style: Theme.of(context).textTheme.headline6,
-            ),
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (ctx) => StudentEditScreen(student)));
-            },
-          ),
-          ListTile(
-            contentPadding: EdgeInsets.all(10),
-            leading: Icon(
               Icons.exit_to_app,
               color: Theme.of(context).primaryColor,
             ),
