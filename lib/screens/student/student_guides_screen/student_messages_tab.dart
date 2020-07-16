@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:android/models/student_model.dart';
 import 'package:android/services/auth_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -64,7 +62,7 @@ class _StudentMessagesTabState extends State<StudentMessagesTab> {
   Future<List<Map<String, dynamic>>> getBookedSlots(advisorEmail) async {
     List<Map<String, dynamic>> slotList = [];
     String path = 'students/${student.uid}/advisors/$advisorEmail/slotBooking';
-    Firestore.instance.collection(path).snapshots().listen((result) {
+    await Firestore.instance.collection(path).snapshots().listen((result) {
       result.documents.forEach((result) {
         Map<String, dynamic> slots = {
           "Date": result.documentID,
