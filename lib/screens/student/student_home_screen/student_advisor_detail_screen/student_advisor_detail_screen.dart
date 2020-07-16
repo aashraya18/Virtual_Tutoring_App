@@ -7,21 +7,30 @@ import '../student_time_screen/student_time_screen.dart';
 import 'advisorBlurImageWithDetail.dart';
 import 'advisorTabBar.dart';
 
-class StudentAdvisorDetailScreen extends StatelessWidget {
+class StudentAdvisorDetailScreen extends StatefulWidget {
   static const routeName = '/student-advior-detail';
+  final int tabNumber;
+  final Advisor advisor;
+  const StudentAdvisorDetailScreen({Key key, this.tabNumber , this.advisor}) : super(key: key);
 
+
+  @override
+  _StudentAdvisorDetailScreenState createState() => _StudentAdvisorDetailScreenState();
+}
+
+class _StudentAdvisorDetailScreenState extends State<StudentAdvisorDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final constraints = MediaQuery.of(context).size;
-    final Advisor advisor =
-        ModalRoute.of(context).settings.arguments as Advisor;
+    final Advisor advisor = widget.advisor;
+
     return Scaffold(
       body: Stack(
         children: <Widget>[
           Column(
             children: <Widget>[
               AdvisorBlurImageWithDetail(advisor),
-              Expanded(child: AdvisorTabBar(advisor)),
+              Expanded(child: AdvisorTabBar(advisor,widget.tabNumber)),
               BottomFlatButton(
                 iconData: CustomIcons.user_add_outline,
                 label: 'Guide Me',

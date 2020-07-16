@@ -23,8 +23,8 @@ enum CurrentTab {
 }
 
 class AdvisorTabBar extends StatefulWidget {
-  const AdvisorTabBar(this.advisor);
-
+  const AdvisorTabBar(this.advisor,this.tabNumber);
+  final int tabNumber;
   final Advisor advisor;
 
   @override
@@ -33,7 +33,7 @@ class AdvisorTabBar extends StatefulWidget {
 
 class _AdvisorTabBarState extends State<AdvisorTabBar> {
   final myController = TextEditingController();
-  CurrentTab _currentTab = CurrentTab.about;
+  CurrentTab _currentTab;
   Student student;
   @override
   void dispose() {
@@ -41,6 +41,11 @@ class _AdvisorTabBarState extends State<AdvisorTabBar> {
     super.dispose();
   }
 
+  @override
+  void initState() {
+    _currentTab = widget.tabNumber == 1 ? CurrentTab.about : widget.tabNumber == 2 ? CurrentTab.reviews : CurrentTab.askMe;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     student = Provider.of<AuthProvider>(context).student;

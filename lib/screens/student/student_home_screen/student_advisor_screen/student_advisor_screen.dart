@@ -38,9 +38,11 @@ class _StudentAdvisorScreenState extends State<StudentAdvisorScreen> {
                       iconSize: 20,
                       textSize: 18,
                       onPressed: () {
-                        Navigator.of(context).pushNamed(
-                            StudentAdvisorDetailScreen.routeName,
-                            arguments: advisor);
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => StudentAdvisorDetailScreen(
+                              advisor: advisor,
+                              tabNumber: 1,
+                            )));
                       },
                     ),
                     AboutAdvisorBar(advisor.reviewsCount.toString(),
