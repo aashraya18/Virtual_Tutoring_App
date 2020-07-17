@@ -12,7 +12,7 @@ class AdvisorDatabaseProvider {
 
   Future<Advisor> getAdvisor(String email) async {
     final advisorData = await _service.getData(docPath: 'helpers/$email');
-    
+
     return Advisor(
       about: advisorData['about'],
       branch: advisorData['branch'],
@@ -63,6 +63,18 @@ class AdvisorDatabaseProvider {
       photoUrl: document['photoUrl'],
       uid: document.documentID,
     );
+  }
+
+  Future <List<dynamic>> getSlotTiming(String advisorEmail,String date) async{
+    //print(student.uid);
+    try{
+      final  document =  await _service.getData(docPath:'helpers/$advisorEmail/freeSlots/$date');
+      print(document['Booked']);
+      return document['Booked'];
+    }catch(e){
+      print(e);
+      return null;
+    }
   }
 
   Future<dynamic> getAdvisorDetails(String emailId , String field) async {

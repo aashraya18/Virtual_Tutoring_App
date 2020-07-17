@@ -2,11 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'screens/admin/advisor_details.dart';
-import 'services/auth_provider.dart';
-import 'services/student_database_provider.dart';
-import 'services/advisor_database_provider.dart';
-import 'services/chat_provider.dart';
-import 'routes.dart';
+import './services/auth_provider.dart';
+import './services/student_database_provider.dart';
+import './services/advisor_database_provider.dart';
+import './services/chat_provider.dart';
+import './routes.dart';
 
 void main() => runApp(MyApp());
 

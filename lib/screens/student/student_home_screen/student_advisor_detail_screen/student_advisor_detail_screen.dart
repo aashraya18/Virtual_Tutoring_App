@@ -30,8 +30,8 @@ class StudentAdvisorDetailScreen extends StatelessWidget {
                 iconSize: 20,
                 textSize: 18,
                 onPressed: () {
-                  Navigator.of(context).pushNamed(StudentTimeScreen.routeName,
-                      arguments: advisor);
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (ctx) => StudentTimeScreen(advisor: advisor)));
                 },
               )
             ],

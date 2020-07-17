@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'screens/screens.dart';
-
+import 'screens/admin/advisor_details.dart';
 Map<String, Widget Function(BuildContext)> routes = {
   ScreenDecider.routeName: (ctx) => ScreenDecider(),
   SplashScreen.routeName: (ctx) => SplashScreen(),
@@ -18,6 +18,7 @@ Map<String, Widget Function(BuildContext)> routes = {
   AdvisorReviewsScreen.routeName: (ctx) => AdvisorReviewsScreen(),
   AdvisorPaymentsScreen.routeName: (ctx) => AdvisorPaymentsScreen(),
   AdvisorChatScreen.routeName: (ctx) => AdvisorChatScreen(),
+  AskMeScreen.routeName:(ctx) => AskMeScreen(),
   //STUDENTS
   StudentAuthScreen.routeName: (ctx) => StudentAuthScreen(),
   StudentDashboardScreen.routeName: (ctx) => StudentDashboardScreen(),

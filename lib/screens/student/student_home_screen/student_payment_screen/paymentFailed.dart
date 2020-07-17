@@ -1,7 +1,6 @@
+import 'package:android/screens/student/student_dashboard_screen/student_dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
-
-import '../../../screen_decider.dart';
 
 class FailedPage extends StatelessWidget {
   final PaymentFailureResponse response;
@@ -31,8 +30,12 @@ class FailedPage extends StatelessWidget {
               height: 10.0,
             ),
             RaisedButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed(ScreenDecider.routeName);
+              onPressed: (){
+                Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (ctx) => StudentDashboardScreen()
+                    )
+                );
               },
               color: Color.fromRGBO(66, 133, 140, 1),
               textColor: Colors.white,

@@ -1,3 +1,4 @@
+import 'package:android/screens/advisor/advisor_ask_me/answer_question_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -85,6 +86,7 @@ class AdvisorDashboardScreen extends StatelessWidget {
                 ],
               ),
             ),
+            AnswerQuestionTile()
           ],
         ),
       ),

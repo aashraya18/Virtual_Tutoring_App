@@ -102,7 +102,7 @@ class _StudentChatScreenState extends State<StudentChatScreen> {
       return false;
     }
     else
-    if(_checkTime(bookedSlots,formattedTime)){
+    if(_checkTime(bookedSlots,1710)){
       print('Go to the call');
       return true;
     }
@@ -170,6 +170,7 @@ class _StudentChatScreenState extends State<StudentChatScreen> {
                                 'channel': '${advisor.uid}' + '${student.uid}',
                                 'advisorName': advisor.displayName,
                                 'advisorEmail': advisor.email,
+
                               },
                             );
                           }
@@ -190,9 +191,7 @@ class _StudentChatScreenState extends State<StudentChatScreen> {
 
                   ],
                 ),
-                Divider(
-                  color: Colors.black,
-                )
+
               ],
             )
         ),

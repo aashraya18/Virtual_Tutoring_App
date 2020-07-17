@@ -1,3 +1,4 @@
+import 'package:android/services/advisor_database_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -79,8 +80,10 @@ class _AdvisorChatScreenState extends State<AdvisorChatScreen> {
     var formatTime = DateFormat('HHmm');
     String formattedDay = formatDay.format(now);
     int formattedTime = int.parse(formatTime.format(now));
+    print(formattedTime);
+    print(formattedDay);
 
-    final List<dynamic> bookedSlots = await Provider.of<StudentDatabaseProvider>(context,listen:false).getSlotTiming('$advisorEmail','$formattedDay');
+    final List<dynamic> bookedSlots = await Provider.of<AdvisorDatabaseProvider>(context,listen:false).getSlotTiming('$advisorEmail','$formattedDay');
 
     if(bookedSlots == null){
       print('Not today');

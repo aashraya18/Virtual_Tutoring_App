@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'student_messages_tab.dart';
-import 'student_advisors_tab.dart';
+import './student_messages_tab.dart';
+import './student_advisors_tab.dart';
 
 class StudentGuidesScreen extends StatelessWidget {
   static const routeName = '/student-guides';

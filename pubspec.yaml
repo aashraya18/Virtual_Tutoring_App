@@ -41,6 +41,8 @@ dependencies:
   otp_text_field: ^1.0.1
   flutter_rating_bar: ^3.0.1+1
   smooth_star_rating: ^1.1.1
+  material_design_icons_flutter: ^4.0.5345
+  like_button: ^1.0.1
 
 dev_dependencies:
   flutter_test:
@@ -50,23 +52,23 @@ flutter:
   uses-material-design: true
 
   assets:
-   - assets/images/facebook-logo.png
-   - assets/images/google-logo.png
-   - assets/images/mentee_icon.png
-   - assets/images/mentees.png
-   - assets/images/payments.png
-   - assets/images/profile.png
-   - assets/images/profile2.png
-   - assets/images/profile3.png
-   - assets/images/reviews.png
-   - assets/images/schedule.png
-   - assets/images/empty_user.jpg
-   - assets/images/vorby/black_bg.png
-   - assets/images/vorby/no_bg.png
-   - assets/images/vorby/white_bg.png
-   - assets/images/gpay.png
-   - assets/images/upi.png
-   - assets/images/phonepe.png
+    - assets/images/facebook-logo.png
+    - assets/images/google-logo.png
+    - assets/images/mentee_icon.png
+    - assets/images/mentees.png
+    - assets/images/payments.png
+    - assets/images/profile.png
+    - assets/images/profile2.png
+    - assets/images/profile3.png
+    - assets/images/reviews.png
+    - assets/images/schedule.png
+    - assets/images/empty_user.jpg
+    - assets/images/vorby/black_bg.png
+    - assets/images/vorby/no_bg.png
+    - assets/images/vorby/white_bg.png
+    - assets/images/gpay.png
+    - assets/images/upi.png
+    - assets/images/phonepe.png
   fonts:
     - family: Literal
       fonts:

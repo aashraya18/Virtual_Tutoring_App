@@ -3,10 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:android/screens/admin/advisor_details.dart';
 import '../services/auth_provider.dart';
 
-import 'auth_select_screen.dart';
-import 'student/student_dashboard_screen/student_dashboard_screen.dart';
-import 'advisor/advisor_dashboard_screen/advisor_dashboard_screen.dart';
-import 'splash_screen.dart';
+import './auth_select_screen.dart';
+import './student/student_dashboard_screen/student_dashboard_screen.dart';
+import './advisor/advisor_dashboard_screen/advisor_dashboard_screen.dart';
+import './splash_screen.dart';
 
 class ScreenDecider extends StatefulWidget {
   static const routeName = '/';

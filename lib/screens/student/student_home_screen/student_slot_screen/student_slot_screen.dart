@@ -1,17 +1,15 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:android/models/student_model.dart';
-
-//import 'file:///D:/FlutterDevelopment/vorby_app/lib/screens/student/student_home_screen/student_slot_screen/user_time_slot.dart';
+import 'package:android/screens/student/student_home_screen/student_slot_screen/user_time_slot.dart';
 import 'package:android/screens/screens.dart';
 import 'package:android/screens/student/student_home_screen/student_payment_screen/order_id.dart';
 import 'package:android/screens/student/student_home_screen/student_payment_screen/payments_screen.dart';
 import 'package:android/services/auth_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import '../student_slot_screen/user_time_slot.dart';
 import '../../../../common_widgets/bottomFlatButton.dart';
 import '../../../../services/custom_icons_icons.dart';
 
@@ -69,26 +67,27 @@ class _StudentSlotScreenState extends State<StudentSlotScreen> {
                 if (snapshot.hasData) {
                   try {
                     mentorNotBookedSlotList = snapshot.data['NotBooked'];
+                    mentorBookedSlotList = snapshot.data['Booked'];
                     return mentorNotBookedSlotList.length >= 1
                         ? Container(
-                        padding: const EdgeInsets.all(20),
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15)),
-                          elevation: 3,
-                          child:
-                          _buildMentorSlots(constraints: constraints),
-                        ))
+                            padding: const EdgeInsets.all(20),
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15)),
+                              elevation: 3,
+                              child:
+                                  _buildMentorSlots(constraints: constraints),
+                            ))
                         : Card(
-                      child: Center(
-                        child: Text(
-                          "No Slots Avaiable",
-                          style: TextStyle(
-                            fontSize: 15.0,
-                          ),
-                        ),
-                      ),
-                    );
+                            child: Center(
+                              child: Text(
+                                "No Slots Avaiable",
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                ),
+                              ),
+                            ),
+                          );
                   } catch (e) {
                     return Card(
                       child: Center(
@@ -108,97 +107,101 @@ class _StudentSlotScreenState extends State<StudentSlotScreen> {
               },
             ),
           ),
+//          SizedBox(
+//            height: 2.0,
+//          ),
+//          Text(
+//            'Mentor Slots Booked',
+//            style: TextStyle(
+//              fontWeight: FontWeight.bold,
+//              fontSize: 15.0,
+//            ),
+//          ),
+//          Expanded(
+//            child: StreamBuilder(
+//              stream: getData(),
+//              builder: (context, snapshot) {
+//                if (snapshot.hasData) {
+//                  try {
+//                    mentorBookedSlotList = snapshot.data['Booked'];
+//                    return Container(
+//                        padding: const EdgeInsets.all(20),
+//                        child: Card(
+//                          shape: RoundedRectangleBorder(
+//                              borderRadius: BorderRadius.circular(15)),
+//                          elevation: 3,
+//                          child:
+//                              _buildMentorBookedSlots(constraints: constraints),
+//                        ));
+//                  } catch (e) {
+//                    return Card(
+//                      child: Center(
+//                        child: Text(
+//                          "No Mentor Slots Booked",
+//                          style: TextStyle(
+//                            fontSize: 15.0,
+//                          ),
+//                        ),
+//                      ),
+//                    );
+//                  }
+//                }
+//                return Center(
+//                  child: CircularProgressIndicator(),
+//                );
+//              },
+//            ),
+//          ),
           SizedBox(
-            height: 2.0,
+            height: 5.0,
           ),
-          Text(
-            'Mentor Slots Booked',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 15.0,
+          Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+            Text(
+              'Slot Selected',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 15.0,
+              ),
             ),
-          ),
-          Expanded(
-            child: StreamBuilder(
-              stream: getData(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  try {
-                    mentorBookedSlotList = snapshot.data['Booked'];
-                    return Container(
-                        padding: const EdgeInsets.all(20),
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15)),
-                          elevation: 3,
-                          child:
-                          _buildMentorBookedSlots(constraints: constraints),
-                        ));
-                  } catch (e) {
-                    return Card(
-                      child: Center(
-                        child: Text(
-                          "No Mentor Slots Booked",
-                          style: TextStyle(
-                            fontSize: 15.0,
-                          ),
+            SizedBox(
+              width: 20.0,
+            ),
+            FlatButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              disabledColor: Theme.of(context).primaryColor,
+              disabledTextColor: Colors.white,
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                child: isTrue
+                    ? Text('$selectedSlot')
+                    : Text(
+                        "No Slot Selected",
+                        style: TextStyle(
+                          fontSize: 15.0,
                         ),
                       ),
-                    );
-                  }
-                }
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              },
+              ),
             ),
-          ),
+          ]),
           SizedBox(
-            height: 2.0,
+            height: 5.0,
           ),
-          Expanded(
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      'Slot Selected',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15.0,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 20.0,
-                    ),
-                    FlatButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      disabledColor: Theme.of(context).primaryColor,
-                      disabledTextColor: Colors.white,
-                      child: Container(
-                        padding: const EdgeInsets.all(10),
-                        child: isTrue
-                            ? Text('$selectedSlot')
-                            : Text(
-                          "No Slot Selected",
-                          style: TextStyle(
-                            fontSize: 15.0,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ])),
-          isLoading ? Center(
-            child: Text('Please Wait.....'),
-          ):BottomFlatButton(
-            iconData: CustomIcons.user_add_outline,
-            label: 'Schedule the Call',
-            iconColor: Colors.white,
-            textColor: Colors.white,
-            iconSize: 25,
-            textSize: 18,
-            onPressed: _goToPaymentsScreen,
-          ),
+          isLoading
+              ? Center(
+                  child: Text('Please Wait.....'),
+                )
+              : BottomFlatButton(
+                  iconData: CustomIcons.user_add_outline,
+                  label: 'Schedule the Call',
+                  iconColor: Colors.white,
+                  textColor: Colors.white,
+                  iconSize: 25,
+                  textSize: 18,
+                  onPressed: _goToPaymentsScreen,
+                ),
         ],
       ),
     );
@@ -240,7 +243,7 @@ class _StudentSlotScreenState extends State<StudentSlotScreen> {
             context: context,
             initialDate: todayDate,
             firstDate: todayDate,
-            lastDate: todayDate.add(Duration(days: 5)),
+            lastDate: todayDate.add(Duration(days: 6)),
           );
           if (date == null) {
             return;
@@ -269,13 +272,21 @@ class _StudentSlotScreenState extends State<StudentSlotScreen> {
       ),
       itemBuilder: (ctx, index) => Center(
           child: RaisedButton(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-            onPressed: () => _slotSelection(index),
-            color: Color.fromRGBO(217, 243, 241, 1),
-            child: Container(
-                padding: const EdgeInsets.all(10),
-                child: Text('${mentorNotBookedSlotList[index]}')),
-          )),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        onPressed: mentorBookedSlotList != null
+            ? mentorBookedSlotList.contains(mentorNotBookedSlotList[index])
+            ? null
+            : () => _slotSelection(index)
+            : () => _slotSelection(index),
+        disabledTextColor: Colors.white,
+        color: Color.fromRGBO(217, 243, 241, 1),
+        child: Container(
+          padding: const EdgeInsets.all(10),
+          child: Text(
+            '${mentorNotBookedSlotList[index]}',
+          ),
+        ),
+      )),
     );
   }
 
@@ -291,13 +302,13 @@ class _StudentSlotScreenState extends State<StudentSlotScreen> {
       ),
       itemBuilder: (ctx, index) => Center(
           child: RaisedButton(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-            color: Color.fromRGBO(217, 243, 241, 1),
-            disabledTextColor: Colors.white,
-            child: Container(
-                padding: const EdgeInsets.all(10),
-                child: Text('${mentorBookedSlotList[index]}')),
-          )),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        color: Color.fromRGBO(217, 243, 241, 1),
+        disabledTextColor: Colors.white,
+        child: Container(
+            padding: const EdgeInsets.all(10),
+            child: Text('${mentorBookedSlotList[index]}')),
+      )),
     );
   }
 
@@ -343,7 +354,7 @@ class _StudentSlotScreenState extends State<StudentSlotScreen> {
       amount: widget.amount,
     );
     String orderId = await order.generateOrderId();
-    if(isTrue){
+    if (isTrue) {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (ctx) => PaymentsScreen(
@@ -355,10 +366,10 @@ class _StudentSlotScreenState extends State<StudentSlotScreen> {
           ),
         ),
       );
-    }else{
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => StudentDashboardScreen()));
+    } else {
+      Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => StudentDashboardScreen()));
     }
-
   }
 
   void _slotSelection(index) {
@@ -371,13 +382,13 @@ class _StudentSlotScreenState extends State<StudentSlotScreen> {
   UserTimeSlot storeData() {
     if (selectedSlot != "No Slot Selected") {
       studentBookedSlotList.add(selectedSlot);
-      if (studentBookedSlotList != 0) {
-        for (var value in studentBookedSlotList) {
-          if (mentorNotBookedSlotList.contains(value)) {
-            mentorNotBookedSlotList.remove(value);
-          }
-        }
-      }
+//      if (studentBookedSlotList != 0) {
+//        for (var value in studentBookedSlotList) {
+//          if (mentorNotBookedSlotList.contains(value)) {
+//            mentorNotBookedSlotList.remove(value);
+//          }
+//        }
+//      }
       for (var value in studentBookedSlotList) {
         mentorBookedList.add(value);
       }

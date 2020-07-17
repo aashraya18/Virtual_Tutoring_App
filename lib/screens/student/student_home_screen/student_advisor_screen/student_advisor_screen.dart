@@ -4,12 +4,17 @@ import '../../../../models/advisor_model.dart';
 import '../../../../common_widgets/bottomFlatButton.dart';
 import '../../../../services/custom_icons_icons.dart';
 import '../student_advisor_detail_screen/student_advisor_detail_screen.dart';
-import 'advisorImageWithRating.dart';
-import 'aboutAdvisorBar.dart';
+import './advisorImageWithRating.dart';
+import './aboutAdvisorBar.dart';
 
-class StudentAdvisorScreen extends StatelessWidget {
+class StudentAdvisorScreen extends StatefulWidget {
   static const routeName = '/student-advisor';
 
+  @override
+  _StudentAdvisorScreenState createState() => _StudentAdvisorScreenState();
+}
+
+class _StudentAdvisorScreenState extends State<StudentAdvisorScreen> {
   @override
   Widget build(BuildContext context) {
     final constraints = MediaQuery.of(context).size;
@@ -77,13 +82,18 @@ class StudentAdvisorScreen extends StatelessWidget {
     return Container(
       height: height * 0.3,
       width: double.infinity,
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(16.0),
       alignment: Alignment.topLeft,
-      child: Text(
-        about,
-        softWrap: true,
-        overflow: TextOverflow.clip,
-        style: TextStyle(fontSize: 16),
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            about,
+            softWrap: true,
+            overflow: TextOverflow.clip,
+            style: TextStyle(fontSize: 16),
+          ),
+        ),
       ),
     );
   }

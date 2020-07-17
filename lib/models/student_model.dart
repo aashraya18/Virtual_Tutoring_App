@@ -8,6 +8,7 @@ class Student {
   final String photoUrl;
   final String uid;
 
+
   Student({
     @required this.bio,
     @required this.displayName,
@@ -15,5 +16,6 @@ class Student {
     @required this.phoneNumber,
     @required this.photoUrl,
     @required this.uid,
+
   });
 }
