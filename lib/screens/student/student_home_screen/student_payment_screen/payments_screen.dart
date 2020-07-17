@@ -114,10 +114,14 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
 
   @override
   void initState() {
+    RegExp regex = RegExp(r"([.]*0)(?!.*\d)");
+    String stringMoney = widget.cartTotal.toString().replaceAll(regex, '');
+    int totalMoney = int.parse(stringMoney);
+    log('$totalMoney');
     super.initState();
     options = {
       'key': '$keyId', // Enter the Key ID generated from the Dashboard
-      'amount': '${widget.cartTotal}', //in the smallest currency sub-unit.
+      'amount': totalMoney, //in the smallest currency sub-unit.
       'name': 'Vorby',
       'currency': "INR",
       'order_id': widget.orderId,

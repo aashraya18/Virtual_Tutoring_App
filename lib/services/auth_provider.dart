@@ -240,12 +240,15 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<void> signOut() async {
-    await _firebaseAuthService.signOut();
-    _advisor = null;
-    _student = null;
-    _role = false;
-    _themeData = studentTheme;
-    notifyListeners();
+    await _firebaseAuthService.signOut().then((value) {
+      _advisor = null;
+      _student = null;
+      _role = false;
+      _themeData = studentTheme;
+      notifyListeners();
+    }
+    );
+
   }
 }
 

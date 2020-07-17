@@ -43,6 +43,7 @@ dependencies:
   smooth_star_rating: ^1.1.1
   material_design_icons_flutter: ^4.0.5345
   like_button: ^1.0.1
+  toast: ^0.1.5
 
 dev_dependencies:
   flutter_test:

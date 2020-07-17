@@ -38,6 +38,13 @@ class _StudentSlotScreenState extends State<StudentSlotScreen> {
   bool isLoading = false;
 
   @override
+  void initState() {
+    dat = selectedDate.day;
+    mon = selectedDate.month;
+    yer = selectedDate.year;
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
     student = Provider.of<AuthProvider>(context).student;
     final constraints = MediaQuery.of(context).size;
@@ -241,7 +248,7 @@ class _StudentSlotScreenState extends State<StudentSlotScreen> {
           final todayDate = DateTime.now();
           final date = await showDatePicker(
             context: context,
-            initialDate: todayDate,
+            initialDate: selectedDate,
             firstDate: todayDate,
             lastDate: todayDate.add(Duration(days: 6)),
           );

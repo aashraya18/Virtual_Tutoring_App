@@ -88,11 +88,13 @@ class _AdvisorTabBarState extends State<AdvisorTabBar> {
           ),
           SizedBox(height: 20),
           Expanded(
-            child: Text(
-              widget.advisor.about,
-              style: TextStyle(fontSize: 17),
-              softWrap: true,
-              overflow: TextOverflow.clip,
+            child: SingleChildScrollView(
+              child: Text(
+                widget.advisor.about,
+                style: TextStyle(fontSize: 17),
+                softWrap: true,
+                overflow: TextOverflow.clip,
+              ),
             ),
           ),
         ],
@@ -139,9 +141,7 @@ class _AdvisorTabBarState extends State<AdvisorTabBar> {
                       ),
                     ),
                   );
-                return new ListView(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
+                return new Column(
                   children:
                       snapshot.data.documents.map((DocumentSnapshot document) {
                     List<dynamic> whoLiked = document["whoLiked"];
