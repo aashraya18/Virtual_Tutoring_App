@@ -1,5 +1,9 @@
 import 'package:android/screens/student/student_home_screen/student_slot_screen/user_time_slot.dart';
 import 'package:android/screens/student/student_home_screen/student_payment_screen/constants.dart';
+import 'package:android/services/auth_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:android/services/student_database_provider.dart';
+import 'package:android/models/student_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'razorpay_flutter.dart';
@@ -36,7 +40,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
   String keyId = Constants.keyId;
   String keyValue = Constants.keyValue;
   String orderId;
-
+  Student student;
   @override
   void dispose() {
     super.dispose();
@@ -155,13 +159,14 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
     log('Mentor List: ${widget.userTimeSlot.mentorNotBookedSlotList}');
   }
 
-  void updateStudentDatabase() {
+  void updateStudentDatabase() async{
     log('Student List: ${widget.userTimeSlot.studentBookedSlotList}');
     String dateSelected = widget.userTimeSlot.dateSelected;
     log('Student Uid: ${widget.userTimeSlot.studentUid}');
     log('${widget.userTimeSlot.advisorEmail}');
     log('$dateSelected');
-
+    StudentDatabaseProvider instance = StudentDatabaseProvider(student);
+    await instance.bookAdvisor('${widget.userTimeSlot.advisorEmail}');
     String path = '/students/${widget.userTimeSlot.studentUid}/advisors/${widget.userTimeSlot.advisorEmail}/slotBooking/$dateSelected';
     DocumentReference documentReference = Firestore.instance.document(path);
     Map<String, dynamic> studentSlot = {
@@ -174,6 +179,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
   @override
   Widget build(BuildContext context) {
     // print("razor runtime --------: ${_razorpay.runtimeType}");
+    student = Provider.of<AuthProvider>(context, listen: false).student;
     return Scaffold(
       body: FutureBuilder(
           future: payData(),

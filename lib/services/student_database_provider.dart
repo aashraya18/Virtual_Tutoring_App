@@ -71,6 +71,10 @@ class StudentDatabaseProvider {
     }
   }
 
+  bookAdvisor(String advisorEmail) async{
+    await _service.updateData(docPath: 'students/${student.uid}/advisors/$advisorEmail',  data:{'status':'done'});
+  }
+
   Future<List<dynamic>> getStudentDeviceToken(String uid) async {
     final document = await _service.getData(docPath: 'students/$uid');
     return document['tokens'];
