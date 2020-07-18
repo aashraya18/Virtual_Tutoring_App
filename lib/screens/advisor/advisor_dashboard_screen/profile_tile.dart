@@ -5,12 +5,14 @@ import '../../../services/auth_provider.dart';
 import '../advisor_profile_screen/advisor_profile_screen.dart';
 
 class ProfileTile extends StatelessWidget {
+
   void _goToProfile(BuildContext context) {
     Navigator.of(context).pushNamed(AdvisorProfileScreen.routeName);
   }
 
   @override
   Widget build(BuildContext context) {
+    final advisor = Provider.of<AuthProvider>(context).advisor;
     final double height =
         MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
     final double width = MediaQuery.of(context).size.width;
@@ -31,7 +33,7 @@ class ProfileTile extends StatelessWidget {
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(
                           'Your Profile',
@@ -40,9 +42,7 @@ class ProfileTile extends StatelessWidget {
                               fontSize: 25),
                         ),
                         Text(
-                          Provider.of<AuthProvider>(context)
-                              .advisor
-                              .displayName,
+                          advisor.displayName,
                           style: TextStyle(
                               color: Theme.of(context).accentColor,
                               fontSize: 17),
@@ -55,9 +55,7 @@ class ProfileTile extends StatelessWidget {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
-                          image: NetworkImage(Provider.of<AuthProvider>(context)
-                              .advisor
-                              .photoUrl)),
+                          image: NetworkImage(advisor.photoUrl)),
                     ),
                   ),
                 ],

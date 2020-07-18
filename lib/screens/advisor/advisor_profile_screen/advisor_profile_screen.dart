@@ -89,11 +89,13 @@ class AdvisorProfileScreen extends StatelessWidget {
             ),
             SizedBox(height: 5),
             Expanded(
-              child: Text(
-                about,
-                style: TextStyle(fontSize: 18),
-                softWrap: true,
-                overflow: TextOverflow.clip,
+              child: SingleChildScrollView(
+                child: Text(
+                  about,
+                  style: TextStyle(fontSize: 18),
+                  softWrap: true,
+                  overflow: TextOverflow.clip,
+                ),
               ),
             ),
             SizedBox(
@@ -129,7 +131,7 @@ class AdvisorProfileScreen extends StatelessWidget {
             'Edit Bio',
             style: TextStyle(
                 fontSize: 26,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w400,
                 color: Theme.of(context).accentColor),
           ),
         ),
@@ -153,7 +155,7 @@ class AdvisorProfileScreen extends StatelessWidget {
             'Sign Out',
             style: TextStyle(
                 fontSize: 26,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w400,
                 color: Theme.of(context).accentColor),
           ),
         ),
