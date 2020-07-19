@@ -102,7 +102,7 @@ class _StudentChatScreenState extends State<StudentChatScreen> {
       return false;
     }
     else
-    if(_checkTime(bookedSlots,1710)){
+    if(_checkTime(bookedSlots,1740)){
       print('Go to the call');
       return true;
     }

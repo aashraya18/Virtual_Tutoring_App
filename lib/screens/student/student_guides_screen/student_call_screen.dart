@@ -56,7 +56,7 @@ class _StudentCallScreenState extends State<StudentCallScreen> {
     };
 
     print(payment);
-    Firestore.instance.collection('helpers').document('test@advisor.com').updateData({'Payment':payment});
+    Firestore.instance.collection('helpers').document(advisorEmail).updateData({'Payment':payment});
 
   }
 
