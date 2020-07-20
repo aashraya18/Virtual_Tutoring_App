@@ -297,8 +297,6 @@ class MessageBox extends StatelessWidget {
           child: Container(
             foregroundDecoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
-              border:
-                  sender == 'advisor' ? Border.all(color: Colors.grey) : null,
             ),
             child: Material(
               borderRadius: BorderRadius.circular(10),

@@ -126,7 +126,8 @@ class _AdvisorChatScreenState extends State<AdvisorChatScreen> {
           centerTitle: true,
           backgroundColor: Theme.of(context).canvasColor,
           actions: <Widget>[
-            IconButton(
+                Builder(
+                    builder:(context)=>IconButton(
               onPressed: () async {
                 await PermissionHandler().requestPermissions(
                   [PermissionGroup.camera, PermissionGroup.microphone],
@@ -141,13 +142,20 @@ class _AdvisorChatScreenState extends State<AdvisorChatScreen> {
                           AdvisorCallScreen('${advisor.uid}' + '${student.uid}'),
                     ),
                   );
+                }else{
+                  Scaffold.of(context).showSnackBar(SnackBar(
+                    backgroundColor: Theme.of(context).primaryColor,
+                    content: Text('Not your scheduled slot'),
+                    duration: Duration(seconds: 3),
+                  ));
                 }
               },
-              icon: Icon(
-                Icons.video_call,
-                size: 35,
-              ),
-            )
+                     icon: Icon(
+                       Icons.video_call,
+                       size: 35,
+                     ),
+            ),
+           ),
           ],
         ),
         body: Column(
@@ -252,8 +260,6 @@ class MsgBox extends StatelessWidget {
           child: Container(
             foregroundDecoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
-              border:
-                  sender == 'student' ? Border.all(color: Colors.grey) : null,
             ),
             child: Material(
               borderRadius: BorderRadius.circular(10),
