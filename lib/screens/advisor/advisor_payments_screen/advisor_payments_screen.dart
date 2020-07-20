@@ -41,10 +41,13 @@ class _AdvisorPaymentsScreenState extends State<AdvisorPaymentsScreen> {
     });
 
   }
+
+
    @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    //getVideoCallStatus();
     getAmount(context);
   }
   @override

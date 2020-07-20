@@ -16,7 +16,7 @@ class MenteeCard extends StatelessWidget {
         await Provider.of<AdvisorDatabaseProvider>(context, listen: false)
             .getStudent(mentee.uid);
     Navigator.of(context)
-        .pushNamed(AdvisorChatScreen.routeName, arguments: student);
+        .popAndPushNamed(AdvisorChatScreen.routeName, arguments: student);
   }
 
   @override

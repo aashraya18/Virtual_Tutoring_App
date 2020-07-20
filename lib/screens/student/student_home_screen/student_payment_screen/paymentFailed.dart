@@ -31,7 +31,11 @@ class FailedPage extends StatelessWidget {
             ),
             RaisedButton(
               onPressed: (){
-                Navigator.of(context).pushNamedAndRemoveUntil('/student-dashboard', (Route<dynamic> route) => false);
+                Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (ctx) => StudentDashboardScreen()
+                    )
+                );
               },
               color: Color.fromRGBO(66, 133, 140, 1),
               textColor: Colors.white,

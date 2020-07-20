@@ -2,7 +2,7 @@ import 'package:android/screens/advisor/advisor_ask_me/ask_me_screen.dart';
 import 'package:android/screens/advisor/advisor_ask_me/submit_answer.dart';
 import 'package:flutter/material.dart';
 import 'screens/screens.dart';
-
+import 'screens/admin/advisor_details.dart';
 Map<String, Widget Function(BuildContext)> routes = {
   ScreenDecider.routeName: (ctx) => ScreenDecider(),
   SplashScreen.routeName: (ctx) => SplashScreen(),

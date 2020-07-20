@@ -71,6 +71,18 @@ class AdvisorDatabaseProvider {
     );
   }
 
+  Future <List<dynamic>> getSlotTiming(String advisorEmail,String date) async{
+    //print(student.uid);
+    try{
+      final  document =  await _service.getData(docPath:'helpers/$advisorEmail/freeSlots/$date');
+      print(document['Booked']);
+      return document['Booked'];
+    }catch(e){
+      print(e);
+      return null;
+    }
+  }
+
   Future<dynamic> getAdvisorDetails(String emailId , String field) async {
     final document = await _service.getData(docPath: 'helpers/$emailId');
     return document['$field'];

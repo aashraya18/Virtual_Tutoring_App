@@ -57,7 +57,7 @@ class _StudentTimeScreenState extends State<StudentTimeScreen> {
             _buildText(),
             Center(
               child: _buildTimeCard(
-                  time: '25', money: '90', selected: TimeSelected.rs90),
+                  time: '25', money: '200', selected: TimeSelected.rs90),
             ),
 
 //            _buildTimeCard(

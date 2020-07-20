@@ -75,6 +75,7 @@ class AuthProvider extends ChangeNotifier {
           phoneNumber: studentData['phoneNumber'],
           photoUrl: studentData['photoUrl'],
           uid: user.uid,
+
         );
         _role = false;
         _themeData = studentTheme;

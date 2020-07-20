@@ -47,6 +47,8 @@ class _AdvisorLoginFormState extends State<AdvisorLoginForm> {
         print('advisor it is');
         tokens = await Provider.of<AdvisorDatabaseProvider>(context,listen:false).getAdvisorDetails(_emailTextCont.text , 'tokens');
         print(tokens);
+        if(tokens == null)
+          tokens = [];
         if(!tokens.contains(Token)){
           tokens.add(Token);
           Firestore.instance.collection('helpers').document(_emailTextCont.text).updateData({'tokens':tokens});
@@ -54,6 +56,7 @@ class _AdvisorLoginFormState extends State<AdvisorLoginForm> {
       }else{
         tokens = await Provider.of<StudentDatabaseProvider>(context,listen:false).getStudentDeviceToken(uid);
         print(tokens);
+        tokens = [];
         if(!tokens.contains(Token)){
           tokens.add(Token);
           Firestore.instance.collection('students').document(uid).updateData({'tokens':tokens});

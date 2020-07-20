@@ -33,7 +33,7 @@ class AdvisorTabBar extends StatefulWidget {
 
 class _AdvisorTabBarState extends State<AdvisorTabBar> {
   final myController = TextEditingController();
-  CurrentTab _currentTab;
+  CurrentTab _currentTab = CurrentTab.about;
   Student student;
   @override
   void dispose() {
@@ -141,7 +141,9 @@ class _AdvisorTabBarState extends State<AdvisorTabBar> {
                       ),
                     ),
                   );
-                return new Column(
+                return new ListView(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
                   children:
                       snapshot.data.documents.map((DocumentSnapshot document) {
                     List<dynamic> whoLiked = document["whoLiked"];

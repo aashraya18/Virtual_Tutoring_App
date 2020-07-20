@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
-
+import 'package:intl/intl.dart';
 import '../../../services/student_database_provider.dart';
 import '../../../models/advisor_model.dart';
 import './student_chat_screen.dart';
@@ -29,7 +29,7 @@ class _StudentMessagesTabState extends State<StudentMessagesTab> {
     return Scaffold(
       body: StreamBuilder<List<String>>(
         stream:
-            Provider.of<StudentDatabaseProvider>(context).getMyMessagesList(),
+        Provider.of<StudentDatabaseProvider>(context).getMyMessagesList(),
         builder: (ctx, snapshot) {
           if (snapshot.hasData) {
             final advisorEmails = snapshot.data;
@@ -69,7 +69,25 @@ class _StudentMessagesTabState extends State<StudentMessagesTab> {
           "Time": result.data["Booked"],
         };
         print('Slots : $slots');
+//        for(int i=0;i<=slots['Date'].length;++i){
+//          if(slots['Date'][i] != '-'){
+//            temp = slots['Date'][i];
+//          }
+//          print(temp);
+//        }
+        String temp = slots['Date'];
+        String temp2 = '';
+        for(int i = 0;i<temp.length;++i){
+          if(temp[i] != '-')
+            temp2 = temp2 + temp[i];
+        }
+        final now = DateTime.now();
+        var formatDay = DateFormat('dMyyyy');
+        print(int.parse(formatDay.format(now)));
+        if(int.parse(formatDay.format(now))<=int.parse(temp2))
         slotList.add(slots);
+        else
+         Firestore.instance.collection(path).document(slots['Date']).delete();
       });
     });
     return slotList;
@@ -142,49 +160,49 @@ class _StudentMessagesTabState extends State<StudentMessagesTab> {
                       ),
                       slotList.data != null
                           ? ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              itemCount: slotList.data.length,
-                              itemBuilder: (BuildContext ctx, int index) {
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: slotList.data.length,
+                          itemBuilder: (BuildContext ctx, int index) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
 
-                                      '${slotList.data[index]['Date']}',
-                                      textAlign: TextAlign.justify,
-                                      style: TextStyle(
-                                        fontSize: 13.0,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                    ListView.builder(
+                                  '${slotList.data[index]['Date']}',
+                                  textAlign: TextAlign.justify,
+                                  style: TextStyle(
+                                    fontSize: 13.0,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                ListView.builder(
 //                                    scrollDirection: Axis.horizontal,
-                                        shrinkWrap: true,
-                                        itemCount: slotList
-                                            .data[index]['Time'].length,
-                                        itemBuilder: (BuildContext ctx,
-                                            int indext) {
-                                          return Text(
-                                            '${slotList.data[index]['Time'][indext]} GMT',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontSize: 13.0,
-                                              fontWeight: FontWeight.w300,
-                                            ),
-                                          );
-                                        }),
-                                    SizedBox(
-                                      height: 5.0,
-                                    )
+                                    shrinkWrap: true,
+                                    itemCount: slotList
+                                        .data[index]['Time'].length,
+                                    itemBuilder: (BuildContext ctx,
+                                        int indext) {
+                                      return Text(
+                                        '${slotList.data[index]['Time'][indext]} GMT',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 13.0,
+                                          fontWeight: FontWeight.w300,
+                                        ),
+                                      );
+                                    }),
+                                SizedBox(
+                                  height: 5.0,
+                                )
 //                                Divider(
 //                                  thickness: 1.0,
 //                                  height: 1.0,
 //                                  endIndent: 10.0,
 //                                ),
-                                  ],
-                                );
-                              })
+                              ],
+                            );
+                          })
                           : Text(''),
                     ],
                   ),
