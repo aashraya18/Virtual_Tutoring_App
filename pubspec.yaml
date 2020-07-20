@@ -30,7 +30,7 @@ dependencies:
   firebase_storage: ^3.1.6
   firebase_messaging: ^6.0.16
   cloud_firestore: ^0.13.4+2
-  razorpay_flutter: 1.2.1
+  razorpay_flutter: ^1.2.1
   permission_handler: ^3.0.0
   agora_rtc_engine: ^1.0.5
   intl: ^0.16.1
@@ -43,6 +43,7 @@ dependencies:
   smooth_star_rating: ^1.1.1
   material_design_icons_flutter: ^4.0.5345
   like_button: ^1.0.1
+  toast: ^0.1.5
 
 dev_dependencies:
   flutter_test:

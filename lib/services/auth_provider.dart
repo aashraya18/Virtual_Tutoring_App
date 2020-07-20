@@ -13,11 +13,13 @@ class AuthProvider extends ChangeNotifier {
   final _firestoreService = FirestoreService.instance;
 
   Student _student;
+
   Student get student {
     return _student;
   }
 
   Advisor _advisor;
+
   Advisor get advisor {
     return _advisor;
   }
@@ -29,6 +31,7 @@ class AuthProvider extends ChangeNotifier {
   }
 
   ThemeData _themeData = studentTheme;
+
   ThemeData get themeData {
     return _themeData;
   }
@@ -45,7 +48,7 @@ class AuthProvider extends ChangeNotifier {
       }
 
       final advisorData =
-          await _firestoreService.getData(docPath: 'helpers/${user.email}');
+      await _firestoreService.getData(docPath: 'helpers/${user.email}');
       if (advisorData.exists) {
         _advisor = Advisor(
           about: advisorData['about'],
@@ -64,7 +67,7 @@ class AuthProvider extends ChangeNotifier {
         _themeData = advisorTheme;
       } else {
         final studentData =
-            await _firestoreService.getData(docPath: 'students/${user.uid}');
+        await _firestoreService.getData(docPath: 'students/${user.uid}');
         _student = Student(
           bio: studentData['bio'],
           displayName: studentData['displayName'],
@@ -94,6 +97,7 @@ class AuthProvider extends ChangeNotifier {
   }
 
   String _verificationId;
+
   Future<void> verifyPhoneNumber(String phoneNumber) async {
     try {
       final verificationFailed =
@@ -131,11 +135,11 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> createUserWithAuthCredential(
-      AuthCredential authCredential, String email, String displayName) async {
+  Future<void> createUserWithAuthCredential(AuthCredential authCredential,
+      String email, String displayName) async {
     try {
       final authResult =
-          await _firebaseAuthService.signInWithCredential(authCredential);
+      await _firebaseAuthService.signInWithCredential(authCredential);
       final user = authResult.user;
 
       await _firestoreService
@@ -145,7 +149,7 @@ class AuthProvider extends ChangeNotifier {
         'email': email,
         'phoneNumber': '${user.phoneNumber}',
         'photoUrl':
-            'https://firebasestorage.googleapis.com/v0/b/vorbyapp.appspot.com/o/empty_user.jpg?alt=media&token=b3c39bcf-2baa-444a-b739-c85aba5cc220',
+        'https://firebasestorage.googleapis.com/v0/b/vorbyapp.appspot.com/o/empty_user.jpg?alt=media&token=b3c39bcf-2baa-444a-b739-c85aba5cc220',
       });
       _student = Student(
         bio: 'Hello, this is $displayName.',
@@ -153,7 +157,7 @@ class AuthProvider extends ChangeNotifier {
         email: email,
         phoneNumber: '${user.phoneNumber}',
         photoUrl:
-            'https://firebasestorage.googleapis.com/v0/b/vorbyapp.appspot.com/o/empty_user.jpg?alt=media&token=b3c39bcf-2baa-444a-b739-c85aba5cc220',
+        'https://firebasestorage.googleapis.com/v0/b/vorbyapp.appspot.com/o/empty_user.jpg?alt=media&token=b3c39bcf-2baa-444a-b739-c85aba5cc220',
         uid: '${user.uid}',
       );
       _role = false;
@@ -167,10 +171,10 @@ class AuthProvider extends ChangeNotifier {
   Future<void> signInWithCredential(AuthCredential authCredential) async {
     try {
       final authResult =
-          await _firebaseAuthService.signInWithCredential(authCredential);
+      await _firebaseAuthService.signInWithCredential(authCredential);
       final user = authResult.user;
       final studentData =
-          await _firestoreService.getData(docPath: 'students/${user.uid}');
+      await _firestoreService.getData(docPath: 'students/${user.uid}');
       if (studentData.exists) {
         _student = Student(
           bio: studentData['bio'],
@@ -191,14 +195,15 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  Future<String> signInWithEmailAndPassword(String email, String password) async {
+  Future<String> signInWithEmailAndPassword(String email,
+      String password) async {
     try {
       final authResult = await _firebaseAuthService.signInWithEmailAndPassword(
           email: email, password: password);
 
       final user = authResult.user;
       final advisorData =
-          await _firestoreService.getData(docPath: 'helpers/$email');
+      await _firestoreService.getData(docPath: 'helpers/$email');
 
       if (advisorData.exists) {
         _advisor = Advisor(
@@ -217,9 +222,8 @@ class AuthProvider extends ChangeNotifier {
         _role = true;
         _themeData = advisorTheme;
       } else {
-
         final studentData =
-            await _firestoreService.getData(docPath: 'students/${user.uid}');
+        await _firestoreService.getData(docPath: 'students/${user.uid}');
         //print(studentData.data);
         _student = Student(
           bio: studentData['bio'],
@@ -237,7 +241,6 @@ class AuthProvider extends ChangeNotifier {
     } catch (error) {
       throw error;
     }
-
   }
 
   Future<void> signOut() async {

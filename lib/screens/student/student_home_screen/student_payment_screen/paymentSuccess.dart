@@ -1,6 +1,6 @@
 import 'package:android/screens/screens.dart';
 import 'package:flutter/material.dart';
-import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'razorpay_flutter.dart';
 
 
 class SuccessPage extends StatelessWidget {
@@ -37,11 +37,7 @@ class SuccessPage extends StatelessWidget {
             ),
             RaisedButton(
               onPressed: (){
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                      builder: (ctx) => StudentDashboardScreen()
-                  )
-                );
+                Navigator.of(context).pushNamedAndRemoveUntil('/student-dashboard', (Route<dynamic> route) => false);
               },
               color: Color.fromRGBO(66, 133, 140, 1),
               textColor: Colors.white,

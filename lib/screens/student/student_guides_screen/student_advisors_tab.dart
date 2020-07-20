@@ -8,13 +8,18 @@ import 'student_chat_screen.dart';
 class StudentAdvisorsTab extends StatelessWidget {
 
 
-
+  bool deactivate = true;
 
   @override
   Widget build(BuildContext context) {
     //getSlot(context, 'test@test.com', 'ashish@advisor.com');
     return Scaffold(
-      body: StreamBuilder<List<String>>(
+      body: deactivate ? Center(child: Text('Coming Soon...',
+      style: TextStyle(
+        color: Color(0xff42858C),
+        fontSize: 25.0,
+        fontWeight: FontWeight.w500
+      ),)) :StreamBuilder<List<String>>(
         stream:
             Provider.of<StudentDatabaseProvider>(context).getMyAdvisorsList(),
         builder: (ctx, snapshot) {
@@ -36,7 +41,11 @@ class StudentAdvisorsTab extends StatelessWidget {
                 itemCount: advisorUids.length,
               );
             } else {
-              return Center(child: Text('No Advisors Yet'));
+              return Center(child: Text('It\'s lonely out here.\nGet some guidance now!',
+              style: TextStyle(
+                color: Color(0xff42858C),
+                fontSize: 20.0,
+              ),));
             }
           } else {
             return Center(child: CircularProgressIndicator());
@@ -51,8 +60,8 @@ class StudentAdvisorsTab extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: ListTile(
-          onTap: () => Navigator.of(context)
-              .pushNamed(StudentChatScreen.routeName, arguments: advisor),
+//          onTap: () => Navigator.of(context)
+//              .pushNamed(StudentChatScreen.routeName, arguments: advisor),
           leading: Container(
               height: 50,
               decoration: BoxDecoration(

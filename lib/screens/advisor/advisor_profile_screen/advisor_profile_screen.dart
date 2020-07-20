@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../services/auth_provider.dart';
 import '../../../models/advisor_model.dart';
+import 'advisor_edit_bio.dart';
 
 class AdvisorProfileScreen extends StatelessWidget {
   static const routeName = '/profile';
@@ -30,7 +31,7 @@ class AdvisorProfileScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    _buildEditButton(context),
+                    _buildEditButton(context,advisor),
                     _buildSignOutButton(context),
                   ],
                 )
@@ -89,11 +90,13 @@ class AdvisorProfileScreen extends StatelessWidget {
             ),
             SizedBox(height: 5),
             Expanded(
-              child: Text(
-                about,
-                style: TextStyle(fontSize: 18),
-                softWrap: true,
-                overflow: TextOverflow.clip,
+              child: SingleChildScrollView(
+                child: Text(
+                  about,
+                  style: TextStyle(fontSize: 18),
+                  softWrap: true,
+                  overflow: TextOverflow.clip,
+                ),
               ),
             ),
             SizedBox(
@@ -114,7 +117,7 @@ class AdvisorProfileScreen extends StatelessWidget {
         ));
   }
 
-  Widget _buildEditButton(BuildContext context) {
+  Widget _buildEditButton(BuildContext context,Advisor advisor) {
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: GestureDetector(
@@ -129,11 +132,12 @@ class AdvisorProfileScreen extends StatelessWidget {
             'Edit Bio',
             style: TextStyle(
                 fontSize: 26,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w400,
                 color: Theme.of(context).accentColor),
           ),
         ),
-        onTap: () {},
+        onTap: () =>
+            Navigator.push(context, MaterialPageRoute(builder: (context) => AdvisorEditBio(advisor))),
       ),
     );
   }
@@ -153,7 +157,7 @@ class AdvisorProfileScreen extends StatelessWidget {
             'Sign Out',
             style: TextStyle(
                 fontSize: 26,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w400,
                 color: Theme.of(context).accentColor),
           ),
         ),

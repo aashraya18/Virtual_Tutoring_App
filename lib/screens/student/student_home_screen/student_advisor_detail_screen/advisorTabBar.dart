@@ -23,8 +23,8 @@ enum CurrentTab {
 }
 
 class AdvisorTabBar extends StatefulWidget {
-  const AdvisorTabBar(this.advisor);
-
+  const AdvisorTabBar(this.advisor,this.tabNumber);
+  final int tabNumber;
   final Advisor advisor;
 
   @override
@@ -41,6 +41,11 @@ class _AdvisorTabBarState extends State<AdvisorTabBar> {
     super.dispose();
   }
 
+  @override
+  void initState() {
+    _currentTab = widget.tabNumber == 1 ? CurrentTab.about : widget.tabNumber == 2 ? CurrentTab.reviews : CurrentTab.askMe;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     student = Provider.of<AuthProvider>(context).student;
@@ -83,11 +88,13 @@ class _AdvisorTabBarState extends State<AdvisorTabBar> {
           ),
           SizedBox(height: 20),
           Expanded(
-            child: Text(
-              widget.advisor.about,
-              style: TextStyle(fontSize: 17),
-              softWrap: true,
-              overflow: TextOverflow.clip,
+            child: SingleChildScrollView(
+              child: Text(
+                widget.advisor.about,
+                style: TextStyle(fontSize: 17),
+                softWrap: true,
+                overflow: TextOverflow.clip,
+              ),
             ),
           ),
         ],

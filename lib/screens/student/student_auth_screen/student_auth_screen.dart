@@ -5,7 +5,7 @@ import 'student_signup_form.dart';
 
 enum Mode {
   login,
-  signup,
+  signUp,
 }
 
 class StudentAuthScreen extends StatefulWidget {
@@ -30,7 +30,7 @@ class _StudentAuthScreenState extends State<StudentAuthScreen> {
             _buildLogo(constraints),
             _buildSelectMode(),
             if (_mode == Mode.login) StudentLoginForm(),
-            if (_mode == Mode.signup) StudentSignUpForm(),
+            if (_mode == Mode.signUp) StudentSignUpForm(),
           ],
         ),
       ),
@@ -109,18 +109,18 @@ class _StudentAuthScreenState extends State<StudentAuthScreen> {
                 ),
               ),
             ),
-            if (_mode == Mode.signup)
+            if (_mode == Mode.signUp)
               Container(
                 height: 3,
                 color: Color.fromRGBO(33, 213, 207, 1),
               ),
           ],
         ),
-        onPressed: _mode == Mode.signup
+        onPressed: _mode == Mode.signUp
             ? null
             : () {
                 setState(() {
-                  _mode = Mode.signup;
+                  _mode = Mode.signUp;
                 });
               },
       ),

@@ -29,7 +29,7 @@ class _StudentTimeScreenState extends State<StudentTimeScreen> {
     if (_timeSelected == null) {
       return;
     }
-    final advisor = ModalRoute.of(context).settings.arguments as Advisor;
+//    final advisor = ModalRoute.of(context).settings.arguments as Advisor;
     double amount;
     if (_timeSelected == TimeSelected.rs90)
       amount = 9000;
@@ -38,8 +38,8 @@ class _StudentTimeScreenState extends State<StudentTimeScreen> {
     else if (_timeSelected == TimeSelected.rs250) amount = 25000;
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => StudentSlotScreen(
-              advisor: advisor,
-              amount: amount * 100,
+              advisor: widget.advisor,
+              amount: amount ,
             )));
   }
 

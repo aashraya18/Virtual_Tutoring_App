@@ -6,6 +6,7 @@ class UserTimeSlot {
     this.advisorEmail,
     this.mentorBookedList,
     this.studentEmail,
+    this.studentUid,
   });
 
   String dateSelected;
@@ -14,4 +15,5 @@ class UserTimeSlot {
   List<dynamic> studentBookedSlotList;
   List<dynamic> mentorBookedList;
   String studentEmail;
+  dynamic studentUid;
 }

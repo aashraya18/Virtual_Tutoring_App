@@ -69,23 +69,25 @@ class AdvisorCard extends StatelessWidget {
         width: width * 0.3,
         child: Card(
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           elevation: 4,
           child: FittedBox(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(advisor.college, style: TextStyle(fontSize: 16)),
-                SizedBox(height: height * 0.005),
-                FittedBox(
-                  child: Text(
-                    advisor.branch,
-                    style: TextStyle(fontSize: 13),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text(advisor.college, style: TextStyle(fontSize: 16)),
+                  SizedBox(height: height * 0.005),
+                  FittedBox(
+                    child: Text(
+                      advisor.branch,
+                      style: TextStyle(fontSize: 13),
+                    ),
+                    fit: BoxFit.cover,
                   ),
-                  fit: BoxFit.cover,
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

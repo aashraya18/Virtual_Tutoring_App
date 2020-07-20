@@ -1,3 +1,8 @@
+
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
+
 import 'firestore_service.dart';
 
 import '../models/advisor_model.dart';
@@ -9,6 +14,7 @@ class AdvisorDatabaseProvider {
   final Advisor advisor;
   AdvisorDatabaseProvider(this.advisor);
   final _service = FirestoreService.instance;
+  final _storageService = FirebaseStorage.instance.ref();
 
   Future<Advisor> getAdvisor(String email) async {
     final advisorData = await _service.getData(docPath: 'helpers/$email');
@@ -80,5 +86,25 @@ class AdvisorDatabaseProvider {
   Future<dynamic> getAdvisorDetails(String emailId , String field) async {
     final document = await _service.getData(docPath: 'helpers/$emailId');
     return document['$field'];
+  }
+
+  Future<void> updateMyPhotoUrl(File file) async {
+    final reference = _storageService.child('student/${advisor.uid}');
+    final StorageUploadTask uploadTask = reference.putFile(file);
+    final StorageTaskSnapshot downloadUrl = (await uploadTask.onComplete);
+    final String url = (await downloadUrl.ref.getDownloadURL());
+
+    await _service.updateData(
+        docPath: 'helpers/${advisor.email}', data: {'photoUrl': url});
+  }
+
+  Future<void> updateMyProfile(
+      String displayName, String bio, String email , String contacts) async {
+    await _service.updateData(docPath: 'helpers/${advisor.email}', data: {
+      'displayName': displayName,
+      'about': bio,
+      'email': email,
+      'phoneNumber' : contacts,
+    });
   }
 }

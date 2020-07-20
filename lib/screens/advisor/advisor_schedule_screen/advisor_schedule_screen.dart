@@ -30,14 +30,18 @@ class _AdvisorScheduleScreenState extends State<AdvisorScheduleScreen> {
   var startTimeList = [for (var i = 9; i <= 22; i += 1) i];
   var endTimeList = [for (var i = 9; i <= 22; i += 1) i];
   List<String> individualSlotList = List<String>();
+  List<String> daysList = ["none","1 day","2 day","3 day","4 day","5 day"];
+  String numberOfDaySelected = "none";
+  int numberOfNextDaysSelectionPossible = 5;
+
   Future<void> _showCalender() async {
     var nextSevenDays = DateTime.now().day + 6;
     var currentMonth = DateTime.now().month;
     var currentYear = DateTime.now().year;
     showDatePicker(
             context: context,
-            firstDate: DateTime.now(),
-            initialDate: DateTime.now(),
+            firstDate: DateTime(currentYear,currentMonth,DateTime.now().day + 1),
+            initialDate: DateTime(currentYear,currentMonth,DateTime.now().day + 1),
             lastDate: DateTime(currentYear, currentMonth, nextSevenDays))
         .then((date) {
       setState(() {
@@ -45,6 +49,8 @@ class _AdvisorScheduleScreenState extends State<AdvisorScheduleScreen> {
         dat = date.day;
         mon = date.month;
         yer = date.year;
+        numberOfNextDaysSelectionPossible = nextSevenDays - dat;
+        numberOfDaySelected = "none";
       });
     });
   }
@@ -86,16 +92,35 @@ class _AdvisorScheduleScreenState extends State<AdvisorScheduleScreen> {
 //    }
 //  }
   void createMentorSlot() {
-    String dateSelected = '$dat-$mon-$yer';
-    String path = '/helpers/${advisor.email}/freeSlots/$dateSelected';
-    DocumentReference documentReference = Firestore.instance.document(path);
-    Map<String, dynamic> mentorSlot = {
-      'NotBooked': individualSlotList,
-    };
-    documentReference.setData(mentorSlot, merge: true).whenComplete(() {
-      log('completed');
+    int count;
+    if(numberOfDaySelected == "none"){
+      count = 1;
+    }
+    else{
+      count = int.parse(numberOfDaySelected.substring(0,1)) + 1;
+    }
+
+    int i = dat;
+    do{
+      count--;
+      String dateSelected = '$i-$mon-$yer';
+      String path = '/helpers/${advisor.email}/freeSlots/$dateSelected';
+      DocumentReference documentReference = Firestore.instance.document(path);
+      Map<String, dynamic> mentorSlot = {
+        'NotBooked': individualSlotList,
+      };
+      documentReference.setData(mentorSlot).whenComplete(() {
+        log('completed');
+      });
+      i++;
+    }while(count>0);
+    setState(() {
+      slotStartTime = null;
+      slotEndTime = null;
+      individualSlotList.clear();
+      numberOfIndividualSlots = 1;
     });
-    Navigator.pushNamed(context, '/advisor-dashboard');
+    Navigator.pop(context);
   }
 
 //  void goToMainPage() {
@@ -194,6 +219,7 @@ class _AdvisorScheduleScreenState extends State<AdvisorScheduleScreen> {
   @override
   Widget build(BuildContext context) {
     advisor = Provider.of<AuthProvider>(context).advisor;
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
@@ -346,6 +372,52 @@ class _AdvisorScheduleScreenState extends State<AdvisorScheduleScreen> {
 //                    height: 20.0,
 //                  ),
                   createIndividualSlots(),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 32.0,vertical: 6.0),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 15.0,
+                          ),
+                          Text(
+                            "Make Slot Available For Next",
+                            style:
+                            TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          DropdownButton<String>(
+                            items: daysList.sublist(0,numberOfNextDaysSelectionPossible + 1)
+                                .map((String dropDownIntItem) {
+                              return DropdownMenuItem<String>(
+                                value: dropDownIntItem,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Text('$dropDownIntItem'),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (String value) {
+                              setState(() {
+                                numberOfDaySelected = value;
+                              });
+                            },
+                            value: numberOfDaySelected,
+                            hint: Text(
+                              'Select',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
                   SizedBox(
                     height: 30.0,
                   ),

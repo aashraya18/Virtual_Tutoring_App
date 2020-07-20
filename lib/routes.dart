@@ -1,3 +1,5 @@
+import 'package:android/screens/advisor/advisor_ask_me/ask_me_screen.dart';
+import 'package:android/screens/advisor/advisor_ask_me/submit_answer.dart';
 import 'package:flutter/material.dart';
 import 'screens/screens.dart';
 import 'screens/admin/advisor_details.dart';
@@ -6,7 +8,7 @@ Map<String, Widget Function(BuildContext)> routes = {
   SplashScreen.routeName: (ctx) => SplashScreen(),
   AuthSelectScreen.routeName: (ctx) => AdvisorAuthScreen(),
   //ADMIN
-  AllAdvisordetails.routeName: (ctx) =>AllAdvisordetails(),
+//  AllAdvisordetails.routeName: (ctx) =>AllAdvisordetails(),
   //ADVISORS
   AdvisorAuthScreen.routeName: (ctx) => AdvisorAuthScreen(),
   AdvisorForgotScreen.routeName: (ctx) => AdvisorForgotScreen(),
@@ -18,7 +20,8 @@ Map<String, Widget Function(BuildContext)> routes = {
   AdvisorReviewsScreen.routeName: (ctx) => AdvisorReviewsScreen(),
   AdvisorPaymentsScreen.routeName: (ctx) => AdvisorPaymentsScreen(),
   AdvisorChatScreen.routeName: (ctx) => AdvisorChatScreen(),
-  AskMeScreen.routeName:(ctx) => AskMeScreen(),
+  AskMeScreen.routeName: (ctx) => AskMeScreen(),
+  SubmitAnswer.routeName: (ctx) => SubmitAnswer(),
   //STUDENTS
   StudentAuthScreen.routeName: (ctx) => StudentAuthScreen(),
   StudentDashboardScreen.routeName: (ctx) => StudentDashboardScreen(),

@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:android/models/advisor_model.dart';
+import 'package:android/services/advisor_database_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -9,16 +11,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../../../services/student_database_provider.dart';
 import '../../../services/auth_provider.dart';
 import '../../../common_widgets/platformExceptionAlertDialog.dart';
-import '../../../models/student_model.dart';
 
-class StudentEditScreen extends StatefulWidget {
-  StudentEditScreen(this.student);
-  final Student student;
+class AdvisorEditBio extends StatefulWidget {
+  AdvisorEditBio(this.advisor);
+  final Advisor advisor;
   @override
-  _StudentEditScreenState createState() => _StudentEditScreenState();
+  _AdvisorEditBioState createState() => _AdvisorEditBioState();
 }
 
-class _StudentEditScreenState extends State<StudentEditScreen> {
+class _AdvisorEditBioState extends State<AdvisorEditBio> {
   final _profileKey = GlobalKey<FormState>();
 
   // Image Picker instance
@@ -28,8 +29,10 @@ class _StudentEditScreenState extends State<StudentEditScreen> {
   bool _isSaving = false;
 
   final _nameController = TextEditingController();
-  final _bioController = TextEditingController();
+  final _contactController = TextEditingController();
   final _emailController = TextEditingController();
+  final _aboutController = TextEditingController();
+
 
   Future<void> _pickPhoto() async {
     try {
@@ -97,16 +100,17 @@ class _StudentEditScreenState extends State<StudentEditScreen> {
     try {
       // If image is not null update image on server.
       if (image != null) {
-        await Provider.of<StudentDatabaseProvider>(context, listen: false)
+        await Provider.of<AdvisorDatabaseProvider>(context, listen: false)
             .updateMyPhotoUrl(image);
       }
 
       // Update profile on server.
-      await Provider.of<StudentDatabaseProvider>(context, listen: false)
+      await Provider.of<AdvisorDatabaseProvider>(context, listen: false)
           .updateMyProfile(
         _nameController.text,
-        _bioController.text,
+        _aboutController.text,
         _emailController.text,
+        _contactController.text,
       );
 
       // Refreshing User.
@@ -128,17 +132,19 @@ class _StudentEditScreenState extends State<StudentEditScreen> {
 
   @override
   void initState() {
-    _nameController.text = widget.student.displayName;
-    _bioController.text = widget.student.bio;
-    _emailController.text = widget.student.email;
+    _nameController.text = widget.advisor.displayName;
+    _aboutController.text = widget.advisor.about;
+    _emailController.text = widget.advisor.email;
+    _contactController.text = widget.advisor.phoneNumber;
     super.initState();
   }
 
   @override
   void dispose() {
     _nameController.dispose();
-    _bioController.dispose();
+    _aboutController.dispose();
     _emailController.dispose();
+    _contactController.dispose();
     super.dispose();
   }
 
@@ -153,15 +159,15 @@ class _StudentEditScreenState extends State<StudentEditScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              _buildProfilePicture(constraints, widget.student.photoUrl),
+              _buildProfilePicture(constraints, widget.advisor.photoUrl),
               Padding(
                 padding: const EdgeInsets.all(25.0),
                 child: Column(
                   children: <Widget>[
                     _buildFullNameTTF(),
-                    _buildBioTTF(),
+                    _buildContactTTF(),
                     _buildEmailTTF(),
-                    Builder(builder:(context)=> _changePasswordLink(_emailController.text , context)),
+                    _buildBioTTF(),
                   ],
                 ),
               ),
@@ -210,6 +216,21 @@ class _StudentEditScreenState extends State<StudentEditScreen> {
     );
   }
 
+  Widget _buildContactTTF() {
+    return TextFormField(
+      controller: _contactController,
+      decoration: InputDecoration(labelText: 'Contact No'),
+      keyboardType: TextInputType.text,
+      validator: (value) {
+        if (value.isEmpty) return 'Contact cannot be empty';
+        return null;
+      },
+      onSaved: (value) {
+        _contactController.text = value;
+      },
+    );
+  }
+
   Widget _buildFullNameTTF() {
     return TextFormField(
       controller: _nameController,
@@ -227,17 +248,17 @@ class _StudentEditScreenState extends State<StudentEditScreen> {
 
   Widget _buildBioTTF() {
     return TextFormField(
-      controller: _bioController,
+      controller: _aboutController,
       decoration: InputDecoration(labelText: 'Bio'),
-      maxLength: 200,
-      maxLines: 5,
+      maxLength: 3000,
+      maxLines: 15,
       keyboardType: TextInputType.text,
       validator: (value) {
         if (value.length < 10) return 'Bio must be greater than 10 char.';
         return null;
       },
       onSaved: (value) {
-        _bioController.text = value;
+        _aboutController.text = value;
       },
     );
   }
@@ -288,7 +309,7 @@ class _StudentEditScreenState extends State<StudentEditScreen> {
                 'Change Password',
                 style: TextStyle(
 //                  color: Theme.of(context).primaryColor,
-                  fontSize: 20
+                    fontSize: 20
                 ),
               ),
             ],
@@ -308,16 +329,16 @@ class _StudentEditScreenState extends State<StudentEditScreen> {
         child: _isSaving
             ? CircularProgressIndicator()
             : Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Icon(Icons.done_outline, color: Colors.white),
-                  SizedBox(width: 20),
-                  Text(
-                    'SAVE CHANGES',
-                    style: TextStyle(color: Colors.white, fontSize: 15),
-                  ),
-                ],
-              ),
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(Icons.done_outline, color: Colors.white),
+            SizedBox(width: 20),
+            Text(
+              'SAVE CHANGES',
+              style: TextStyle(color: Colors.white, fontSize: 15),
+            ),
+          ],
+        ),
       ),
       onTap: _onSaveChanges,
     );

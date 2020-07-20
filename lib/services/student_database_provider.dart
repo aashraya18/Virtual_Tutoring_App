@@ -85,6 +85,10 @@ class StudentDatabaseProvider {
     }
   }
 
+  bookAdvisor(String advisorEmail) async{
+    await _service.updateData(docPath: 'students/${student.uid}/advisors/$advisorEmail',  data:{'status':'done'});
+  }
+
   Future<List<dynamic>> getStudentDeviceToken(String uid) async {
     final document = await _service.getData(docPath: 'students/$uid');
     return document['tokens'];
@@ -111,6 +115,11 @@ class StudentDatabaseProvider {
         path: 'students/${student.uid}/messages',
         builder: (snapshot) => snapshot.documentID,
       );
+
+//  Stream<List<String>> getMyBookedSlotList(advisorEmail) => _service.collectionStream(
+//    path: 'students/${student.uid}/advisors/$advisorEmail/slotBooking',
+//    builder: (snapshot) => snapshot.documentID,
+//  );
 
   Future<Advisor> getMyMessages(String advisorEmail) async {
     final advisorData =

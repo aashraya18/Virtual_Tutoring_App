@@ -21,37 +21,41 @@ class _StudentAdvisorScreenState extends State<StudentAdvisorScreen> {
     final Advisor advisor =
         ModalRoute.of(context).settings.arguments as Advisor;
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          AdvisorImageWithRating(advisor),
-          Stack(
-            children: <Widget>[
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  BottomFlatButton(
-                    iconData: CustomIcons.user_add_outline,
-                    label: 'Guide Me',
-                    iconColor: Colors.white,
-                    textColor: Colors.white,
-                    iconSize: 20,
-                    textSize: 18,
-                    onPressed: () {
-                      Navigator.of(context).pushNamed(
-                          StudentAdvisorDetailScreen.routeName,
-                          arguments: advisor);
-                    },
-                  ),
-                  AboutAdvisorBar(advisor.reviewsCount.toString(),
-                      advisor.menteesCount.toString()),
-                  Divider(),
-                ],
-              ),
-              _buildSmallImageOnTop(constraints, advisor.photoUrl),
-            ],
-          ),
-          _buildDescription(constraints.height, advisor.about),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            AdvisorImageWithRating(advisor),
+            Stack(
+              children: <Widget>[
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    BottomFlatButton(
+                      iconData: CustomIcons.user_add_outline,
+                      label: 'Guide Me',
+                      iconColor: Colors.white,
+                      textColor: Colors.white,
+                      iconSize: 20,
+                      textSize: 18,
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => StudentAdvisorDetailScreen(
+                              advisor: advisor,
+                              tabNumber: 1,
+                            )));
+                      },
+                    ),
+                    AboutAdvisorBar(advisor.reviewsCount.toString(),
+                        advisor.menteesCount.toString()),
+                    Divider(),
+                  ],
+                ),
+                _buildSmallImageOnTop(constraints, advisor.photoUrl),
+              ],
+            ),
+            _buildDescription(constraints.height, advisor.about),
+          ],
+        ),
       ),
     );
   }

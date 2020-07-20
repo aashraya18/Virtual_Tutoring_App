@@ -22,11 +22,22 @@ class MenteeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Image.asset('assets/images/mentee_icon.png'),
+      leading: Padding(
+        padding: const EdgeInsets.only(left: 5.0),
+        child: Image.asset(
+            'assets/images/mentee_icon.png',
+            scale: 1.5,
+        ),
+      ),
       title: Text(mentee.displayName),
-      trailing: Text(
-        status(mentee.status),
-        style: TextStyle(color: statusColor(mentee.status)),
+      trailing: Padding(
+        padding: const EdgeInsets.only(right: 5.0),
+        child: Text(
+          status(mentee.status),
+          style: TextStyle(
+              color: statusColor(mentee.status),
+          fontSize: 18.0),
+        ),
       ),
       onTap: () async => _onTap(context),
     );
