@@ -43,6 +43,7 @@ class AdvisorReviewsScreen extends StatelessWidget {
           if (snapshot.hasData) {
             final reviews = snapshot.data;
             if (reviews.isNotEmpty) {
+              print(reviews);
               return SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (ctx, index) => ReviewCard(reviews[index]),

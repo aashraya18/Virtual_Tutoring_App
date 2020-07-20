@@ -102,7 +102,7 @@ class _StudentChatScreenState extends State<StudentChatScreen> {
       return false;
     }
     else
-    if(_checkTime(bookedSlots,1740)){
+    if(_checkTime(bookedSlots,formattedTime)){
       print('Go to the call');
       return true;
     }
@@ -300,6 +300,7 @@ class MessageBox extends StatelessWidget {
             ),
             child: Material(
               borderRadius: BorderRadius.circular(10),
+              elevation: 5.0,
               color: sender == 'student'
                   ? Theme.of(context).primaryColor
                   : Theme.of(context).accentColor,
