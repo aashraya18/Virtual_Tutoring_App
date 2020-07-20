@@ -8,7 +8,6 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../../../services/student_database_provider.dart';
 import '../../../services/auth_provider.dart';
 import '../../../common_widgets/platformExceptionAlertDialog.dart';
 
