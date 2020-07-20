@@ -45,7 +45,7 @@ class StudentSettingsScreen extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               image: DecorationImage(
-                  fit: BoxFit.fill, image:NetworkImage(student.photoUrl)),
+                  fit: BoxFit.fill, image: NetworkImage(student.photoUrl)),
             ),
           ),
           SizedBox(height: 15),

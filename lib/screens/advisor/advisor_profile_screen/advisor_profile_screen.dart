@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../services/auth_provider.dart';
 import '../../../models/advisor_model.dart';
+import 'advisor_edit_bio.dart';
 
 class AdvisorProfileScreen extends StatelessWidget {
   static const routeName = '/profile';
@@ -30,7 +31,7 @@ class AdvisorProfileScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    _buildEditButton(context),
+                    _buildEditButton(context,advisor),
                     _buildSignOutButton(context),
                   ],
                 )
@@ -116,7 +117,7 @@ class AdvisorProfileScreen extends StatelessWidget {
         ));
   }
 
-  Widget _buildEditButton(BuildContext context) {
+  Widget _buildEditButton(BuildContext context,Advisor advisor) {
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: GestureDetector(
@@ -135,7 +136,8 @@ class AdvisorProfileScreen extends StatelessWidget {
                 color: Theme.of(context).accentColor),
           ),
         ),
-        onTap: () {},
+        onTap: () =>
+            Navigator.push(context, MaterialPageRoute(builder: (context) => AdvisorEditBio(advisor))),
       ),
     );
   }
