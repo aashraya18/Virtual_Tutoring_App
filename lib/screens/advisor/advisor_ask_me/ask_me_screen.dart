@@ -66,10 +66,10 @@ class _AskMeScreenState extends State<AskMeScreen> {
       onPressed: _currentTab == CurrentTab.pastQuestion
           ? null
           : () {
-              setState(() {
-                _currentTab = CurrentTab.pastQuestion;
-              });
-            },
+        setState(() {
+          _currentTab = CurrentTab.pastQuestion;
+        });
+      },
     );
   }
 
@@ -82,10 +82,10 @@ class _AskMeScreenState extends State<AskMeScreen> {
       onPressed: _currentTab == CurrentTab.newQuestion
           ? null
           : () {
-              setState(() {
-                _currentTab = CurrentTab.newQuestion;
-              });
-            },
+        setState(() {
+          _currentTab = CurrentTab.newQuestion;
+        });
+      },
     );
   }
 
@@ -164,7 +164,7 @@ class _AskMeScreenState extends State<AskMeScreen> {
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
               children:
-                  snapshot.data.documents.map((DocumentSnapshot document) {
+              snapshot.data.documents.map((DocumentSnapshot document) {
                 return Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Card(
@@ -248,9 +248,9 @@ class _AskMeScreenState extends State<AskMeScreen> {
                             onPressed: () =>
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (ctx) => SubmitAnswer(
-                                          question: document["Question"],
-                                          id: document["ID"],
-                                        ))),
+                                      question: document["Question"],
+                                      id: document["ID"],
+                                    ))),
                             color: Colors.teal,
                             child: Padding(
                               padding: EdgeInsets.symmetric(

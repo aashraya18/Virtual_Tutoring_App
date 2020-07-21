@@ -33,7 +33,7 @@ class AdvisorTabBar extends StatefulWidget {
 
 class _AdvisorTabBarState extends State<AdvisorTabBar> {
   final myController = TextEditingController();
-  CurrentTab _currentTab = CurrentTab.about;
+  CurrentTab _currentTab;
   Student student;
   @override
   void dispose() {
@@ -141,11 +141,9 @@ class _AdvisorTabBarState extends State<AdvisorTabBar> {
                       ),
                     ),
                   );
-                return new ListView(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
+                return new Column(
                   children:
-                      snapshot.data.documents.map((DocumentSnapshot document) {
+                  snapshot.data.documents.map((DocumentSnapshot document) {
                     List<dynamic> whoLiked = document["whoLiked"];
                     bool previouslyLiked = whoLiked != null
                         ? whoLiked.contains('${student.email}')
@@ -194,17 +192,17 @@ class _AdvisorTabBarState extends State<AdvisorTabBar> {
                                   child: Row(
                                     children: <Widget>[
                                       LikeButton(
-                                              size: 20.0,
-                                              onTap: (isLiked) =>
-                                                  onLikeButtonTapped(
-                                                      id: document.documentID,
-                                                      like: isLiked
-                                                          ? likes -= 1
-                                                          : likes += 1,
-                                                      isLiked: isLiked),
-                                              likeCount: likes,
-                                              isLiked: previouslyLiked ? true : false,
-                                            )
+                                        size: 20.0,
+                                        onTap: (isLiked) =>
+                                            onLikeButtonTapped(
+                                                id: document.documentID,
+                                                like: isLiked
+                                                    ? likes -= 1
+                                                    : likes += 1,
+                                                isLiked: isLiked),
+                                        likeCount: likes,
+                                        isLiked: previouslyLiked ? true : false,
+                                      )
 //                                          : Row(
 //                                              children: <Widget>[
 //                                                Icon(
@@ -253,7 +251,7 @@ class _AdvisorTabBarState extends State<AdvisorTabBar> {
               }),
           Padding(
             padding:
-                const EdgeInsets.symmetric(horizontal: 60.0, vertical: 20.0),
+            const EdgeInsets.symmetric(horizontal: 60.0, vertical: 20.0),
             child: RaisedButton(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30)),
@@ -329,16 +327,16 @@ class _AdvisorTabBarState extends State<AdvisorTabBar> {
               onPressed: myController.text != ""
                   ? () => _updateDatabase(myController.text)
                   : () {
-                      setState(() {
-                        log('$answer');
-                        myController.clear();
-                        _currentTab = CurrentTab.askMe;
-                      });
-                    },
+                setState(() {
+                  log('$answer');
+                  myController.clear();
+                  _currentTab = CurrentTab.askMe;
+                });
+              },
               color: Colors.teal,
               child: Padding(
                 padding:
-                    EdgeInsets.symmetric(horizontal: 100.0, vertical: 15.0),
+                EdgeInsets.symmetric(horizontal: 100.0, vertical: 15.0),
                 child: Text(
                   'Ask',
                   style: TextStyle(
@@ -363,10 +361,10 @@ class _AdvisorTabBarState extends State<AdvisorTabBar> {
       onPressed: _currentTab == CurrentTab.about
           ? null
           : () {
-              setState(() {
-                _currentTab = CurrentTab.about;
-              });
-            },
+        setState(() {
+          _currentTab = CurrentTab.about;
+        });
+      },
     );
   }
 
@@ -379,10 +377,10 @@ class _AdvisorTabBarState extends State<AdvisorTabBar> {
       onPressed: _currentTab == CurrentTab.reviews
           ? null
           : () {
-              setState(() {
-                _currentTab = CurrentTab.reviews;
-              });
-            },
+        setState(() {
+          _currentTab = CurrentTab.reviews;
+        });
+      },
     );
   }
 
@@ -395,10 +393,10 @@ class _AdvisorTabBarState extends State<AdvisorTabBar> {
       onPressed: _currentTab == CurrentTab.askMe
           ? null
           : () {
-              setState(() {
-                _currentTab = CurrentTab.askMe;
-              });
-            },
+        setState(() {
+          _currentTab = CurrentTab.askMe;
+        });
+      },
     );
   }
 

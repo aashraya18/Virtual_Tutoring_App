@@ -38,9 +38,9 @@ class _StudentTimeScreenState extends State<StudentTimeScreen> {
     else if (_timeSelected == TimeSelected.rs250) amount = 25000;
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => StudentSlotScreen(
-              advisor: widget.advisor,
-              amount: amount ,
-            )));
+          advisor: widget.advisor,
+          amount: amount ,
+        )));
   }
 
   @override
@@ -57,7 +57,7 @@ class _StudentTimeScreenState extends State<StudentTimeScreen> {
             _buildText(),
             Center(
               child: _buildTimeCard(
-                  time: '25', money: '200', selected: TimeSelected.rs90),
+                  time: '25', money: '90', selected: TimeSelected.rs90),
             ),
 
 //            _buildTimeCard(
@@ -114,7 +114,7 @@ class _StudentTimeScreenState extends State<StudentTimeScreen> {
           height: constraints.height * 0.075,
           child: Card(
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             child: Row(
               children: <Widget>[
                 Expanded(
@@ -155,11 +155,11 @@ class _StudentTimeScreenState extends State<StudentTimeScreen> {
         onTap: _timeSelected == selected
             ? null
             : () {
-                setState(() {
-                  _timeSelected = selected;
-                  amount = double.parse(money);
-                });
-              },
+          setState(() {
+            _timeSelected = selected;
+            amount = double.parse(money);
+          });
+        },
       ),
     );
   }

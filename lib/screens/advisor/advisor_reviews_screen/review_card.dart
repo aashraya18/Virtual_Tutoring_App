@@ -8,7 +8,7 @@ class ReviewCard extends StatelessWidget {
   Widget build(BuildContext context) {
     print(review.heading);
     return ListTile(
-      leading: Image.asset('assets/images/mentee_icon.png'),
+      leading: Image.asset('assets/images/mentee_icon.png',height: 25,),
       title: Text(review.heading),
       trailing: SmoothStarRating(
         starCount: 5,
