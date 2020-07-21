@@ -3,9 +3,13 @@ import 'package:provider/provider.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:android/services/advisor_database_provider.dart';
+import 'package:android/services/student_database_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:android/google_sheet/call_log.dart';
 import 'package:android/google_sheet/controller.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:android/services/auth_provider.dart';
+import 'package:android/models/student_model.dart';
 class AdvisorCallScreen extends StatefulWidget {
   final String channelName;
   const AdvisorCallScreen(this.channelName);
@@ -21,7 +25,7 @@ class _AdvisorCallScreenState extends State<AdvisorCallScreen> {
   Map payment;
   int amount;
   int guidedStudents;
-
+  Student student;
 
   logToExcel(String event) async{
     final now = DateTime.now();
@@ -46,6 +50,65 @@ class _AdvisorCallScreenState extends State<AdvisorCallScreen> {
     super.dispose();
   }
 
+  creditToAdvisor(){
+    amount =  payment['Amount'] +100;
+    guidedStudents = payment['GuidedStudents']+1;
+    String status = "";
+    if(amount >= 2000)
+      setState(() {
+        status = 'allowed';
+      });
+    payment = {
+      'Amount': amount,
+      'GuidedStudents':guidedStudents,
+      'status':status,
+    };
+
+    print(payment);
+    Firestore.instance.collection('helpers').document('test@advisor.com').updateData({'Payment':payment});
+
+  }
+
+  createAlertDialog(BuildContext context){
+    return showDialog(
+        context: context,
+        builder: (context){
+         return AlertDialog(
+           title: Text('Was your call successful.You will not be able to enter the call again',style: TextStyle(color:Colors.white),),
+           backgroundColor: Theme.of(context).primaryColor,
+           actions: [
+             FlatButton(
+
+               child: Text('Yes'),
+               onPressed: () async{
+                 print('yes');
+                 print(student.email);
+                 StudentDatabaseProvider instance = StudentDatabaseProvider(student);
+                 Map videoCallStatus ={
+                   'Student':'Yes',
+                 };
+                 Map data = await instance.videoCallStatus('test@advisor.com',videoCallStatus);
+                 print(data);
+                 if(data['Advisor'] == 'Yes')
+                   creditToAdvisor();
+                 Navigator.pop(context);
+                 _onCallEnd(context);
+               },
+             ),
+
+             FlatButton(
+
+               child: Text('No'),
+               onPressed: (){
+                 print('no');
+               },
+             ),
+           ],
+         );
+        }
+    );
+  }
+
   int counter = 1620;
   Timer _timer;
   _startTimer() {
@@ -54,7 +117,7 @@ class _AdvisorCallScreenState extends State<AdvisorCallScreen> {
         //print(counter);
         counter--;
       });
-      
+
       if(counter == 1320)
         logToExcel('5 mins in call');
       else if(counter == 720)
@@ -246,7 +309,10 @@ class _AdvisorCallScreenState extends State<AdvisorCallScreen> {
             padding: const EdgeInsets.all(12.0),
           ),
           RawMaterialButton(
-            onPressed: () => _onCallEnd(context),
+            onPressed: () async{
+             await createAlertDialog(context);
+              _onCallEnd(context);
+              },
             child: Icon(
               Icons.call_end,
               color: Colors.white,
@@ -342,6 +408,8 @@ class _AdvisorCallScreenState extends State<AdvisorCallScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    student = Provider.of<AuthProvider>(context, listen: false).student;
     return Scaffold(
       backgroundColor: Colors.black,
       body: Center(

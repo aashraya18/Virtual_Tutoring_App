@@ -8,7 +8,7 @@ import '../models/student_model.dart';
 import '../models/mentee_model.dart';
 
 class StudentDatabaseProvider {
-  final Student student;
+  final Student  student;
   StudentDatabaseProvider(this.student);
   final _service = FirestoreService.instance;
   final _storageService = FirebaseStorage.instance.ref();
@@ -68,6 +68,18 @@ class StudentDatabaseProvider {
       return document['Booked'];
     }catch(e){
       return null;
+    }
+  }
+
+ Future<dynamic> videoCallStatus(String advisorEmail , Map callStatus)async{
+    try {
+      print(callStatus);
+      await _service.updateData(docPath: 'students/${student.uid}/advisors/$advisorEmail',
+          data: {'videoCall': callStatus});
+      var data = await _service.getData(docPath: 'students/${student.uid}/advisors/$advisorEmail');
+      return data['videoCall'];
+    }catch(e){
+      print(e);
     }
   }
 

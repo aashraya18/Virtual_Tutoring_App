@@ -1,4 +1,5 @@
 import 'package:android/services/advisor_database_provider.dart';
+import 'package:android/services/student_database_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'dart:async';
@@ -26,8 +27,10 @@ class _StudentCallScreenState extends State<StudentCallScreen> {
   bool paymentAllowed = false;
   Map payment;
   int amount;
+  String advisorEmail;
   int guidedStudents;
   Student student;
+  Map temp;
   @override
   void dispose() {
     // clear users
@@ -36,6 +39,25 @@ class _StudentCallScreenState extends State<StudentCallScreen> {
     AgoraRtcEngine.leaveChannel();
     AgoraRtcEngine.destroy();
     super.dispose();
+  }
+
+  creditToAdvisor(){
+    amount =  payment['Amount'] +100;
+    guidedStudents = payment['GuidedStudents']+1;
+    String status = "";
+    if(amount >= 2000)
+      setState(() {
+        status = 'allowed';
+      });
+    payment = {
+      'Amount': amount,
+      'GuidedStudents':guidedStudents,
+      'status':status,
+    };
+
+    print(payment);
+    Firestore.instance.collection('helpers').document(advisorEmail).updateData({'Payment':payment});
+
   }
 
   int counter = 1620;
@@ -53,21 +75,7 @@ class _StudentCallScreenState extends State<StudentCallScreen> {
         logToExcel('15 mins in call');
 
      else if(counter == 420) {
-        amount =  payment['Amount'] +100;
-        guidedStudents = payment['GuidedStudents']+1;
-        String status = "";
-        if(amount >= 2000)
-          setState(() {
-            status = 'allowed';
-          });
-        payment = {
-          'Amount': amount,
-          'GuidedStudents':guidedStudents,
-          'status':status,
-        };
-
-        print(payment);
-        Firestore.instance.collection('helpers').document('test@advisor.com').updateData({'Payment':payment});
+        creditToAdvisor();
       }
       else if(counter == 0){
         _timer.cancel();
@@ -76,9 +84,43 @@ class _StudentCallScreenState extends State<StudentCallScreen> {
     });
   }
 
+  createAlertDialog(BuildContext context){
+    return showDialog(
+        context: context,
+        builder: (context){
+          return AlertDialog(
+            title: Text('Was your call successful.You will not be able to enter the call again',style: TextStyle(color:Colors.white),),
+            backgroundColor: Theme.of(context).primaryColor,
+            actions: [
+              FlatButton(
+                child: Text('Yes'),
+                onPressed: ()async{
+                  print('yes');
+                  StudentDatabaseProvider instance = StudentDatabaseProvider(student);
+                  Map videoCallStatus ={
+                    'Student':'Yes',
+                  };
+                  print(advisorEmail);
+                 Map data = await instance.videoCallStatus(advisorEmail,videoCallStatus);
+                   creditToAdvisor();
+                  Navigator.pop(context);
+                },
+              ),
+              FlatButton(
+                child: Text('No'),
+                onPressed: (){
+                  print('no');
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        }
+    );
+  }
 
     getPayment() async{
-     payment = await Provider.of<AdvisorDatabaseProvider>(context ,listen:false).getAdvisorDetails('test@advisor.com', 'Payment');
+     payment = await Provider.of<AdvisorDatabaseProvider>(context ,listen:false).getAdvisorDetails(advisorEmail, 'Payment');
     if(payment == null){
       payment ={
         'Amount':0,
@@ -92,7 +134,7 @@ class _StudentCallScreenState extends State<StudentCallScreen> {
     super.initState();
     // initialize agora sdk
 //    _startTimer();
-//    getPayment();
+
     initialize();
   }
 
@@ -268,7 +310,10 @@ class _StudentCallScreenState extends State<StudentCallScreen> {
             padding: const EdgeInsets.all(12.0),
           ),
           RawMaterialButton(
-            onPressed: () => _onCallEnd(context),
+            onPressed: () async{
+              await createAlertDialog(context);
+              _onCallEnd(context);
+            },
             child: Icon(
               Icons.call_end,
               color: Colors.white,
@@ -318,7 +363,9 @@ class _StudentCallScreenState extends State<StudentCallScreen> {
 
   @override
   Widget build(BuildContext context) {
-//    Map temp = ModalRoute.of(context).settings.arguments;
+     temp = ModalRoute.of(context).settings.arguments;
+     advisorEmail = temp['advisorEmail'];
+     getPayment();
 //    payment = temp['payment'];
 //    print(payment);
     student = Provider.of<AuthProvider>(context, listen: false).student;

@@ -1,3 +1,4 @@
+import 'package:android/services/advisor_database_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -79,8 +80,10 @@ class _AdvisorChatScreenState extends State<AdvisorChatScreen> {
     var formatTime = DateFormat('HHmm');
     String formattedDay = formatDay.format(now);
     int formattedTime = int.parse(formatTime.format(now));
+    print(formattedTime);
+    print(formattedDay);
 
-    final List<dynamic> bookedSlots = await Provider.of<StudentDatabaseProvider>(context,listen:false).getSlotTiming('$advisorEmail','$formattedDay');
+    final List<dynamic> bookedSlots = await Provider.of<AdvisorDatabaseProvider>(context,listen:false).getSlotTiming('$advisorEmail','$formattedDay');
 
     if(bookedSlots == null){
       print('Not today');
@@ -123,7 +126,8 @@ class _AdvisorChatScreenState extends State<AdvisorChatScreen> {
           centerTitle: true,
           backgroundColor: Theme.of(context).canvasColor,
           actions: <Widget>[
-            IconButton(
+                Builder(
+                    builder:(context)=>IconButton(
               onPressed: () async {
                 await PermissionHandler().requestPermissions(
                   [PermissionGroup.camera, PermissionGroup.microphone],
@@ -138,13 +142,20 @@ class _AdvisorChatScreenState extends State<AdvisorChatScreen> {
                           AdvisorCallScreen('${advisor.uid}' + '${student.uid}'),
                     ),
                   );
+                }else{
+                  Scaffold.of(context).showSnackBar(SnackBar(
+                    backgroundColor: Theme.of(context).primaryColor,
+                    content: Text('Not your scheduled slot'),
+                    duration: Duration(seconds: 3),
+                  ));
                 }
               },
-              icon: Icon(
-                Icons.video_call,
-                size: 35,
-              ),
-            )
+                     icon: Icon(
+                       Icons.video_call,
+                       size: 35,
+                     ),
+            ),
+           ),
           ],
         ),
         body: Column(
@@ -249,8 +260,6 @@ class MsgBox extends StatelessWidget {
           child: Container(
             foregroundDecoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
-              border:
-                  sender == 'student' ? Border.all(color: Colors.grey) : null,
             ),
             child: Material(
               borderRadius: BorderRadius.circular(10),
