@@ -160,9 +160,7 @@ class _AskMeScreenState extends State<AskMeScreen> {
                   ),
                 ),
               );
-            return new ListView(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
+            return new Column(
               children:
               snapshot.data.documents.map((DocumentSnapshot document) {
                 return Padding(

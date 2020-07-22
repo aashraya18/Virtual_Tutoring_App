@@ -117,7 +117,7 @@ class _AdvisorCallScreenState extends State<AdvisorCallScreen> {
         //print(counter);
         counter--;
       });
-      
+
       if(counter == 1320)
         logToExcel('5 mins in call');
       else if(counter == 720)

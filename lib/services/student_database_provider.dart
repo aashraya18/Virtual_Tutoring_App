@@ -85,6 +85,18 @@ class StudentDatabaseProvider {
     }
   }
 
+ Future<dynamic> videoCallStatus(String advisorEmail , Map callStatus)async{
+    try {
+      print(callStatus);
+      await _service.updateData(docPath: 'students/${student.uid}/advisors/$advisorEmail',
+          data: {'videoCall': callStatus});
+      var data = await _service.getData(docPath: 'students/${student.uid}/advisors/$advisorEmail');
+      return data['videoCall'];
+    }catch(e){
+      print(e);
+    }
+  }
+
   bookAdvisor(String advisorEmail) async{
     await _service.updateData(docPath: 'students/${student.uid}/advisors/$advisorEmail',  data:{'status':'done'});
   }

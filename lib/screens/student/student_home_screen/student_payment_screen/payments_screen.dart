@@ -9,10 +9,14 @@ import 'package:flutter/material.dart';
 import 'razorpay_flutter.dart';
 import 'dart:developer';
 import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'razorpay_flutter.dart';
+import 'constants.dart';
 import 'paymentSuccess.dart';
 import 'paymentFailed.dart';
-import 'package:http/http.dart' as http;
-//import 'package:crypto/crypto.dart';
+import '../student_slot_screen/user_time_slot.dart';
 
 class PaymentsScreen extends StatefulWidget {
   static const routeName = '/user-payments';
