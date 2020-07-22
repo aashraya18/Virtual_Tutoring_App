@@ -204,7 +204,7 @@ class _AdvisorPaymentsScreenState extends State<AdvisorPaymentsScreen> {
                           ),
                         ),
                         AnimatedContainer(
-                          duration: Duration(milliseconds: 500),
+                          duration: Duration(milliseconds: 350),
                           margin: (upi)?EdgeInsets.only(left:15,right: 15,top:60):EdgeInsets.only(left:15,right: 15),
                           height: 63,
                           decoration: BoxDecoration(
@@ -271,7 +271,7 @@ class _AdvisorPaymentsScreenState extends State<AdvisorPaymentsScreen> {
                           ),
                         ),
                         AnimatedContainer(
-                          duration: Duration(milliseconds:500 ),
+                          duration: Duration(milliseconds:350 ),
                           margin: (gPay || phonePe)? EdgeInsets.only(left:15,right: 15,top:60): EdgeInsets.only(left:15,right: 15),
                           height: 63,
                           decoration: BoxDecoration(
@@ -316,37 +316,54 @@ class _AdvisorPaymentsScreenState extends State<AdvisorPaymentsScreen> {
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top:35.0),
-                      child: GestureDetector(
-                        onTap:(){
-                          if(allowed) {
-                            setState(() {
-                              payment = {
-                                'Amount': payment['Amount'],
-                                'GuidedStudents': payment['GuidedStudents'],
-                                'status': 'Requested',
-                                'UpiID':upiCtrl.text,
-                                'Number':numCtrl.text,
-                                'mode':mode,
-                              };
-                            });
-                            setState(() {
-                              allowed = false;
-                            });
-                            Firestore.instance.collection('helpers').document(emailID).updateData({'Payment': payment});
-                          }else
-                            print('Not allowed');},
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom:35.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: (allowed)?Theme.of(context).primaryColor:Colors.grey,
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(top:8.0,bottom: 8.0,left: 50,right: 50),
-                              child: Text('Request Payment',style: TextStyle(color:Colors.white,fontSize: 25),),
+                    Builder(
+                      builder: (context) => Padding(
+                        padding: const EdgeInsets.only(top:35.0),
+                        child: GestureDetector(
+                          onTap:(){
+
+                            if(allowed) {
+                              if(upiCtrl.text == '' && numCtrl.text == ''){
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                  backgroundColor: Theme.of(context).primaryColor,
+                                  content: Text('Enter UPI id or phone number'),
+                                  duration: Duration(seconds: 3),
+                                ));
+                              }else{
+                                setState(() {
+                                  payment = {
+                                    'Amount': payment['Amount'],
+                                    'GuidedStudents': payment['GuidedStudents'],
+                                    'status': 'Requested',
+                                    'UpiID':upiCtrl.text,
+                                    'Number':numCtrl.text,
+                                    'mode':mode,
+                                  };
+                                });
+                                setState(() {
+                                  allowed = false;
+                                });
+                                Firestore.instance.collection('helpers').document(emailID).updateData({'Payment': payment});
+                              }
+
+                            }else
+                              Scaffold.of(context).showSnackBar(SnackBar(
+                                backgroundColor: Theme.of(context).primaryColor,
+                                content: Text('Cant request'),
+                                duration: Duration(seconds: 3),
+                              ));
+                            },
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom:35.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: (allowed)?Theme.of(context).primaryColor:Colors.grey,
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(top:8.0,bottom: 8.0,left: 50,right: 50),
+                                child: Text('Request Payment',style: TextStyle(color:Colors.white,fontSize: 25),),
+                              ),
                             ),
                           ),
                         ),
