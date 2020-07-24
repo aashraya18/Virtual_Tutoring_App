@@ -7,9 +7,10 @@ class ReviewCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print(review.heading);
-    return ListTile(
+    return ExpansionTile(
+
       leading: Image.asset('assets/images/mentee_icon.png',height: 25,),
-      title: Text(review.heading),
+      title: Text(review.heading,style: TextStyle(color: Colors.black),),
       trailing: SmoothStarRating(
         starCount: 5,
         rating: review.stars,
@@ -21,6 +22,12 @@ class ReviewCard extends StatelessWidget {
         borderColor: Theme.of(context).primaryColor,
         spacing: 0.0,
       ),
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top:8.0,bottom: 20),
+          child: Text(review.review),
+        ),
+      ],
     );
   }
 }

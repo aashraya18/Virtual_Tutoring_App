@@ -88,6 +88,11 @@ class AdvisorDatabaseProvider {
     return document['$field'];
   }
 
+  confirmStudent(String advisorEmail, String studentId, String displayName) async{
+    await _service.updateData(docPath: 'helpers/${advisorEmail}/mentees/$studentId',  data:{'status':'done','displayName':displayName});
+  }
+
+
   Future<void> updateMyPhotoUrl(File file) async {
     final reference = _storageService.child('student/${advisor.uid}');
     final StorageUploadTask uploadTask = reference.putFile(file);

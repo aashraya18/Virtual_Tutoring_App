@@ -2,7 +2,9 @@ import 'package:android/screens/student/student_home_screen/student_slot_screen/
 import 'package:android/screens/student/student_home_screen/student_payment_screen/constants.dart';
 import 'package:android/services/auth_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:android/models/advisor_model.dart';
 import 'package:android/services/student_database_provider.dart';
+import 'package:android/services/advisor_database_provider.dart';
 import 'package:android/models/student_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -45,6 +47,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
   String keyValue = Constants.keyValue;
   String orderId;
   Student student;
+  Advisor advisor;
   @override
   void dispose() {
     super.dispose();
@@ -149,10 +152,12 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
     updateStudentDatabase();
   }
 
-  void updateMentorDatabase() {
+  void updateMentorDatabase() async{
     String dateSelected = widget.userTimeSlot.dateSelected;
     String path = '/helpers/${widget.userTimeSlot.advisorEmail}/freeSlots/$dateSelected';
     DocumentReference documentReference = Firestore.instance.document(path);
+    AdvisorDatabaseProvider instance = AdvisorDatabaseProvider(advisor);
+    await instance.confirmStudent(widget.userTimeSlot.advisorEmail, widget.userTimeSlot.studentUid, student.displayName);
     Map<String, dynamic> mentorSlot = {
 //      'NotBooked': widget.userTimeSlot.mentorNotBookedSlotList,
       'Booked': FieldValue.arrayUnion(widget.userTimeSlot.mentorBookedList),
@@ -184,6 +189,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
   Widget build(BuildContext context) {
     // print("razor runtime --------: ${_razorpay.runtimeType}");
     student = Provider.of<AuthProvider>(context, listen: false).student;
+
     return Scaffold(
       body: FutureBuilder(
           future: payData(),
