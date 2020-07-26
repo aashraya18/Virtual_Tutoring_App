@@ -17,7 +17,9 @@ class StudentSlotScreen extends StatefulWidget {
   static const routeName = '/student-slot';
   final advisor;
   final amount;
-  const StudentSlotScreen({this.advisor, this.amount});
+  final isDiscountApplied;
+  final discountId;
+  const StudentSlotScreen({this.advisor, this.amount,this.isDiscountApplied,this.discountId});
 
   @override
   _StudentSlotScreenState createState() => _StudentSlotScreenState();
@@ -25,7 +27,7 @@ class StudentSlotScreen extends StatefulWidget {
 
 class _StudentSlotScreenState extends State<StudentSlotScreen> {
   Student student;
-  var selectedDate = DateTime.now();
+  var selectedDate = DateTime.now().add(Duration(days: 1));
   var dat;
   var mon;
   var yer;
@@ -88,7 +90,7 @@ class _StudentSlotScreenState extends State<StudentSlotScreen> {
                         : Card(
                             child: Center(
                               child: Text(
-                                "No Slots Avaiable",
+                                "No Slots Available",
                                 style: TextStyle(
                                   fontSize: 15.0,
                                 ),
@@ -99,7 +101,7 @@ class _StudentSlotScreenState extends State<StudentSlotScreen> {
                     return Card(
                       child: Center(
                         child: Text(
-                          "No Slots Avaiable",
+                          "No Slots Available",
                           style: TextStyle(
                             fontSize: 15.0,
                           ),
@@ -249,7 +251,7 @@ class _StudentSlotScreenState extends State<StudentSlotScreen> {
           final date = await showDatePicker(
             context: context,
             initialDate: selectedDate,
-            firstDate: todayDate,
+            firstDate: todayDate.add(Duration(days: 1)),
             lastDate: todayDate.add(Duration(days: 6)),
           );
           if (date == null) {
@@ -408,6 +410,8 @@ class _StudentSlotScreenState extends State<StudentSlotScreen> {
       mentorNotBookedSlotList: mentorNotBookedSlotList,
       studentEmail: '${student.email}',
       studentUid: '${student.uid}',
+      discountId: '${widget.discountId}',
+      isDiscountApplied: widget.isDiscountApplied,
     );
     return slotSelected;
   }

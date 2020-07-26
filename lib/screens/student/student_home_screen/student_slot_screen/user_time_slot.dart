@@ -7,6 +7,8 @@ class UserTimeSlot {
     this.mentorBookedList,
     this.studentEmail,
     this.studentUid,
+    this.isDiscountApplied,
+    this.discountId,
   });
 
   String dateSelected;
@@ -16,4 +18,6 @@ class UserTimeSlot {
   List<dynamic> mentorBookedList;
   String studentEmail;
   dynamic studentUid;
+  bool isDiscountApplied;
+  String discountId;
 }

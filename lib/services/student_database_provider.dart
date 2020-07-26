@@ -61,6 +61,11 @@ class StudentDatabaseProvider {
         builder: (snapshot) => snapshot.documentID,
       );
 
+  Stream<List<String>> getMyCouponsList() => _service.collectionStream(
+    path: 'students/${student.uid}/coupons',
+    builder: (snapshot) => snapshot.documentID,
+  );
+
   Future <List<dynamic>> getSlotTiming(String advisorEmail,String date) async{
     print(student.uid);
     try{

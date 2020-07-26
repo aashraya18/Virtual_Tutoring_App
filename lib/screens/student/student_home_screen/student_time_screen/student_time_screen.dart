@@ -1,11 +1,10 @@
+import 'dart:developer';
 import 'package:android/models/student_model.dart';
 import 'package:android/services/auth_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../../../common_widgets/bottomFlatButton.dart';
-import '../../../../common_widgets/platformAlertDialog.dart';
-import '../../../../models/advisor_model.dart';
 import '../student_slot_screen/student_slot_screen.dart';
 
 enum TimeSelected {
@@ -17,14 +16,34 @@ enum TimeSelected {
 class StudentTimeScreen extends StatefulWidget {
   static const routeName = '/student-time';
   final advisor;
-  const StudentTimeScreen({Key key, this.advisor}) : super(key: key);
+  final student;
+  const StudentTimeScreen({Key key, this.advisor,this.student}) : super(key: key);
   @override
   _StudentTimeScreenState createState() => _StudentTimeScreenState();
 }
 
 class _StudentTimeScreenState extends State<StudentTimeScreen> {
-  TimeSelected _timeSelected;
+  TimeSelected _timeSelected = TimeSelected.rs90;
   double amount;
+  List<String> couponCodes = ["None"];
+  var _category;
+  Map<String, int> couponMap = Map<String, int>();
+  Map<String, String> couponIdMap = Map<String, String>();
+  bool isDiscountApplied = false;
+  String discountId;
+
+  @override
+  void initState() {
+    couponMap["None"] = 0;
+    super.initState();
+    generateCouponList().then((value) => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   void _setTime() {
     if (_timeSelected == null) {
       return;
@@ -36,23 +55,38 @@ class _StudentTimeScreenState extends State<StudentTimeScreen> {
     else if (_timeSelected == TimeSelected.rs100)
       amount = 10000;
     else if (_timeSelected == TimeSelected.rs250) amount = 25000;
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => StudentSlotScreen(
-          advisor: widget.advisor,
-          amount: amount ,
-        )));
+
+    try {
+      var discount = couponMap[_category];
+      log('$discount');
+      amount = amount * (100 - discount) / 100;
+      log('$amount');
+      isDiscountApplied = true;
+      discountId = couponIdMap[_category];
+
+    } catch (e) {}
+    finally{
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => StudentSlotScreen(
+            advisor: widget.advisor,
+            amount: amount,
+            isDiscountApplied: isDiscountApplied,
+            discountId: discountId,
+          )));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(''),
         elevation: 0,
       ),
       body: Center(
         child: Column(
-          mainAxisSize: MainAxisSize.max,
+//          mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             _buildText(),
             Center(
@@ -64,6 +98,9 @@ class _StudentTimeScreenState extends State<StudentTimeScreen> {
 //                time: '30', money: '100', selected: TimeSelected.rs100),
 //            _buildTimeCard(
 //                time: '60', money: '250', selected: TimeSelected.rs250),
+            _buildCouponText(),
+            _buildCoupon(),
+            _buildCouponList(),
             Spacer(),
             BottomFlatButton(
               iconData: Icons.access_time,
@@ -76,6 +113,97 @@ class _StudentTimeScreenState extends State<StudentTimeScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildCoupon() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 48.0, vertical: 16.0),
+      child: Container(
+        child: DropdownButtonHideUnderline(
+          child: DropdownButtonFormField(
+            items: couponCodes.map((String category) {
+              return new DropdownMenuItem(
+                  value: category,
+                  child: Column(
+                    children: <Widget>[
+                      Text(category),
+                    ],
+                  ));
+            }).toList(),
+            onChanged: (newValue) {
+              // do other stuff with _category
+              setState(() => _category = newValue);
+            },
+            style: TextStyle(
+              fontSize: 20.0,
+              color: Colors.black,
+            ),
+            value: _category,
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.fromLTRB(20, 20, 10, 20),
+              filled: true,
+              fillColor: Colors.white,
+              hintText: "Choose Coupon",
+              border: OutlineInputBorder(
+                borderRadius: new BorderRadius.circular(25.0),
+                borderSide: new BorderSide(),
+              ),
+//          errorText:
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCouponList() {
+    return StreamBuilder<QuerySnapshot>(
+        stream: getCoupons(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) return new Text('Loading...');
+          return new ListView(
+            shrinkWrap: true,
+            scrollDirection: Axis.vertical,
+            children: snapshot.data.documents.map((DocumentSnapshot document) {
+              return Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 50.0, vertical: 5.0),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  color: Colors.grey[100],
+                  elevation: 0.1,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: <Widget>[
+                        Text('${document.data["CouponCode"]}'),
+                        Text('${document.data["CouponDescription"]}')
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
+          );
+        });
+  }
+
+  Widget _buildCouponText() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10.0),
+      alignment: Alignment.centerLeft,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            'Select Coupon',
+            style: TextStyle(fontSize: 21),
+          ),
+        ],
       ),
     );
   }
@@ -114,7 +242,7 @@ class _StudentTimeScreenState extends State<StudentTimeScreen> {
           height: constraints.height * 0.075,
           child: Card(
             shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             child: Row(
               children: <Widget>[
                 Expanded(
@@ -155,12 +283,35 @@ class _StudentTimeScreenState extends State<StudentTimeScreen> {
         onTap: _timeSelected == selected
             ? null
             : () {
-          setState(() {
-            _timeSelected = selected;
-            amount = double.parse(money);
-          });
-        },
+                setState(() {
+                  _timeSelected = selected;
+                  amount = double.parse(money);
+                });
+              },
       ),
     );
+  }
+
+  Stream<QuerySnapshot> getCoupons() {
+    String studentUid = widget.student.uid;
+    String path = '/students/$studentUid/coupons';
+    return Firestore.instance
+        .collection(path)
+        .orderBy("CouponValue")
+        .snapshots();
+  }
+
+  Future<void> generateCouponList() async {
+    String studentUid = widget.student.uid;
+    String path = '/students/$studentUid/coupons';
+    await Firestore.instance.collection(path).getDocuments().then((result) {
+      result.documents.forEach((result) {
+        couponCodes.add(result.data["CouponCode"]);
+        couponMap[result.data["CouponCode"]] = result.data["CouponValue"];
+        couponIdMap[result.data["CouponCode"]] = result.documentID;
+      });
+    });
+    log('$couponCodes');
+    log('$couponMap');
   }
 }

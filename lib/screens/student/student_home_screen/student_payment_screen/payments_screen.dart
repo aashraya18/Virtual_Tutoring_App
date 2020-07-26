@@ -1,10 +1,10 @@
+import 'package:android/models/advisor_model.dart';
 import 'package:android/screens/student/student_home_screen/student_slot_screen/user_time_slot.dart';
 import 'package:android/screens/student/student_home_screen/student_payment_screen/constants.dart';
+import 'package:android/services/advisor_database_provider.dart';
 import 'package:android/services/auth_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:android/models/advisor_model.dart';
 import 'package:android/services/student_database_provider.dart';
-import 'package:android/services/advisor_database_provider.dart';
 import 'package:android/models/student_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +13,6 @@ import 'dart:developer';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'razorpay_flutter.dart';
 import 'constants.dart';
 import 'paymentSuccess.dart';
@@ -89,14 +88,13 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
     // Do something when payment succeeds
     capturePayment(response);
     updateDatabase();
-    Navigator.pushAndRemoveUntil(
-      context,
+    _razorpay.clear();
+    Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (BuildContext context) => SuccessPage(
           response: response,
         ),
       ),
-          (Route<dynamic> route) => false,
     );
     _razorpay.clear();
   }
@@ -104,14 +102,14 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
   void _handlePaymentError(PaymentFailureResponse response) {
     print("payment has error00000000000000000000000000000000000000");
     // Do something when payment fails
-    Navigator.pushAndRemoveUntil(
+    _razorpay.clear();
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (BuildContext context) => FailedPage(
           response: response,
         ),
       ),
-          (Route<dynamic> route) => false,
     );
     _razorpay.clear();
   }
@@ -184,12 +182,18 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
     documentReference.setData(studentSlot, merge: true).whenComplete(() {
       log('completeddone');
     });
+    print('${widget.userTimeSlot.isDiscountApplied}');
+    if(widget.userTimeSlot.isDiscountApplied == true){
+      print('Entered coupon deletion');
+      String path2   = 'students/${widget.userTimeSlot.studentUid}/coupons/${widget.userTimeSlot.discountId}';
+      Firestore.instance.document(path2).delete().whenComplete(() => log('Coupon Deleted'));
+    }
+
   }
   @override
   Widget build(BuildContext context) {
     // print("razor runtime --------: ${_razorpay.runtimeType}");
     student = Provider.of<AuthProvider>(context, listen: false).student;
-
     return Scaffold(
       body: FutureBuilder(
           future: payData(),
@@ -254,3 +258,4 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
 //    }
 //
 //  }
+

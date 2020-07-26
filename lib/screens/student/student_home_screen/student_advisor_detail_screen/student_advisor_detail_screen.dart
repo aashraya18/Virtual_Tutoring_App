@@ -1,4 +1,6 @@
+import 'package:android/services/auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../models/advisor_model.dart';
 import '../../../../common_widgets/bottomFlatButton.dart';
@@ -23,6 +25,7 @@ class _StudentAdvisorDetailScreenState extends State<StudentAdvisorDetailScreen>
   Widget build(BuildContext context) {
     final constraints = MediaQuery.of(context).size;
     final Advisor advisor = widget.advisor;
+    final student = Provider.of<AuthProvider>(context).student;
 
     return Scaffold(
       body: Stack(
@@ -40,7 +43,7 @@ class _StudentAdvisorDetailScreenState extends State<StudentAdvisorDetailScreen>
                 textSize: 18,
                 onPressed: () {
                   Navigator.of(context).push(
-                      MaterialPageRoute(builder: (ctx) => StudentTimeScreen(advisor: advisor)));
+                      MaterialPageRoute(builder: (ctx) => StudentTimeScreen(advisor: advisor,student: student,)));
                 },
               )
             ],

@@ -37,7 +37,7 @@ class SuccessPage extends StatelessWidget {
             ),
             RaisedButton(
               onPressed: (){
-                Navigator.of(context).pushNamedAndRemoveUntil('/student-dashboard', (Route<dynamic> route) => false);
+                Navigator.popUntil(context, (Route<dynamic> route) => route.isFirst);
               },
               color: Color.fromRGBO(66, 133, 140, 1),
               textColor: Colors.white,
