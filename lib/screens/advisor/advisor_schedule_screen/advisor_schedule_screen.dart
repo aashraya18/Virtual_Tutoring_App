@@ -91,7 +91,7 @@ class _AdvisorScheduleScreenState extends State<AdvisorScheduleScreen> {
 //      goToMainPage();
 //    }
 //  }
-  void createMentorSlot() {
+  void createMentorSlot(BuildContext context) {
     int count;
     if(numberOfDaySelected == "none"){
       count = 1;
@@ -121,6 +121,11 @@ class _AdvisorScheduleScreenState extends State<AdvisorScheduleScreen> {
       numberOfIndividualSlots = 1;
     });
     Navigator.pop(context);
+    Scaffold.of(context).showSnackBar(SnackBar(
+      backgroundColor: Theme.of(context).primaryColor,
+      content: Text('Slots added'),
+      duration: Duration(seconds: 3),
+    ));
   }
 
 //  void goToMainPage() {
@@ -421,45 +426,48 @@ class _AdvisorScheduleScreenState extends State<AdvisorScheduleScreen> {
                   SizedBox(
                     height: 30.0,
                   ),
-                  RaisedButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (_) => AlertDialog(
-                          title: Center(child: Text("Make Available")),
-                          actions: [
-                            RaisedButton(
-                              onPressed: () {
-                                createMentorSlot();
-                              },
-                              child: Text("Yes"),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0)),
-                            ),
-                            SizedBox(
-                              width: 53,
-                            ),
-                            RaisedButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0)),
-                              child: Text("No"),
-                            ),
-                            SizedBox(width: 27.0)
-                          ],
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18)),
-                        ),
-                        barrierDismissible: true,
-                      );
-                    },
-                    child: Text("Make Available"),
-                    color: Color(0xffFDB05E),
-                    textColor: Colors.black,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
+                  Builder(
+                      builder: (ctx) =>
+                      RaisedButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (_) => AlertDialog(
+                            title: Center(child: Text("Make Available")),
+                            actions: [
+                              RaisedButton(
+                                onPressed: () {
+                                  createMentorSlot(ctx);
+                                },
+                                child: Text("Yes"),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30.0)),
+                              ),
+                              SizedBox(
+                                width: 53,
+                              ),
+                              RaisedButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30.0)),
+                                child: Text("No"),
+                              ),
+                              SizedBox(width: 27.0)
+                            ],
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18)),
+                          ),
+                          barrierDismissible: true,
+                        );
+                      },
+                      child: Text("Make Available"),
+                      color: Color(0xffFDB05E),
+                      textColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
                     ),
                   ),
                 ],
