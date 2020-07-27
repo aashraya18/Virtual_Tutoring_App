@@ -7,6 +7,7 @@ import 'package:android/services/auth_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 enum CurrentTab {
   pastQuestion,
@@ -22,6 +23,85 @@ class AskMeScreen extends StatefulWidget {
 class _AskMeScreenState extends State<AskMeScreen> {
   CurrentTab _currentTab = CurrentTab.newQuestion;
   Advisor advisor;
+
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  AndroidInitializationSettings androidInitializationSettings;
+  IOSInitializationSettings iosInitializationSettings;
+  InitializationSettings initializationSettings;
+  @override
+  void initState() {
+    initializing();
+    super.initState();
+  }
+  void initializing() async{
+    androidInitializationSettings = AndroidInitializationSettings('no_bg');
+    iosInitializationSettings = IOSInitializationSettings(onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+    initializationSettings = InitializationSettings(androidInitializationSettings,iosInitializationSettings);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings,onSelectNotification: onSelectNotification);
+  }
+
+  void _showNotifications() async{
+    await notification();
+  }
+
+  Future<void> notification() async {
+    AndroidNotificationDetails androidNotificationDetails =
+    AndroidNotificationDetails(
+        'Channel ID', 'Channel title', 'channel body',
+        priority: Priority.High,
+        importance: Importance.Max,
+        ticker: 'test');
+
+    IOSNotificationDetails iosNotificationDetails = IOSNotificationDetails();
+
+    NotificationDetails notificationDetails =
+    NotificationDetails(androidNotificationDetails, iosNotificationDetails);
+    await flutterLocalNotificationsPlugin.show(
+        0, 'Hello there', 'please subscribe my channel', notificationDetails);
+  }
+
+  Future<void> notificationAfterSec() async {
+    var timeDelayed = DateTime.now().add(Duration(seconds: 5));
+    AndroidNotificationDetails androidNotificationDetails =
+    AndroidNotificationDetails(
+        'second channel ID', 'second Channel title', 'second channel body',
+        priority: Priority.High,
+        importance: Importance.Max,
+        ticker: 'test');
+
+    IOSNotificationDetails iosNotificationDetails = IOSNotificationDetails();
+
+    NotificationDetails notificationDetails =
+    NotificationDetails(androidNotificationDetails, iosNotificationDetails);
+    await flutterLocalNotificationsPlugin.schedule(1, 'Hello there',
+        'please subscribe my channel', timeDelayed, notificationDetails);
+  }
+
+  Future onSelectNotification(String payLoad) {
+    if (payLoad != null) {
+      print(payLoad);
+    }
+
+    // we can set navigator to navigate another screen
+  }
+
+  Future onDidReceiveLocalNotification(
+      int id, String title, String body, String payload) async {
+    return CupertinoAlertDialog(
+      title: Text(title),
+      content: Text(body),
+      actions: <Widget>[
+        CupertinoDialogAction(
+            isDefaultAction: true,
+            onPressed: () {
+              print("");
+            },
+            child: Text("Okay")),
+      ],
+    );
+  }
+
+
   @override
   void dispose() {
 
@@ -33,6 +113,17 @@ class _AskMeScreenState extends State<AskMeScreen> {
     return Scaffold(
       body: Column(
         children: <Widget>[
+          FlatButton(
+            color: Colors.blue,
+            onPressed: _showNotifications,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "Show Notification",
+                style: TextStyle(fontSize: 20.0, color: Colors.white),
+              ),
+            ),
+          ),
           Row(
             children: <Widget>[
               Expanded(child: _buildPastQuestion()),
