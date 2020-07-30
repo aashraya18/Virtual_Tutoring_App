@@ -56,7 +56,6 @@ class _AdvisorLoginFormState extends State<AdvisorLoginForm> {
       }else{
         tokens = await Provider.of<StudentDatabaseProvider>(context,listen:false).getStudentDeviceToken(uid);
         print(tokens);
-        tokens = [];
         if(!tokens.contains(Token)){
           tokens.add(Token);
           Firestore.instance.collection('students').document(uid).updateData({'tokens':tokens});

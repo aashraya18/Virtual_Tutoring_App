@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'razorpay_flutter.dart';
 import 'dart:developer';
 import 'dart:convert';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'razorpay_flutter.dart';
@@ -18,6 +19,8 @@ import 'constants.dart';
 import 'paymentSuccess.dart';
 import 'paymentFailed.dart';
 import '../student_slot_screen/user_time_slot.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter/cupertino.dart';
 
 class PaymentsScreen extends StatefulWidget {
   static const routeName = '/user-payments';
@@ -47,10 +50,25 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
   String orderId;
   Student student;
   Advisor advisor;
+
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  AndroidInitializationSettings androidInitializationSettings;
+  IOSInitializationSettings iosInitializationSettings;
+  InitializationSettings initializationSettings;
+
+
+
   @override
   void dispose() {
     super.dispose();
     _razorpay.clear();
+  }
+
+  void initializing() async{
+    androidInitializationSettings = AndroidInitializationSettings('no_bg');
+    iosInitializationSettings = IOSInitializationSettings(onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+    initializationSettings = InitializationSettings(androidInitializationSettings,iosInitializationSettings);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings,onSelectNotification: onSelectNotification);
   }
 
   Future payData() async {
@@ -87,6 +105,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
     log("payment has succedded");
     // Do something when payment succeeds
     capturePayment(response);
+    setNotification();
     updateDatabase();
     _razorpay.clear();
     Navigator.of(context).pushReplacement(
@@ -121,8 +140,73 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
     // Do something when an external wallet is selected
   }
 
+  void _showNotifications(int hours , int hourBefore, String advisorName) async{
+    await notification(advisorName);
+    //await notificationOnMeetingDay(10 ,'Meeting Today with $advisorName');
+    await notificationOnMeetingDay(hourBefore,'Meeting with $advisorName in 1 hour');
+  }
+
+  Future<void> notification(String advisorname) async {
+    AndroidNotificationDetails androidNotificationDetails =
+    AndroidNotificationDetails(
+        'Channel ID', 'Channel title', 'channel body',
+        priority: Priority.High,
+        importance: Importance.Max,
+        ticker: 'test');
+
+    IOSNotificationDetails iosNotificationDetails = IOSNotificationDetails();
+
+    NotificationDetails notificationDetails =
+    NotificationDetails(androidNotificationDetails, iosNotificationDetails);
+    await flutterLocalNotificationsPlugin.show(
+        0, 'Hello there', 'Meeting with $advisorname scheduled ', notificationDetails);
+  }
+
+  Future<void> notificationOnMeetingDay(int hours ,String message) async {
+    var timeDelayed = DateTime.now().add(Duration(seconds: hours));
+    AndroidNotificationDetails androidNotificationDetails =
+    AndroidNotificationDetails(
+        'second channel ID', 'second Channel title', 'second channel body',
+        priority: Priority.High,
+        importance: Importance.Max,
+        ticker: 'test');
+
+    IOSNotificationDetails iosNotificationDetails = IOSNotificationDetails();
+
+    NotificationDetails notificationDetails =
+    NotificationDetails(androidNotificationDetails, iosNotificationDetails);
+    await flutterLocalNotificationsPlugin.schedule(1, 'Hello there',
+        '$message', timeDelayed, notificationDetails);
+  }
+
+  Future onSelectNotification(String payLoad) {
+    if (payLoad != null) {
+      print(payLoad);
+    }
+
+    // we can set navigator to navigate another screen
+  }
+
+  Future onDidReceiveLocalNotification(
+      int id, String title, String body, String payload) async {
+    return CupertinoAlertDialog(
+      title: Text(title),
+      content: Text(body),
+      actions: <Widget>[
+        CupertinoDialogAction(
+            isDefaultAction: true,
+            onPressed: () {
+              print("");
+            },
+            child: Text("Okay")),
+      ],
+    );
+  }
+
+
   @override
   void initState() {
+    initializing();
     RegExp regex = RegExp(r"([.]*0)(?!.*\d)");
     String stringMoney = widget.cartTotal.toString().replaceAll(regex, '');
     int totalMoney = int.parse(stringMoney);
@@ -144,6 +228,26 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
     };
   }
 
+
+  setNotification(){
+
+   //DateTime dateSelected = DateTime.parse(widget.userTimeSlot.);
+   //Duration dur = DateTime.now().difference(dateSelected);
+    print(widget.userTimeSlot.studentBookedSlotList[0]);
+    print(widget.userTimeSlot.dateSelected);
+    String date = widget.userTimeSlot.dateSelected;
+    var bookedDate = DateFormat('d-M-yyyy').parse(date);
+    print(bookedDate);
+    print(DateTime.now().difference(bookedDate).inHours);
+   int hours =  -DateTime.now().difference(bookedDate).inHours;
+   String hourBefore = '';
+   for(int i = 0 ;i<=1;++i){
+      hourBefore = hourBefore+ widget.userTimeSlot.studentBookedSlotList[0][i];
+     }
+   int oneHrBefore = int.parse(hourBefore);
+   print(oneHrBefore);
+    _showNotifications(hours ,oneHrBefore, widget.userTimeSlot.advisorEmail);
+  }
 
   void updateDatabase() {
     updateMentorDatabase();

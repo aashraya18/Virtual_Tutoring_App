@@ -34,7 +34,7 @@ class _AskMeScreenState extends State<AskMeScreen> {
     super.initState();
   }
   void initializing() async{
-    androidInitializationSettings = AndroidInitializationSettings('no_bg');
+    androidInitializationSettings = AndroidInitializationSettings('black_bg');
     iosInitializationSettings = IOSInitializationSettings(onDidReceiveLocalNotification: onDidReceiveLocalNotification);
     initializationSettings = InitializationSettings(androidInitializationSettings,iosInitializationSettings);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,onSelectNotification: onSelectNotification);
@@ -42,6 +42,7 @@ class _AskMeScreenState extends State<AskMeScreen> {
 
   void _showNotifications() async{
     await notification();
+    await notificationAfterSec();
   }
 
   Future<void> notification() async {
@@ -57,11 +58,11 @@ class _AskMeScreenState extends State<AskMeScreen> {
     NotificationDetails notificationDetails =
     NotificationDetails(androidNotificationDetails, iosNotificationDetails);
     await flutterLocalNotificationsPlugin.show(
-        0, 'Hello there', 'please subscribe my channel', notificationDetails);
+        0, 'Hello there', 'Wait for 30 mins', notificationDetails);
   }
 
   Future<void> notificationAfterSec() async {
-    var timeDelayed = DateTime.now().add(Duration(seconds: 5));
+    var timeDelayed = DateTime.now().add(Duration(minutes: 30));
     AndroidNotificationDetails androidNotificationDetails =
     AndroidNotificationDetails(
         'second channel ID', 'second Channel title', 'second channel body',
@@ -113,14 +114,16 @@ class _AskMeScreenState extends State<AskMeScreen> {
     return Scaffold(
       body: Column(
         children: <Widget>[
-          FlatButton(
-            color: Colors.blue,
-            onPressed: _showNotifications,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                "Show Notification",
-                style: TextStyle(fontSize: 20.0, color: Colors.white),
+          SafeArea(
+            child: FlatButton(
+              color: Colors.blue,
+              onPressed: _showNotifications,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  "Show Notification",
+                  style: TextStyle(fontSize: 20.0, color: Colors.white),
+                ),
               ),
             ),
           ),
