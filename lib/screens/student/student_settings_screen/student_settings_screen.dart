@@ -3,10 +3,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
-
 import '../../../services/auth_provider.dart';
 import '../../../models/student_model.dart';
 import 'student_edit_screen.dart';
+import 'package:android/screens/student/student_settings_screen/refferal.dart';
 
 class StudentSettingsScreen extends StatelessWidget {
   static const routeName = '/student-settings';
@@ -81,6 +81,21 @@ class StudentSettingsScreen extends StatelessWidget {
                   builder: (ctx) => StudentEditScreen(student)));
             },
           ),
+          ListTile(
+              contentPadding: EdgeInsets.all(10),
+              leading: Icon(
+                MdiIcons.giftOutline,
+                color: Theme.of(context).primaryColor,
+              ),
+              title: Text(
+                'Rewards',
+                style: Theme.of(context).textTheme.headline6,
+              ),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => Referral(),
+                ));
+              }),
           ListTile(
             contentPadding: EdgeInsets.all(10),
             leading: Icon(
